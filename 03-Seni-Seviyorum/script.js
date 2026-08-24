@@ -1,0 +1,1 @@
+const btn = document.getElementById('btn'); const yazi = document.getElementById('yazi'); btn.addEventListener('click', () => { btn.classList.add('gizle'); yazi.classList.add('goster'); });

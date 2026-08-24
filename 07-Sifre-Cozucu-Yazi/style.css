@@ -1,0 +1,1 @@
+body { margin: 0; height: 100vh; background-color: #050801; display: flex; justify-content: center; align-items: center; font-family: 'Courier New', monospace; } .sifreli-yazi { color: #4a90e2; font-size: 5vw; font-weight: bold; letter-spacing: 5px; cursor: pointer; text-shadow: 0 0 10px #0033cc, 0 0 20px #0022aa, 0 0 40px #001166; }

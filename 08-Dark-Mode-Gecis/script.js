@@ -1,0 +1,1 @@
+const dugme = document.getElementById('tema-gecis'); const sayfa = document.body; dugme.addEventListener('change', () => { if(dugme.checked) { sayfa.classList.add('karanlik'); } else { sayfa.classList.remove('karanlik'); } });
