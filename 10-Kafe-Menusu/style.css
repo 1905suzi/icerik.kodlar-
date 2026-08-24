@@ -1,0 +1,161 @@
+/* Renk Paleti: Krem, Espresso ve Yumuşak Turuncu */
+:root {
+    --krem-arkaplan: #fdfbf7;
+    --espresso-koyu: #3e2723;
+    --espresso-acik: #5d4037;
+    --yumusak-turuncu: #ffb74d;
+    --beyaz: #ffffff;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--krem-arkaplan);
+    color: var(--espresso-koyu);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Üst Kısım (Hero) */
+header {
+    text-align: center;
+    padding: 60px 20px 30px;
+}
+
+header h1 {
+    font-size: 3rem;
+    margin: 0 0 10px 0;
+    letter-spacing: 2px;
+}
+
+header p {
+    font-size: 1.1rem;
+    color: var(--espresso-acik);
+    margin: 0;
+}
+
+/* Kategori Butonları */
+.kategoriler {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 40px;
+    padding: 0 20px;
+}
+
+.kategori-btn {
+    background-color: var(--beyaz);
+    color: var(--espresso-acik);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(62, 39, 35, 0.05);
+    transition: all 0.3s ease;
+}
+
+.kategori-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(62, 39, 35, 0.08);
+}
+
+.kategori-btn.aktif {
+    background-color: var(--yumusak-turuncu);
+    color: var(--beyaz);
+    box-shadow: 0 8px 20px rgba(255, 183, 77, 0.4);
+}
+
+/* Menü Izgarası */
+.menu-izgarasi {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 0 40px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Ürün Kartı */
+.urun-karti {
+    background-color: var(--beyaz);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(62, 39, 35, 0.04);
+    transition: all 0.4s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.urun-karti:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(62, 39, 35, 0.08);
+}
+
+/* JS Animasyonu İçin Gizleme Sınıfı */
+.gizli {
+    display: none !important;
+}
+
+.urun-karti.goster-animasyon {
+    animation: yumusakGiris 0.5s ease forwards;
+}
+
+@keyframes yumusakGiris {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Resim Alanları (Şimdilik renkli yer tutucular) */
+.urun-resmi {
+    height: 200px;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+.resim-1 { background-color: #d7ccc8; }
+.resim-2 { background-color: #ffccbc; }
+.resim-3 { background-color: #bcaaa4; }
+.resim-4 { background-color: #efebe9; }
+.resim-5 { background-color: #ffe0b2; }
+.resim-6 { background-color: #ffcdd2; }
+
+/* Bilgi Kısmı */
+.urun-bilgi {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.urun-bilgi h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.3rem;
+}
+
+.urun-bilgi p {
+    margin: 0 0 20px 0;
+    color: var(--espresso-acik);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    flex-grow: 1;
+}
+
+.fiyat {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--yumusak-turuncu);
+    align-self: flex-start;
+    padding: 8px 15px;
+    background-color: rgba(255, 183, 77, 0.1);
+    border-radius: 12px;
+}

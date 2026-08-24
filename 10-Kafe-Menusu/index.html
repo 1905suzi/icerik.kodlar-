@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> S Cafe Menü</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>S Cafe</h1>
+        <p>En taze kahveler ve el yapımı tatlılar</p>
+    </header>
+
+    <main>
+        <!-- Kategori Butonları -->
+        <nav class="kategoriler">
+            <button class="kategori-btn aktif" data-kategori="tumu">Tümü</button>
+            <button class="kategori-btn" data-kategori="kahve">Sıcak Kahveler</button>
+            <button class="kategori-btn" data-kategori="soguk">Soğuk İçecekler</button>
+            <button class="kategori-btn" data-kategori="tatli">Tatlılar</button>
+        </nav>
+
+        <!-- Menü Öğeleri -->
+        <div class="menu-izgarasi" id="menuIzgarasi">
+            <!-- Ürün 1 -->
+            <div class="urun-karti" data-kategori="kahve">
+                <div class="urun-resmi resim-1"></div>
+                <div class="urun-bilgi">
+                    <h3>Latte Macchiato</h3>
+                    <p>Yumuşak içimli, bol süt köpüklü klasik lezzet.</p>
+                    <span class="fiyat">85 ₺</span>
+                </div>
+            </div>
+
+            <!-- Ürün 2 -->
+            <div class="urun-karti" data-kategori="tatli">
+                <div class="urun-resmi resim-2"></div>
+                <div class="urun-bilgi">
+                    <h3>San Sebastian</h3>
+                    <p>Akışkan çikolata sosu ile sunulan efsanevi cheesecake.</p>
+                    <span class="fiyat">140 ₺</span>
+                </div>
+            </div>
+
+            <!-- Ürün 3 -->
+            <div class="urun-karti" data-kategori="soguk">
+                <div class="urun-resmi resim-3"></div>
+                <div class="urun-bilgi">
+                    <h3>Iced Americano</h3>
+                    <p>Buz gibi ferahlatıcı sert kahve deneyimi.</p>
+                    <span class="fiyat">75 ₺</span>
+                </div>
+            </div>
+
+            <!-- Ürün 4 -->
+            <div class="urun-karti" data-kategori="kahve">
+                <div class="urun-resmi resim-4"></div>
+                <div class="urun-bilgi">
+                    <h3>Filtre Kahve</h3>
+                    <p>Özel kavrulmuş taze çekirdeklerden filtre kahve.</p>
+                    <span class="fiyat">60 ₺</span>
+                </div>
+            </div>
+
+            <!-- Ürün 5 -->
+            <div class="urun-karti" data-kategori="tatli">
+                <div class="urun-resmi resim-5"></div>
+                <div class="urun-bilgi">
+                    <h3>Tiramisu</h3>
+                    <p>İtalyan usulü, kahve aromalı hafif tatlı.</p>
+                    <span class="fiyat">120 ₺</span>
+                </div>
+            </div>
+            
+            <!-- Ürün 6 -->
+            <div class="urun-karti" data-kategori="soguk">
+                <div class="urun-resmi resim-6"></div>
+                <div class="urun-bilgi">
+                    <h3>Hibiscus Çayı</h3>
+                    <p>Buzlu, ferahlatıcı meyve notalı soğuk çay.</p>
+                    <span class="fiyat">70 ₺</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
