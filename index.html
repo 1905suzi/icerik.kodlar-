@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projelerim - İçerik Kodları</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0284c7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-top: 20px;
+        }
+
+        h1 {
+            color: var(--accent);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 24px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+            border: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border-color: var(--accent);
+        }
+
+        .badge {
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--accent);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Proje Galerisi</h1>
+            <p class="subtitle">HTML, CSS ve JavaScript Çalışmalarım</p>
+        </header>
+
+        <div class="grid">
+            <a href="01-Neon-Buton/" class="card">
+                <span class="badge">#01</span>
+                <h3>Neon Buton</h3>
+            </a>
+            <a href="02-Kalp-Patlamasi/" class="card">
+                <span class="badge">#02</span>
+                <h3>Kalp Patlaması</h3>
+            </a>
+            <a href="03-Seni-Seviyorum/" class="card">
+                <span class="badge">#03</span>
+                <h3>Seni Seviyorum</h3>
+            </a>
+            <a href="04-Glassmorphism/" class="card">
+                <span class="badge">#04</span>
+                <h3>Glassmorphism</h3>
+            </a>
+            <a href="05-Cizilen-Lazer-Kalp/" class="card">
+                <span class="badge">#05</span>
+                <h3>Çizilen Lazer Kalp</h3>
+            </a>
+            <a href="06-Matrix-Yagmuru/" class="card">
+                <span class="badge">#06</span>
+                <h3>Matrix Yağmuru</h3>
+            </a>
+            <a href="07-Sifre-Cozucu-Yazi/" class="card">
+                <span class="badge">#07</span>
+                <h3>Şifre Çözücü Yazı</h3>
+            </a>
+            <a href="08-Dark-Mode-Gecis/" class="card">
+                <span class="badge">#08</span>
+                <h3>Dark Mode Geçiş</h3>
+            </a>
+            <a href="09-3D-Suzulen-Kalp/" class="card">
+                <span class="badge">#09</span>
+                <h3>3D Süzülen Kalp</h3>
+            </a>
+            <a href="10-Kafe-Menusu/" class="card">
+                <span class="badge">#10</span>
+                <h3>Kafe Menüsü</h3>
+            </a>
+            <a href="11-Rastgele-Kullanici-API/" class="card">
+                <span class="badge">#11</span>
+                <h3>Rastgele Kullanıcı API</h3>
+            </a>
+            <a href="12-3D-Urun-Karti/" class="card">
+                <span class="badge">#12</span>
+                <h3>3D Ürün Kartı</h3>
+            </a>
+            <a href="13-Robot-Kalp-Firlatma/" class="card">
+                <span class="badge">#13</span>
+                <h3>Robot Kalp Fırlatma</h3>
+            </a>
+            <a href="14-3D-Acan-Gul/" class="card">
+                <span class="badge">#14</span>
+                <h3>3D Açan Gül</h3>
+            </a>
+            <a href="16-Robot-Login/" class="card">
+                <span class="badge">#16</span>
+                <h3>Robot Login</h3>
+            </a>
+            <a href="17-Galaksi-Kalp/" class="card">
+                <span class="badge">#17</span>
+                <h3>Galaksi Kalp</h3>
+            </a>
+            <a href="18-3D-Asik-Kalp/" class="card">
+                <span class="badge">#18</span>
+                <h3>3D Aşık Kalp</h3>
+            </a>
+            <a href="19-Karakter-Animasyonlu-Giris/" class="card">
+                <span class="badge">#19</span>
+                <h3>Karakter Animasyonlu Giriş</h3>
+            </a>
+            <a href="20-Stream-Duygu-Analizi-UI/" class="card">
+                <span class="badge">#20</span>
+                <h3>Stream Duygu Analizi UI</h3>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
