@@ -1,0 +1,206 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background: #417BFF; /* Videodaki mavi arka plan */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.scene {
+    position: relative;
+    width: 1000px;
+    height: 600px;
+}
+
+/* ================= EKRAN TİTREME (SHAKE) ================= */
+.shake {
+    animation: shakeEffect 0.4s cubic-bezier(.36,.07,.19,.97) both;
+}
+@keyframes shakeEffect {
+    10%, 90% { transform: translate3d(-2px, 0, 0); }
+    20%, 80% { transform: translate3d(4px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
+    40%, 60% { transform: translate3d(8px, 0, 0); }
+}
+
+/* ================= ÇANTA TASARIMI ================= */
+.floor-briefcase {
+    position: absolute;
+    width: 40px;
+    height: 30px;
+    bottom: 100px;
+    left: 400px; /* Karakterin koşup duracağı yer */
+    z-index: 5;
+    transition: opacity 0.3s;
+}
+.floor-briefcase.hidden {
+    display: none;
+}
+
+.case {
+    width: 40px;
+    height: 25px;
+    background: #8B5A2B;
+    border-radius: 4px;
+    position: absolute;
+    bottom: 0;
+    box-shadow: inset 0 -4px 0 rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.2);
+}
+.case::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px; height: 4px;
+    background: #FFD700;
+}
+.handle {
+    width: 14px;
+    height: 8px;
+    border: 3px solid #6b4421;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* ================= GIF KARAKTER TASARIMI ================= */
+.character {
+    position: absolute;
+    bottom: 100px;
+    left: -150px; /* Ekranın dışından başlayacak */
+    width: 120px; /* GIF Boyutu */
+    z-index: 10;
+    transition: transform 0.3s;
+    /* Resmi yatay eksende biraz düzeltmek için */
+    transform-origin: bottom center;
+}
+
+/* Eğilme (Çantayı alırken) */
+.character.bending {
+    transform: scaleY(0.7) translateY(20px);
+}
+
+/* Çarpma (Güm!) */
+.character.bumping {
+    transform: rotate(-15deg) translateX(-20px);
+    filter: sepia(1) hue-rotate(-50deg) saturate(3); /* Çarpınca rengi biraz değişsin (opsiyonel komik efekt) */
+}
+
+/* Başarılı Zıplama */
+.character.jumping {
+    animation: jumpJoy 1s ease-in-out;
+}
+
+@keyframes jumpJoy {
+    0% { transform: translateY(0) scale(1); }
+    40% { transform: translateY(-120px) rotate(10deg) scale(1.1); }
+    60% { transform: translateY(-120px) rotate(-10deg) scale(1.1); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+/* ================= GİRİŞ FORMU ================= */
+.login-wrapper {
+    position: absolute;
+    right: 150px;
+    bottom: 50px;
+    width: 380px;
+    opacity: 0;
+    transform: translateX(50px) scale(0.9);
+    pointer-events: none;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 15;
+}
+
+.login-wrapper.revealed {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    pointer-events: all;
+}
+
+.login-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.login-card h2 {
+    color: #111;
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+.login-card p {
+    color: #666;
+    font-size: 12px;
+    margin-bottom: 25px;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 15px;
+}
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+}
+.input-group input {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    transition: border 0.3s;
+}
+.input-group input:focus {
+    border-color: #069c56; /* Videodaki yeşil tonu */
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: #069c56;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+.submit-btn:hover {
+    background: #048246;
+}
+
+.social-login {
+    margin-top: 15px;
+}
+.google-btn {
+    width: 100%;
+    padding: 10px;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.google-btn i {
+    color: #DB4437;
+}

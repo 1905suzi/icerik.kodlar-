@@ -1,0 +1,441 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    /* Dark mod gradyan arka plan */
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Arka Plan Bulutları (Karanlık moda uygun) */
+.clouds {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+.cloud {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50px;
+    filter: blur(12px);
+}
+.cloud-1 { width: 120px; height: 40px; top: 20%; left: 10%; }
+.cloud-2 { width: 200px; height: 60px; top: 15%; right: 15%; }
+.cloud-3 { width: 150px; height: 50px; bottom: 30%; left: 20%; }
+
+.login-container {
+    position: relative;
+    width: 480px; /* Biraz daha geniş */
+    margin-top: 150px; /* Robot gövdesi için alan */
+    z-index: 5;
+}
+
+/* ================= ROBOT TASARIMI ================= */
+.robot {
+    position: absolute;
+    top: 50%; /* Dikey ortalama */
+    left: -120px; /* Kartın sol dışından içeri bakacak */
+    transform: translateY(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Anten */
+.anten {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: -4px;
+    z-index: 2;
+}
+.anten-top {
+    width: 18px;
+    height: 18px;
+    background: #f39c12; /* Turuncu/sarı lamba */
+    border-radius: 50%;
+    box-shadow: 0 0 15px #f39c12, inset -3px -3px 5px rgba(0,0,0,0.2);
+}
+.anten-cubuk {
+    width: 6px;
+    height: 18px;
+    background: #aabdd3;
+}
+
+/* Kafa */
+.kafa {
+    width: 140px;
+    height: 110px;
+    background: linear-gradient(135deg, #f0f7fe, #c4dcf2);
+    border-radius: 40px;
+    border: 3px solid #ffffff;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1), inset 0 -15px 20px rgba(154, 188, 227, 0.4);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 22px;
+    z-index: 3;
+}
+
+/* Kulaklar */
+.kulak {
+    position: absolute;
+    top: 35px;
+    width: 12px;
+    height: 35px;
+    background: #aabdd3;
+    border-radius: 6px;
+}
+.sol-kulak { left: -12px; border-radius: 10px 0 0 10px; }
+.sag-kulak { right: -12px; border-radius: 0 10px 10px 0; }
+
+/* Yanaklar */
+.yanak {
+    position: absolute;
+    bottom: 25px;
+    width: 18px;
+    height: 12px;
+    background: rgba(243, 156, 18, 0.4);
+    border-radius: 50%;
+    filter: blur(2px);
+}
+.sol-yanak { left: 15px; }
+.sag-yanak { right: 15px; }
+
+/* Gözler */
+.goz {
+    width: 32px;
+    height: 42px;
+    background: #2c4463;
+    border-radius: 50%;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.goz-bebegi {
+    width: 14px;
+    height: 18px;
+    background: #ffffff;
+    border-radius: 50%;
+    position: absolute;
+    top: 6px;
+    left: 10px;
+    transition: all 0.2s ease;
+}
+
+.goz-parilti {
+    width: 6px;
+    height: 8px;
+    background: #ffffff;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 10px;
+    right: 8px;
+    opacity: 0.6;
+}
+
+/* Şifre yazılırken gözlerin düşüp pörtlemesi */
+.robot.sifre-yaziyor .goz {
+    transform: translateY(20px) scale(1.5);
+    background: #2c4463;
+    border-radius: 40%;
+}
+.robot.sifre-yaziyor .goz-bebegi {
+    top: 15px;
+    left: 9px;
+    width: 16px;
+    height: 16px;
+}
+
+/* Kullanıcı adı yazılırken gözler fareyi/yazıyı takip eder gibi (sağa sola bakar) */
+.robot.kullanici-yaziyor .goz-bebegi {
+    transform: translateX(6px) translateY(6px);
+}
+
+/* Ağız */
+.agiz {
+    position: absolute;
+    bottom: 22px;
+    width: 28px;
+    height: 14px;
+    border-bottom: 4px solid #2c4463;
+    border-radius: 0 0 20px 20px;
+    transition: all 0.3s;
+}
+
+/* Gövde ve Ekran */
+.govde {
+    width: 100px;
+    height: 80px;
+    background: linear-gradient(135deg, #1e293b, #334155);
+    border-radius: 20px;
+    margin-top: -15px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid rgba(255,255,255,0.2);
+    box-shadow: inset 0 -10px 15px rgba(0, 0, 0, 0.3);
+}
+
+.ekran {
+    width: 60px;
+    height: 35px;
+    background: #0f172a;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 10px #000;
+}
+
+.ekran span {
+    color: #4db8ff;
+    font-family: monospace;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Giriş yapıldığında robot zıplar ve güler */
+.robot.giris-basarili {
+    animation: robotZipla 0.6s ease-in-out infinite alternate;
+}
+.robot.giris-basarili .agiz {
+    height: 25px;
+    background: #2c4463;
+    border-bottom: none;
+    border-radius: 0 0 30px 30px;
+}
+.robot.giris-basarili .goz {
+    height: 30px;
+    border-radius: 50% 50% 10% 10%;
+    transform: translateY(-5px);
+}
+
+@keyframes robotZipla {
+    0% { transform: translateY(-50%); }
+    100% { transform: translateY(calc(-50% - 30px)); }
+}
+
+/* Kartın yanından tutunan eller */
+.eller {
+    position: absolute;
+    bottom: 20px;
+    right: -20px; /* Sağa doğru uzanan kollar */
+    width: 60px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 15;
+}
+.el {
+    width: 45px;
+    height: 30px;
+    background: linear-gradient(135deg, #f0f7fe, #c4dcf2);
+    border: 3px solid rgba(255,255,255,0.8);
+    border-radius: 20px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+}
+
+/* ================= GİRİŞ KARTI (DARK MODE) ================= */
+.login-card {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    padding: 60px 40px 40px 190px; /* Robot solda, form sağda */
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 5;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-card h2 {
+    color: #f8fafc;
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+
+.login-card p {
+    color: #94a3b8;
+    font-size: 15px;
+    margin-bottom: 35px;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 22px;
+}
+
+.input-group .icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    font-size: 20px;
+    transition: color 0.3s;
+}
+
+.input-group input {
+    width: 100%;
+    height: 60px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 0 50px;
+    font-size: 16px;
+    color: #f8fafc;
+    outline: none;
+    transition: all 0.3s;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.input-group input::placeholder {
+    color: #64748b;
+}
+
+.input-group input:focus {
+    border-color: #3b82f6; /* Mavi focus */
+    background: rgba(15, 23, 42, 0.9);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.input-group input:focus + .icon,
+.input-group input:not(:placeholder-shown) + .icon {
+    color: #3b82f6;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    cursor: pointer;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+.toggle-password:hover {
+    color: #f8fafc;
+}
+
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.options input[type="checkbox"] {
+    accent-color: #3b82f6;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.options a {
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.submit-btn {
+    width: 100%;
+    height: 60px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb); /* Mavi degrade buton */
+    color: #ffffff;
+    border: none;
+    border-radius: 16px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 25px rgba(37, 99, 235, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+/* ================= SOCIAL LOGIN (Google & Apple) ================= */
+.divider {
+    margin: 25px 0;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #64748b;
+    font-size: 13px;
+}
+.divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.divider span {
+    padding: 0 15px;
+}
+
+.social-login {
+    display: flex;
+    gap: 15px;
+}
+.social-btn {
+    flex: 1;
+    height: 55px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    color: #f8fafc;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+.social-btn i {
+    font-size: 18px;
+}
+.social-btn.google-btn i {
+    color: #ea4335;
+}
+.social-btn.apple-btn i {
+    color: #f8fafc;
+}
+
+.social-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}

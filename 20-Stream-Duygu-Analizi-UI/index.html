@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Stream Sentiment Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div class="dashboard">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="logo">
+                <i class="fa-solid fa-waveform"></i> Sentiment<span>AI</span>
+            </div>
+            <div class="stream-info">
+                <div class="live-badge"><div class="dot"></div> LIVE</div>
+                <div class="viewers"><i class="fa-solid fa-users"></i> <span id="viewerCount">14,208</span></div>
+            </div>
+        </header>
+
+        <!-- MAIN GRID -->
+        <div class="grid-container">
+            
+            <!-- LEFT: CHAT FEED -->
+            <div class="panel chat-panel">
+                <div class="panel-header">
+                    <h3><i class="fa-regular fa-comments"></i> Live Chat Feed</h3>
+                </div>
+                <div class="chat-box" id="chatBox">
+                    <!-- Messages will be injected here via JS -->
+                </div>
+            </div>
+
+            <!-- CENTER: REAL-TIME CHART -->
+            <div class="panel chart-panel">
+                <div class="panel-header">
+                    <h3><i class="fa-solid fa-chart-line"></i> Emotion Fluctuation (Real-time)</h3>
+                </div>
+                <div class="chart-container">
+                    <canvas id="sentimentChart"></canvas>
+                </div>
+                <div class="chart-legend">
+                    <span class="legend-item"><div class="color-box pos"></div> Joy / Hype</span>
+                    <span class="legend-item"><div class="color-box neu"></div> Neutral / Info</span>
+                    <span class="legend-item"><div class="color-box neg"></div> Anger / Toxic</span>
+                </div>
+            </div>
+
+            <!-- RIGHT: STATS & OVERALL VIBE -->
+            <div class="panel stats-panel">
+                <div class="panel-header">
+                    <h3><i class="fa-solid fa-bolt"></i> Stream Vibe</h3>
+                </div>
+                
+                <div class="vibe-score">
+                    <div class="score-circle" id="scoreCircle">
+                        <span id="overallScore">85%</span>
+                        <p>HYPE</p>
+                    </div>
+                </div>
+
+                <div class="progress-bars">
+                    <div class="bar-group">
+                        <div class="bar-label">Positive (Joy/Hype) <span id="posPercent">60%</span></div>
+                        <div class="bar-track"><div class="bar-fill pos-fill" id="posBar" style="width: 60%;"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label">Neutral <span id="neuPercent">30%</span></div>
+                        <div class="bar-track"><div class="bar-fill neu-fill" id="neuBar" style="width: 30%;"></div></div>
+                    </div>
+                    <div class="bar-group">
+                        <div class="bar-label">Negative (Toxic/Anger) <span id="negPercent">10%</span></div>
+                        <div class="bar-track"><div class="bar-fill neg-fill" id="negBar" style="width: 10%;"></div></div>
+                    </div>
+                </div>
+                
+                <div class="alerts">
+                    <h4>AI Alerts</h4>
+                    <ul id="alertList">
+                        <li class="alert-item pos-alert"><i class="fa-solid fa-arrow-trend-up"></i> High engagement detected!</li>
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

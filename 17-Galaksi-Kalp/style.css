@@ -1,0 +1,154 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    user-select: none;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background: #000000; /* Derin uzay siyahı */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* ================= KART TASARIMI ================= */
+.card-container {
+    position: relative;
+    z-index: 10;
+    background: rgba(15, 5, 25, 0.7);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 50px 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.03);
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.card-container.fade-out {
+    opacity: 0;
+    transform: scale(0.9);
+    pointer-events: none;
+}
+
+.title {
+    color: #fff;
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 182, 255, 0.6);
+    letter-spacing: 2px;
+}
+
+.gif-container {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hugging-bears {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    mix-blend-mode: screen; 
+}
+
+.subtitle {
+    color: #e0c2ff;
+    font-size: 12px;
+    letter-spacing: 4px;
+    margin-bottom: 40px;
+    text-shadow: 0 0 10px rgba(224, 194, 255, 0.5);
+}
+
+/* ================= BASILI TUT BUTONU ================= */
+.hold-btn-wrapper {
+    position: relative;
+    width: 200px;
+    height: 50px;
+    border-radius: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+
+.btn {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    position: relative;
+    outline: none;
+    cursor: pointer;
+}
+
+.btn-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #b829d6, #ff00ff);
+    box-shadow: 0 0 20px #ff00ff;
+    transition: width 0.1s linear;
+    z-index: 1;
+}
+
+.btn-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 14px;
+    letter-spacing: 2px;
+    font-weight: bold;
+    z-index: 2;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    white-space: nowrap;
+}
+
+/* ================= FİNAL YAZISI ================= */
+#finalText {
+    position: absolute;
+    z-index: 5;
+    color: #fff;
+    font-size: 70px;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 8px;
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+    transition: opacity 2.5s ease, transform 2.5s ease;
+    text-shadow: 0 0 20px #ff00ff, 0 0 50px #ff00ff, 0 0 100px #ff00ff;
+    pointer-events: none;
+}
+
+#finalText.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.hidden {
+    display: none;
+}

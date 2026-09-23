@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy Gallery 3D</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Three.js ve OrbitControls kütüphaneleri -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+    <!-- 3D Sahne -->
+    <div id="canvas-container"></div>
+
+    <!-- Başlangıç Kartı -->
+    <div class="card-container" id="startCard">
+        <h1 class="title">Galaxy Gallery</h1>
+        
+        <div class="gif-container">
+            <img src="https://media.giphy.com/media/Vz58J8shFW6BvqnYTm/giphy.gif" alt="Sarılma" class="hugging-bears">
+        </div>
+        
+        <p class="subtitle">PARA MI PRINCESITA</p>
+        
+        <!-- İçi dolan buton -->
+        <div class="hold-btn-wrapper">
+            <button id="iniciarBtn" class="btn">
+                <div class="btn-fill" id="btnFill"></div>
+                <span class="btn-text">BASILI TUT</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Final Yazısı -->
+    <div id="finalText" class="hidden">
+        I love you
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background: #0a0a1a;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* ============ ŞİRİN KARAKTERİ ============ */
+.karakter {
+    position: absolute;
+    left: 28%;
+    bottom: 40%;
+    z-index: 10;
+    animation: karakterZipla 2s ease-in-out infinite;
+}
+
+@keyframes karakterZipla {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Gövde - Yumuşak beyaz blob */
+.govde {
+    width: 100px;
+    height: 120px;
+    background: #ffffff;
+    border-radius: 50px 50px 45px 45px;
+    position: relative;
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
+}
+
+/* Gözler - Şirin nokta gözler */
+.goz {
+    width: 8px;
+    height: 8px;
+    background: #2a2a2a;
+    border-radius: 50%;
+    position: absolute;
+    top: 38px;
+    animation: gozKirp 3.5s ease-in-out infinite;
+}
+
+.sol-goz { left: 28px; }
+.sag-goz { right: 28px; }
+
+@keyframes gozKirp {
+    0%, 42%, 48%, 100% { transform: scaleY(1); }
+    45% { transform: scaleY(0.1); }
+}
+
+/* Ağız - Mutlu gülümseme */
+.agiz {
+    position: absolute;
+    bottom: 38px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 10px;
+    border-bottom: 3px solid #2a2a2a;
+    border-radius: 0 0 12px 12px;
+}
+
+/* Yanaklar - Pembe kızarıklık */
+.yanak {
+    width: 18px;
+    height: 12px;
+    background: rgba(255, 150, 170, 0.5);
+    border-radius: 50%;
+    position: absolute;
+    top: 52px;
+    filter: blur(2px);
+}
+
+.sol-yanak { left: 12px; }
+.sag-yanak { right: 12px; }
+
+/* Kollar */
+.kol {
+    width: 8px;
+    height: 35px;
+    background: #ffffff;
+    border-radius: 20px;
+    position: absolute;
+}
+
+/* Sol kol - Aşağıda sabit */
+.sol-kol {
+    left: -6px;
+    top: 55px;
+    transform: rotate(15deg);
+}
+
+/* Sağ kol - Fırlatan el */
+.sag-kol {
+    right: -20px;
+    top: 30px;
+    transform-origin: bottom left;
+    animation: kolFirlat 1.5s ease-in-out infinite;
+}
+
+@keyframes kolFirlat {
+    0%, 30% { transform: rotate(-20deg); }
+    45% { transform: rotate(-50deg); }
+    60% { transform: rotate(30deg); }
+    80%, 100% { transform: rotate(-20deg); }
+}
+
+/* Eldeki kalp */
+.eldeki-kalp {
+    position: absolute;
+    top: -12px;
+    right: -10px;
+    font-size: 14px;
+    animation: eldekiAnimasyon 1.5s ease-in-out infinite;
+}
+
+@keyframes eldekiAnimasyon {
+    0%, 40% { opacity: 1; transform: scale(0.8); }
+    55% { opacity: 1; transform: scale(1.2); }
+    70% { opacity: 0; transform: scale(0.5) translateX(30px) translateY(-25px); }
+    71%, 100% { opacity: 0; }
+}
+
+/* Ayaklar */
+.ayak {
+    width: 14px;
+    height: 18px;
+    background: #ffffff;
+    border-radius: 10px;
+    position: absolute;
+    bottom: -12px;
+    z-index: -1;
+}
+
+.sol-ayak {
+    left: 30px;
+}
+
+.sag-ayak {
+    right: 30px;
+}
+
+/* "biu!" yazısı */
+.biu-yazi {
+    position: absolute;
+    top: -10px;
+    right: -50px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff8fa3;
+    font-style: italic;
+    animation: biuAnimasyon 1.5s ease-in-out infinite;
+    text-shadow: 0 0 10px rgba(255, 143, 163, 0.5);
+}
+
+@keyframes biuAnimasyon {
+    0%, 40% { opacity: 0; transform: scale(0.5); }
+    55% { opacity: 1; transform: scale(1.1); }
+    75% { opacity: 1; transform: scale(1); }
+    90%, 100% { opacity: 0; transform: scale(0.8) translateX(10px); }
+}
+
+/* ============ KALP ALANI ============ */
+.kalp-alani {
+    position: absolute;
+    right: 15%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 280px;
+    height: 280px;
+}
+
+/* Mini kalpler - YUMUŞAK OVAL yapıda */
+.mini-kalp {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+    filter: drop-shadow(0 0 3px rgba(255, 77, 109, 0.4));
+}
+
+/* Yumuşak oval kalp şekli (CSS ile) */
+.mini-kalp::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #e74c6f;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+}
+
+.mini-kalp::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #e74c6f;
+    border-radius: 50%;
+    top: -35%;
+    left: 0;
+    transform: rotate(-45deg);
+}
+
+/* Alternatif renk tonları */
+.mini-kalp.ton-1::before, .mini-kalp.ton-1::after { background: #ff6b8a; }
+.mini-kalp.ton-2::before, .mini-kalp.ton-2::after { background: #e74c6f; }
+.mini-kalp.ton-3::before, .mini-kalp.ton-3::after { background: #c4405c; }
+
+.mini-kalp.gorunur {
+    animation: kalpBelir 0.4s ease-out forwards;
+}
+
+@keyframes kalpBelir {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    70% {
+        transform: scale(1.15);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Uçuşan kalpler */
+.ucusan-kalp {
+    position: absolute;
+    font-size: 14px;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Arka plan */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(circle at 30% 50%, rgba(255, 77, 109, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 65% 45%, rgba(255, 77, 109, 0.06) 0%, transparent 40%);
+    pointer-events: none;
+}

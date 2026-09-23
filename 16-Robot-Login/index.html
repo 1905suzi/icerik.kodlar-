@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Giriş Paneli</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Arka plan bulutları -->
+    <div class="clouds">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+    </div>
+
+    <div class="login-container">
+        
+        <!-- Sevimli Robot -->
+        <div class="robot" id="robot">
+            <div class="anten">
+                <div class="anten-top"></div>
+                <div class="anten-cubuk"></div>
+            </div>
+            <div class="kafa">
+                <!-- Kulaklar (yan paneller) -->
+                <div class="kulak sol-kulak"></div>
+                <div class="kulak sag-kulak"></div>
+                
+                <div class="goz sol-goz">
+                    <div class="goz-bebegi"></div>
+                    <div class="goz-parilti"></div>
+                </div>
+                <div class="goz sag-goz">
+                    <div class="goz-bebegi"></div>
+                    <div class="goz-parilti"></div>
+                </div>
+                <!-- Sevimli yanaklar -->
+                <div class="yanak sol-yanak"></div>
+                <div class="yanak sag-yanak"></div>
+                
+                <div class="agiz"></div>
+            </div>
+            
+            <!-- Gövde ve ekran -->
+            <div class="govde">
+                <div class="ekran">
+                    <span>&lt;/&gt;</span>
+                </div>
+            </div>
+
+            <div class="eller">
+                <div class="el sol-el"></div>
+                <div class="el sag-el"></div>
+            </div>
+        </div>
+
+        <!-- Giriş Kartı -->
+        <div class="login-card">
+            <h2>Hoş Geldin! 👋</h2>
+            <p>Seni tanıyalım, lütfen giriş yap.</p>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <i class="fa-regular fa-user icon"></i>
+                    <input type="text" id="username" placeholder="Kullanıcı Adı" autocomplete="off">
+                </div>
+
+                <div class="input-group">
+                    <i class="fa-solid fa-lock icon"></i>
+                    <input type="password" id="password" placeholder="Şifre" autocomplete="off">
+                    <i class="fa-regular fa-eye-slash toggle-password" id="togglePassword"></i>
+                </div>
+
+                <div class="options">
+                    <label><input type="checkbox"> Beni Hatırla</label>
+                    <a href="#">Şifremi Unuttum?</a>
+                </div>
+
+                <button type="submit" class="submit-btn">Devam <i class="fa-solid fa-arrow-right"></i></button>
+
+                <div class="divider">
+                    <span>veya şununla devam et</span>
+                </div>
+
+                <div class="social-login">
+                    <button type="button" class="social-btn google-btn">
+                        <i class="fa-brands fa-google"></i> Google
+                    </button>
+                    <button type="button" class="social-btn apple-btn">
+                        <i class="fa-brands fa-apple"></i> Apple
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
