@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Hava Durumu</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome Yüklüyoruz (İkonlar için) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    
+    <div class="app-wrap default-bg" id="appWrap">
+        
+        <div class="weather-card">
+            <!-- Arama Alanı -->
+            <div class="search-box">
+                <i class="fa-solid fa-location-dot location-icon"></i>
+                <input type="text" id="cityInput" placeholder="Şehir adı girin (Örn: Istanbul)...">
+                <button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+
+            <!-- Yükleniyor veya Hata Mesajı -->
+            <div class="message" id="message"></div>
+
+            <!-- Hava Durumu Sonuç Alanı (Başlangıçta Gizli) -->
+            <div class="weather-info" id="weatherInfo" style="display: none;">
+                <div class="weather-main">
+                    <i class="fa-solid fa-cloud weather-icon" id="weatherIcon"></i>
+                    <h1 class="temperature" id="temp">--°C</h1>
+                    <h2 class="city-name" id="cityName">Şehir</h2>
+                    <p class="description" id="description">Açık</p>
+                </div>
+
+                <div class="weather-details">
+                    <div class="detail">
+                        <i class="fa-solid fa-water"></i>
+                        <div>
+                            <span class="detail-title">Nem</span>
+                            <span class="detail-value" id="humidity">--%</span>
+                        </div>
+                    </div>
+                    <div class="detail">
+                        <i class="fa-solid fa-wind"></i>
+                        <div>
+                            <span class="detail-title">Rüzgar</span>
+                            <span class="detail-value" id="windSpeed">-- km/s</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
