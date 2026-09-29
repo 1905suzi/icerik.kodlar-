@@ -8,13 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let i = 0; i < COLUMN_COUNT; i++) {
         const col = document.createElement('div');
         col.className = 'color-col';
-        col.innerHTML = \`
+        col.innerHTML = `
             <h2 class="hex-text" title="Tıkla ve Kopyala">#FFFFFF</h2>
             <div class="controls">
                 <button class="btn-lock" title="Kilitle"><i class="fa-solid fa-lock-open"></i></button>
                 <button class="btn-copy" title="Kopyala"><i class="fa-regular fa-copy"></i></button>
             </div>
-        \`;
+        `;
         paletteContainer.appendChild(col);
     }
 

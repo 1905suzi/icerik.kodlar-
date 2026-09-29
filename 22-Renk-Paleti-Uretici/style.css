@@ -31,13 +31,13 @@ body {
 }
 
 .color-col {
-    min-width: 250px; /* Her bir renk en az 250px yer kaplasın */
-    flex: 1;
+    flex: 0 0 20vw; /* Ekranda her zaman 5 tane görünsün (20% * 5 = 100%) */
+    min-width: 200px; /* Çok küçülürse diye minimum sınır */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: background-color 0.4s ease; /* Renk değişiminde yumuşak geçiş */
+    transition: background-color 0.4s ease;
     position: relative;
 }
 
