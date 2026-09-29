@@ -204,6 +204,16 @@
     font-weight: 600;
 }
 
+/* Hava Durumu İkon Renkleri */
+.fa-sun               { color: #FFD700; text-shadow: 0 0 12px rgba(255,215,0,0.7); }
+.fa-cloud-sun         { color: #FFC145; text-shadow: 0 0 10px rgba(255,193,69,0.6); }
+.fa-cloud             { color: #B0C4DE; }
+.fa-smog              { color: #A8B8C8; }
+.fa-cloud-rain        { color: #74A9CF; }
+.fa-cloud-showers-heavy { color: #4a90d9; text-shadow: 0 0 8px rgba(74,144,217,0.5); }
+.fa-snowflake         { color: #D0EFFF; text-shadow: 0 0 10px rgba(176,224,255,0.8); }
+.fa-cloud-bolt        { color: #C084FC; text-shadow: 0 0 12px rgba(192,132,252,0.7); }
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
