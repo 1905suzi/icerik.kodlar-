@@ -41,9 +41,9 @@
     -webkit-backdrop-filter: blur(25px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 40px; /* İstenen Oval Kenarlar */
-    padding: 40px;
-    width: 400px;
-    max-width: 90%;
+    padding: 30px;
+    width: 600px;
+    max-width: 95%;
     box-shadow: 0 30px 60px rgba(0,0,0,0.2), inset 0 0 10px rgba(255,255,255,0.2);
     color: white;
     text-align: center;
@@ -152,6 +152,55 @@
 .detail-value {
     display: block;
     font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* Haftalık Tahmin */
+.weekly-forecast {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 10px; /* Scrollbar için boşluk */
+}
+/* Scrollbar Gizleme */
+.weekly-forecast::-webkit-scrollbar {
+    height: 6px;
+}
+.weekly-forecast::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.3);
+    border-radius: 10px;
+}
+
+.forecast-day {
+    flex: 0 0 90px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 20px;
+    padding: 15px 10px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: background 0.3s, transform 0.3s;
+    cursor: pointer;
+}
+.forecast-day:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-5px);
+}
+.forecast-day .f-day {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    opacity: 0.9;
+}
+.forecast-day i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+.forecast-day .f-temps {
+    font-size: 0.9rem;
     font-weight: 600;
 }
 

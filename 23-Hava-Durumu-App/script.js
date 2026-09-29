@@ -71,14 +71,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const { latitude, longitude, name, country } = geoData.results[0];
 
-            // 2. ADIM: Forecast API ile koordinatlardan Hava Durumu verisini çek
-            const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m`);
+            // 2. ADIM: Forecast API ile koordinatlardan Hava Durumu verisini çek (Daily eklendi)
+            const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`);
             const weatherData = await weatherRes.json();
 
             const current = weatherData.current;
+            const daily = weatherData.daily;
             
             // Verileri Arayüze İşle
-            updateUI(name, country, current);
+            updateUI(name, country, current, daily);
 
         } catch (error) {
             console.error(error);
@@ -86,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function updateUI(name, country, currentData) {
+    function updateUI(name, country, currentData, dailyData) {
         // Hata mesajını temizle, sonucu göster
         message.innerText = '';
         weatherInfo.style.display = 'block';
@@ -99,7 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // WMO Koduna göre analiz
         const code = currentData.weather_code;
-        // Eğer kod listede yoksa varsayılan olarak kapalı (3) al
         const condition = weatherCodes[code] || weatherCodes[3];
 
         descriptionEl.innerText = condition.desc;
@@ -109,5 +109,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Dinamik Arka Planı Güncelle
         appWrap.className = `app-wrap ${condition.bg}`;
+
+        // Haftalık Tahmini (Daily) Ekrana Çiz
+        renderWeeklyForecast(dailyData);
+    }
+
+    function renderWeeklyForecast(dailyData) {
+        const weeklyForecastEl = document.getElementById('weeklyForecast');
+        weeklyForecastEl.innerHTML = ''; // Önceki verileri temizle
+
+        const days = ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'];
+
+        for (let i = 0; i < dailyData.time.length; i++) {
+            const dateObj = new Date(dailyData.time[i]);
+            const dayName = days[dateObj.getDay()];
+
+            const code = dailyData.weather_code[i];
+            const maxTemp = Math.round(dailyData.temperature_2m_max[i]);
+            const minTemp = Math.round(dailyData.temperature_2m_min[i]);
+            const condition = weatherCodes[code] || weatherCodes[3];
+
+            const dayHTML = `
+                <div class="forecast-day">
+                    <div class="f-day">${i === 0 ? 'Bugün' : dayName}</div>
+                    <i class="fa-solid ${condition.icon}"></i>
+                    <div class="f-temps">${maxTemp}° / ${minTemp}°</div>
+                </div>
+            `;
+            weeklyForecastEl.innerHTML += dayHTML;
+        }
     }
 });
