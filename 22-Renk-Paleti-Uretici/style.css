@@ -17,9 +17,21 @@ body {
     display: flex;
     width: 100vw;
     height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+}
+/* Scrollbar'ı gizle (daha estetik bir görünüm için) */
+.palette-container::-webkit-scrollbar {
+    display: none;
+}
+.palette-container {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 .color-col {
+    min-width: 250px; /* Her bir renk en az 250px yer kaplasın */
     flex: 1;
     display: flex;
     flex-direction: column;

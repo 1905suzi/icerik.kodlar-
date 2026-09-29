@@ -1,7 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const cols = document.querySelectorAll('.color-col');
+    const paletteContainer = document.getElementById('paletteContainer');
     const toast = document.getElementById('toast');
     const mobileGenBtn = document.getElementById('generateBtn');
+
+    // 15 adet sütun oluştur
+    const COLUMN_COUNT = 15;
+    for (let i = 0; i < COLUMN_COUNT; i++) {
+        const col = document.createElement('div');
+        col.className = 'color-col';
+        col.innerHTML = \`
+            <h2 class="hex-text" title="Tıkla ve Kopyala">#FFFFFF</h2>
+            <div class="controls">
+                <button class="btn-lock" title="Kilitle"><i class="fa-solid fa-lock-open"></i></button>
+                <button class="btn-copy" title="Kopyala"><i class="fa-regular fa-copy"></i></button>
+            </div>
+        \`;
+        paletteContainer.appendChild(col);
+    }
+
+    const cols = document.querySelectorAll('.color-col');
 
     // 1. Rastgele HEX Kod Üretici
     function generateRandomHex() {
@@ -14,74 +31,52 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 2. Renk Parlaklığı (Luminance) Hesaplayıcı
-    // Eğer üretilen renk çok açıksa (örneğin açık sarı), üzerindeki yazı siyah olmalı. Koyuysa beyaz olmalı.
     function checkLuminance(hex) {
-        // Hex'i RGB'ye çevir
         const r = parseInt(hex.slice(1, 3), 16);
         const g = parseInt(hex.slice(3, 5), 16);
         const b = parseInt(hex.slice(5, 7), 16);
-        
-        // YIQ Formülü ile parlaklık hesaplama
         const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-        
-        // Eşik değeri 128
         return (yiq >= 128) ? 'black' : 'white';
     }
 
     // 3. Ana Fonksiyon: Sütunlara Renkleri Dağıt
     function setColors() {
         cols.forEach(col => {
-            const hexText = col.querySelector('.hex-text');
-            const lockIcon = col.querySelector('.btn-lock i');
-            
-            // Eğer sütun kilitliyse (locked) bu sütunu es geç
-            if (col.classList.contains('locked')) {
-                return;
-            }
+            if (col.classList.contains('locked')) return;
 
             const randomColor = generateRandomHex();
-            
-            // Arka plan rengini değiştir
             col.style.backgroundColor = randomColor;
             
-            // Metni güncelle
+            const hexText = col.querySelector('.hex-text');
             hexText.innerText = randomColor;
 
-            // Kontrast (Parlaklık) kontrolü yap ve metin/ikon renklerini ayarla
             const contrastColor = checkLuminance(randomColor);
             hexText.style.color = contrastColor;
             col.style.color = contrastColor; 
         });
     }
 
-    // 4. Clipboard'a Kopyalama ve Toast Bildirimi
+    // 4. Clipboard'a Kopyalama
     function copyToClipboard(hex) {
         navigator.clipboard.writeText(hex).then(() => {
-            // Başarılı kopyalama animasyonu
             toast.classList.add('show');
             setTimeout(() => {
                 toast.classList.remove('show');
-            }, 2000); // 2 saniye sonra geri gizle
+            }, 2000);
         });
     }
 
     // --- EVENT LISTENERS ---
 
-    // Sütun içindeki tıklamalar (Kilitleme ve Kopyalama)
+    // Sütun içindeki tıklamalar
     cols.forEach(col => {
         const hexText = col.querySelector('.hex-text');
         const lockBtn = col.querySelector('.btn-lock');
         const copyBtn = col.querySelector('.btn-copy');
 
-        // Hex metnine veya kopyala butonuna basılınca kopyala
-        hexText.addEventListener('click', () => {
-            copyToClipboard(hexText.innerText);
-        });
-        copyBtn.addEventListener('click', () => {
-            copyToClipboard(hexText.innerText);
-        });
+        hexText.addEventListener('click', () => copyToClipboard(hexText.innerText));
+        copyBtn.addEventListener('click', () => copyToClipboard(hexText.innerText));
 
-        // Kilitleme butonuna basılınca durumu (locked class'ını) toggle et
         lockBtn.addEventListener('click', () => {
             col.classList.toggle('locked');
             const icon = lockBtn.querySelector('i');
@@ -95,18 +90,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Space (Boşluk) tuşuna basıldığında yeni renkler üret
+    // Space ile renk üretimi ve Ok tuşları ile yatay kaydırma
     document.addEventListener('keydown', (e) => {
-        // e.code === 'Space'
-        if (e.keyCode === 32) {
-            e.preventDefault(); // Sayfanın aşağı kaymasını engelle
+        if (e.code === 'Space') {
+            e.preventDefault(); 
             setColors();
+        } else if (e.code === 'ArrowRight') {
+            paletteContainer.scrollBy({ left: 300, behavior: 'smooth' });
+        } else if (e.code === 'ArrowLeft') {
+            paletteContainer.scrollBy({ left: -300, behavior: 'smooth' });
         }
     });
 
-    // Mobilde buton ile üretim
     mobileGenBtn.addEventListener('click', setColors);
 
-    // İlk açılışta renkleri doldur
     setColors();
 });
