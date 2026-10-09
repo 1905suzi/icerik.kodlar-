@@ -29,6 +29,8 @@
         </div>
     </header>
 
+    <div id="activeOrderContainer"></div>
+
     <div class="categories" id="categoryContainer">
         <!-- Kategoriler JS ile gelecek -->
     </div>
@@ -46,7 +48,7 @@
     <div class="modal-overlay" id="cartModal">
         <div class="modal">
             <i class="fa-solid fa-xmark close-modal" id="closeModal"></i>
-            <h2>Sepetiniz</h2>
+            <div class="cart-header"><button class="back-btn" id="backToMenuBtn"><i class="fa-solid fa-arrow-left"></i></button> <h2>Sepetiniz</h2></div>
             <div id="cartItemsContainer"></div>
             <div class="cart-total">Toplam: <span id="cartTotal">0</span> ₺</div>
             <button class="checkout-btn" id="checkoutBtn">Siparişi Onayla</button>
