@@ -71,7 +71,10 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCartUI();
         
         // Sepete eklenince modalı aç (isteğe bağlı, "sepete git" hissi için)
-        cartModal.classList.add('active');
+        // cartModal.classList.add('active'); iptal edildi (kullanıcı gezinmeye devam edebilsin)
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 1500);
     };
 
     window.changeQty = (index, delta) => {

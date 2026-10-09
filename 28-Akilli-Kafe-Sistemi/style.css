@@ -420,3 +420,22 @@ header {
     cursor: pointer;
     color: var(--text-dark);
 }
+
+/* Toast (Sepete eklendi bildirimi) */
+.toast {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2ed573;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-weight: bold;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: bottom 0.3s;
+    z-index: 10000;
+}
+.toast.show {
+    bottom: 100px; /* FAB butonunun üstünde görünsün */
+}
