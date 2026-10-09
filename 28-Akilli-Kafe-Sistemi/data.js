@@ -1,8 +1,8 @@
 
 const menuData = [
     { id: 1, category: 'Sıcak İçecekler', name: 'Çay', price: 25, img: 'https://images.unsplash.com/photo-1576092762791-dd9e2220abd4?w=500&auto=format&fit=crop' },
-    { id: 2, category: 'Kahveler', name: 'Latte', price: 95, img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=500&auto=format&fit=crop' },
-    { id: 3, category: 'Kahveler', name: 'Americano', price: 80, img: 'https://images.unsplash.com/photo-1551030173-122aabc4489c?w=500&auto=format&fit=crop' },
+    { id: 2, category: 'Sıcak İçecekler', name: 'Latte', price: 95, img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=500&auto=format&fit=crop' },
+    { id: 3, category: 'Sıcak İçecekler', name: 'Americano', price: 80, img: 'https://images.unsplash.com/photo-1551030173-122aabc4489c?w=500&auto=format&fit=crop' },
     { id: 4, category: 'Soğuk İçecekler', name: 'Iced Caramel Macchiato', price: 115, img: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=500&auto=format&fit=crop' },
     { id: 5, category: 'Soğuk İçecekler', name: 'Limonata', price: 75, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&auto=format&fit=crop' },
     { id: 6, category: 'Mixler', name: 'Orman Meyveli Smoothie', price: 125, img: 'https://images.unsplash.com/photo-1556881286-fc6915169721?w=500&auto=format&fit=crop' },

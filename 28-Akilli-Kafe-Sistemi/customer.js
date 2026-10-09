@@ -17,12 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const checkoutBtn = document.getElementById('checkoutBtn');
 
     // Kategorileri Çıkar
-    const categories = ['Tümü', ...new Set(menuData.map(item => item.category))];
+    const categories = [...new Set(menuData.map(item => item.category))];
 
     function renderCategories() {
         categories.forEach(cat => {
             const btn = document.createElement('button');
-            btn.className = 'cat-btn' + (cat === 'Tümü' ? ' active' : '');
+            btn.className = 'cat-btn' + (cat === categories[0] ? ' active' : '');
             btn.innerText = cat;
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderMenu(filterCat = 'Tümü') {
         menuGrid.innerHTML = '';
-        const filtered = filterCat === 'Tümü' ? menuData : menuData.filter(item => item.category === filterCat);
+        const filtered = menuData.filter(item => item.category === filterCat);
 
         filtered.forEach(item => {
             const card = document.createElement('div');
@@ -127,5 +127,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     renderCategories();
-    renderMenu();
+    renderMenu(categories[0]);
+
+    // Splash ekranı kapatma
+    document.getElementById('enterMenuBtn').addEventListener('click', () => {
+        const splash = document.getElementById('splashScreen');
+        splash.style.opacity = '0';
+        setTimeout(() => splash.style.visibility = 'hidden', 500);
+    });
 });
