@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mutfak Ekranı - Akıllı Kafe</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-nav">
+        <a href="index.html">☕ Müşteri (Menü)</a>
+        <a href="mutfak.html">🍳 Mutfak Ekranı</a>
+        <a href="kasa.html">💳 Kasa Ekranı</a>
+    </div>
+
+    <div class="dashboard">
+        <h2><i class="fa-solid fa-fire-burner"></i> MUTFAK SİPARİŞ EKRANI</h2>
+        <p style="color: var(--primary);">Fiyatlar gizlidir. Sadece ürünler ve masalar görünür.</p>
+        <div class="order-grid" id="mutfakGrid">
+            <!-- Siparişler JS ile gelecek -->
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="mutfak.js"></script>
+</body>
+</html>

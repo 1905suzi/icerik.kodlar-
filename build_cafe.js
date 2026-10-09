@@ -1,297 +1,740 @@
 const fs = require('fs');
 const path = require('path');
 
-const dirPath = path.join(process.cwd(), '10-Kafe-Menusu');
+const dirPath = path.join(process.cwd(), '28-Akilli-Kafe-Sistemi');
 
 if (!fs.existsSync(dirPath)) {
   fs.mkdirSync(dirPath, { recursive: true });
 }
 
-const html = `<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lumina Cafe Menü</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <h1>Lumina Cafe</h1>
-        <p>En taze kahveler ve el yapımı tatlılar</p>
-    </header>
+// 1. Ortak Veri ve Stil Dosyaları
+const dataJs = `
+const menuData = [
+    { id: 1, category: 'Sıcak İçecekler', name: 'Çay', price: 25, img: 'https://images.unsplash.com/photo-1576092762791-dd9e2220abd4?w=500&auto=format&fit=crop' },
+    { id: 2, category: 'Kahveler', name: 'Latte', price: 95, img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=500&auto=format&fit=crop' },
+    { id: 3, category: 'Kahveler', name: 'Americano', price: 80, img: 'https://images.unsplash.com/photo-1551030173-122aabc4489c?w=500&auto=format&fit=crop' },
+    { id: 4, category: 'Soğuk İçecekler', name: 'Iced Caramel Macchiato', price: 115, img: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=500&auto=format&fit=crop' },
+    { id: 5, category: 'Soğuk İçecekler', name: 'Limonata', price: 75, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&auto=format&fit=crop' },
+    { id: 6, category: 'Mixler', name: 'Orman Meyveli Smoothie', price: 125, img: 'https://images.unsplash.com/photo-1556881286-fc6915169721?w=500&auto=format&fit=crop' },
+    { id: 7, category: 'Tatlılar', name: 'San Sebastian Cheesecake', price: 140, img: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=500&auto=format&fit=crop' },
+    { id: 8, category: 'Tatlılar', name: 'Tiramisu', price: 120, img: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=500&auto=format&fit=crop' },
+    { id: 9, category: 'Atıştırmalıklar', name: 'Kruvasan', price: 65, img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&auto=format&fit=crop' },
+    { id: 10, category: 'Atıştırmalıklar', name: 'Izgara Peynirli Tost', price: 90, img: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=500&auto=format&fit=crop' }
+];
 
-    <main>
-        <!-- Kategori Butonları -->
-        <nav class="kategoriler">
-            <button class="kategori-btn aktif" data-kategori="tumu">Tümü</button>
-            <button class="kategori-btn" data-kategori="kahve">Sıcak Kahveler</button>
-            <button class="kategori-btn" data-kategori="soguk">Soğuk İçecekler</button>
-            <button class="kategori-btn" data-kategori="tatli">Tatlılar</button>
-        </nav>
+// Benzersiz sipariş ID'si üretmek için
+function generateOrderId() {
+    return Math.floor(1000 + Math.random() * 9000); // 4 haneli kod
+}
 
-        <!-- Menü Öğeleri -->
-        <div class="menu-izgarasi" id="menuIzgarasi">
-            <!-- Ürün 1 -->
-            <div class="urun-karti" data-kategori="kahve">
-                <div class="urun-resmi resim-1"></div>
-                <div class="urun-bilgi">
-                    <h3>Latte Macchiato</h3>
-                    <p>Yumuşak içimli, bol süt köpüklü klasik lezzet.</p>
-                    <span class="fiyat">85 ₺</span>
-                </div>
-            </div>
+// LocalStorage'dan siparişleri al
+function getOrders() {
+    const orders = localStorage.getItem('cafeOrders');
+    return orders ? JSON.parse(orders) : [];
+}
 
-            <!-- Ürün 2 -->
-            <div class="urun-karti" data-kategori="tatli">
-                <div class="urun-resmi resim-2"></div>
-                <div class="urun-bilgi">
-                    <h3>San Sebastian</h3>
-                    <p>Akışkan çikolata sosu ile sunulan efsanevi cheesecake.</p>
-                    <span class="fiyat">140 ₺</span>
-                </div>
-            </div>
+// LocalStorage'a sipariş kaydet
+function saveOrders(orders) {
+    localStorage.setItem('cafeOrders', JSON.stringify(orders));
+}
+`;
 
-            <!-- Ürün 3 -->
-            <div class="urun-karti" data-kategori="soguk">
-                <div class="urun-resmi resim-3"></div>
-                <div class="urun-bilgi">
-                    <h3>Iced Americano</h3>
-                    <p>Buz gibi ferahlatıcı sert kahve deneyimi.</p>
-                    <span class="fiyat">75 ₺</span>
-                </div>
-            </div>
-
-            <!-- Ürün 4 -->
-            <div class="urun-karti" data-kategori="kahve">
-                <div class="urun-resmi resim-4"></div>
-                <div class="urun-bilgi">
-                    <h3>Filtre Kahve</h3>
-                    <p>Özel kavrulmuş taze çekirdeklerden filtre kahve.</p>
-                    <span class="fiyat">60 ₺</span>
-                </div>
-            </div>
-
-            <!-- Ürün 5 -->
-            <div class="urun-karti" data-kategori="tatli">
-                <div class="urun-resmi resim-5"></div>
-                <div class="urun-bilgi">
-                    <h3>Tiramisu</h3>
-                    <p>İtalyan usulü, kahve aromalı hafif tatlı.</p>
-                    <span class="fiyat">120 ₺</span>
-                </div>
-            </div>
-            
-            <!-- Ürün 6 -->
-            <div class="urun-karti" data-kategori="soguk">
-                <div class="urun-resmi resim-6"></div>
-                <div class="urun-bilgi">
-                    <h3>Hibiscus Çayı</h3>
-                    <p>Buzlu, ferahlatıcı meyve notalı soğuk çay.</p>
-                    <span class="fiyat">70 ₺</span>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <script src="script.js"></script>
-</body>
-</html>`;
-
-const css = `/* Renk Paleti: Krem, Espresso ve Yumuşak Turuncu */
+const styleCss = `
 :root {
-    --krem-arkaplan: #fdfbf7;
-    --espresso-koyu: #3e2723;
-    --espresso-acik: #5d4037;
-    --yumusak-turuncu: #ffb74d;
-    --beyaz: #ffffff;
+    --bg-color: #Fdfbf7;
+    --primary: #D4A373; /* Bal köpüğü */
+    --secondary: #FAEDCD; /* Açık Bal */
+    --text-dark: #4a3b2c;
+    --white: #ffffff;
+    --shadow: 0 10px 20px rgba(212, 163, 115, 0.15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    background-color: var(--krem-arkaplan);
-    color: var(--espresso-koyu);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    -webkit-font-smoothing: antialiased;
+    background-color: var(--bg-color);
+    color: var(--text-dark);
 }
 
-/* Üst Kısım (Hero) */
+/* Header & Logo */
 header {
+    background: var(--white);
+    padding: 20px;
     text-align: center;
-    padding: 60px 20px 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-header h1 {
-    font-size: 3rem;
-    margin: 0 0 10px 0;
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo i {
+    font-size: 2.5rem;
+    color: var(--primary);
+}
+
+.logo h1 {
+    font-size: 1.5rem;
     letter-spacing: 2px;
 }
 
-header p {
-    font-size: 1.1rem;
-    color: var(--espresso-acik);
-    margin: 0;
+/* Navigasyon Paneli (Sekmeler) */
+.admin-nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    background: var(--primary);
+    padding: 10px;
+}
+.admin-nav a {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 15px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.2);
+}
+.admin-nav a:hover {
+    background: var(--white);
+    color: var(--primary);
 }
 
 /* Kategori Butonları */
-.kategoriler {
+.categories {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding: 20px;
+    justify-content: center;
+    scrollbar-width: none;
+}
+.categories::-webkit-scrollbar { display: none; }
+
+.cat-btn {
+    background: var(--white);
+    border: 2px solid var(--secondary);
+    color: var(--text-dark);
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: all 0.3s;
+}
+
+.cat-btn.active, .cat-btn:hover {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+}
+
+/* Ürün Grid'i */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+    padding: 20px 5vw;
+}
+
+.product-card {
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-info {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.product-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.price {
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: var(--primary);
+}
+
+.add-btn {
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(212, 163, 115, 0.4);
+    transition: transform 0.2s;
+}
+
+.add-btn:active { transform: scale(0.9); }
+
+/* Sepet Yüzen Butonu */
+.cart-fab {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--text-dark);
+    color: var(--white);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 40px;
-    padding: 0 20px;
-}
-
-.kategori-btn {
-    background-color: var(--beyaz);
-    color: var(--espresso-acik);
-    border: none;
-    padding: 12px 25px;
-    border-radius: 30px;
-    font-size: 1rem;
-    font-weight: 600;
+    align-items: center;
+    font-size: 1.5rem;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(62, 39, 35, 0.05);
-    transition: all 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    z-index: 101;
 }
 
-.kategori-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(62, 39, 35, 0.08);
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff4757;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.kategori-btn.aktif {
-    background-color: var(--yumusak-turuncu);
-    color: var(--beyaz);
-    box-shadow: 0 8px 20px rgba(255, 183, 77, 0.4);
+/* Modallar */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
-/* Menü Izgarası */
-.menu-izgarasi {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    padding: 0 40px 60px;
+.modal-overlay.active { display: flex; }
+
+.modal {
+    background: var(--white);
+    width: 90%;
+    max-width: 400px;
+    border-radius: 20px;
+    padding: 30px;
+    position: relative;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-dark);
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--secondary);
+}
+
+.cart-total {
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-align: right;
+    margin: 20px 0;
+    color: var(--primary);
+}
+
+.checkout-btn {
+    width: 100%;
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    padding: 15px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Sipariş Ekranları (Kasa & Mutfak) */
+.dashboard {
+    padding: 30px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-/* Ürün Kartı */
-.urun-karti {
-    background-color: var(--beyaz);
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(62, 39, 35, 0.04);
-    transition: all 0.4s ease;
-    display: flex;
-    flex-direction: column;
+.order-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
 }
 
-.urun-karti:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 40px rgba(62, 39, 35, 0.08);
-}
-
-/* JS Animasyonu İçin Gizleme Sınıfı */
-.gizli {
-    display: none !important;
-}
-
-.urun-karti.goster-animasyon {
-    animation: yumusakGiris 0.5s ease forwards;
-}
-
-@keyframes yumusakGiris {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Resim Alanları (Şimdilik renkli yer tutucular) */
-.urun-resmi {
-    height: 200px;
-    width: 100%;
-    background-size: cover;
-    background-position: center;
-}
-
-.resim-1 { background-color: #d7ccc8; }
-.resim-2 { background-color: #ffccbc; }
-.resim-3 { background-color: #bcaaa4; }
-.resim-4 { background-color: #efebe9; }
-.resim-5 { background-color: #ffe0b2; }
-.resim-6 { background-color: #ffcdd2; }
-
-/* Bilgi Kısmı */
-.urun-bilgi {
+.order-card {
+    background: var(--white);
+    border: 2px solid var(--secondary);
+    border-radius: 15px;
     padding: 20px;
+}
+
+.order-header {
     display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-}
-
-.urun-bilgi h3 {
-    margin: 0 0 10px 0;
-    font-size: 1.3rem;
-}
-
-.urun-bilgi p {
-    margin: 0 0 20px 0;
-    color: var(--espresso-acik);
-    font-size: 0.95rem;
-    line-height: 1.5;
-    flex-grow: 1;
-}
-
-.fiyat {
-    font-size: 1.2rem;
+    justify-content: space-between;
+    border-bottom: 2px dashed var(--secondary);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
     font-weight: bold;
-    color: var(--yumusak-turuncu);
-    align-self: flex-start;
+}
+
+.order-items li {
+    margin-bottom: 8px;
+    list-style: none;
+}
+
+.order-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.action-btn {
     padding: 8px 15px;
-    background-color: rgba(255, 183, 77, 0.1);
+    border: none;
+    border-radius: 8px;
+    background: var(--primary);
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.status-badge {
+    padding: 4px 10px;
     border-radius: 12px;
-}`;
+    font-size: 0.8rem;
+    color: white;
+}
+.status-new { background: #ff4757; }
+.status-ready { background: #2ed573; }
+`;
 
-const js = `const kategoriButonlari = document.querySelectorAll('.kategori-btn');
-const urunKartlari = document.querySelectorAll('.urun-karti');
+// 2. Müşteri (index.html ve customer.js)
+const customerHtml = `<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Müşteri Sipariş Ekranı - Akıllı Kafe</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-nav">
+        <a href="index.html">☕ Müşteri (Menü)</a>
+        <a href="mutfak.html">🍳 Mutfak Ekranı</a>
+        <a href="kasa.html">💳 Kasa Ekranı</a>
+    </div>
 
-kategoriButonlari.forEach(buton => {
-    buton.addEventListener('click', () => {
-        // 1. Tıklanan butona 'aktif' sınıfını ver, diğerlerinden kaldır
-        kategoriButonlari.forEach(btn => btn.classList.remove('aktif'));
-        buton.classList.add('aktif');
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-mug-hot"></i>
+            <h1>KAFE BAL KÖPÜĞÜ</h1>
+            <p style="font-size: 0.9rem; color: var(--primary);">Masa No: <span id="tableNo"></span></p>
+        </div>
+    </header>
 
-        // 2. Filtreleme işlemi
-        const secilenKategori = buton.getAttribute('data-kategori');
+    <div class="categories" id="categoryContainer">
+        <!-- Kategoriler JS ile gelecek -->
+    </div>
 
-        urunKartlari.forEach(kart => {
-            // Animasyonu sıfırlamak için sınıfı kaldırıyoruz
-            kart.classList.remove('goster-animasyon');
-            
-            const urunKategorisi = kart.getAttribute('data-kategori');
+    <div class="menu-grid" id="menuGrid">
+        <!-- Ürünler JS ile gelecek -->
+    </div>
 
-            if (secilenKategori === 'tumu' || secilenKategori === urunKategorisi) {
-                kart.classList.remove('gizli');
-                // Pürüzsüz giriş animasyonu için kısa bir gecikme ile sınıf ekliyoruz
-                setTimeout(() => {
-                    kart.classList.add('goster-animasyon');
-                }, 10);
-            } else {
-                kart.classList.add('gizli');
-            }
+    <div class="cart-fab" id="cartFab">
+        <i class="fa-solid fa-basket-shopping"></i>
+        <div class="cart-count" id="cartCount">0</div>
+    </div>
+
+    <!-- Sepet Modalı -->
+    <div class="modal-overlay" id="cartModal">
+        <div class="modal">
+            <i class="fa-solid fa-xmark close-modal" id="closeModal"></i>
+            <h2>Sepetiniz</h2>
+            <div id="cartItemsContainer"></div>
+            <div class="cart-total">Toplam: <span id="cartTotal">0</span> ₺</div>
+            <button class="checkout-btn" id="checkoutBtn">Siparişi Onayla</button>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="customer.js"></script>
+</body>
+</html>`;
+
+const customerJs = `
+document.addEventListener('DOMContentLoaded', () => {
+    // Rastgele Masa Numarası Ata (1-20 arası)
+    const tableNo = Math.floor(Math.random() * 20) + 1;
+    document.getElementById('tableNo').innerText = tableNo;
+
+    let cart = [];
+    
+    const menuGrid = document.getElementById('menuGrid');
+    const categoryContainer = document.getElementById('categoryContainer');
+    const cartCount = document.getElementById('cartCount');
+    const cartFab = document.getElementById('cartFab');
+    const cartModal = document.getElementById('cartModal');
+    const closeModal = document.getElementById('closeModal');
+    const cartItemsContainer = document.getElementById('cartItemsContainer');
+    const cartTotal = document.getElementById('cartTotal');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+
+    // Kategorileri Çıkar
+    const categories = ['Tümü', ...new Set(menuData.map(item => item.category))];
+
+    function renderCategories() {
+        categories.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = 'cat-btn' + (cat === 'Tümü' ? ' active' : '');
+            btn.innerText = cat;
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderMenu(cat);
+            });
+            categoryContainer.appendChild(btn);
         });
-    });
-});`;
+    }
 
-fs.writeFileSync(path.join(dirPath, 'index.html'), html);
-fs.writeFileSync(path.join(dirPath, 'style.css'), css);
-fs.writeFileSync(path.join(dirPath, 'script.js'), js);
-console.log('10-Kafe-Menusu created successfully!');
+    function renderMenu(filterCat = 'Tümü') {
+        menuGrid.innerHTML = '';
+        const filtered = filterCat === 'Tümü' ? menuData : menuData.filter(item => item.category === filterCat);
+
+        filtered.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = \`
+                <img src="\${item.img}" alt="\${item.name}" class="product-img">
+                <div class="product-info">
+                    <div>
+                        <span style="font-size:0.8rem; color:var(--primary); font-weight:bold;">\${item.category}</span>
+                        <h3 class="product-title">\${item.name}</h3>
+                    </div>
+                    <div class="product-bottom">
+                        <span class="price">\${item.price} ₺</span>
+                        <button class="add-btn" onclick="addToCart(\${item.id})"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                </div>
+            \`;
+            menuGrid.appendChild(card);
+        });
+    }
+
+    window.addToCart = (id) => {
+        const product = menuData.find(p => p.id === id);
+        const existing = cart.find(i => i.id === id);
+        
+        if (existing) {
+            existing.quantity++;
+        } else {
+            cart.push({ ...product, quantity: 1 });
+        }
+        updateCartUI();
+    };
+
+    function updateCartUI() {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.innerText = totalItems;
+
+        cartItemsContainer.innerHTML = '';
+        let total = 0;
+        
+        cart.forEach((item, index) => {
+            total += item.price * item.quantity;
+            cartItemsContainer.innerHTML += \`
+                <div class="cart-item">
+                    <div>
+                        <strong>\${item.name}</strong><br>
+                        <small>\${item.price} ₺ x \${item.quantity}</small>
+                    </div>
+                    <button onclick="removeFromCart(\${index})" style="background:none;border:none;color:red;cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            \`;
+        });
+        
+        cartTotal.innerText = total;
+    }
+
+    window.removeFromCart = (index) => {
+        cart.splice(index, 1);
+        updateCartUI();
+    };
+
+    // Modal İşlemleri
+    cartFab.addEventListener('click', () => cartModal.classList.add('active'));
+    closeModal.addEventListener('click', () => cartModal.classList.remove('active'));
+
+    // Siparişi Kasa ve Mutfağa Gönder
+    checkoutBtn.addEventListener('click', () => {
+        if(cart.length === 0) return alert('Sepetiniz boş!');
+        
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        
+        const newOrder = {
+            id: generateOrderId(),
+            tableNo: tableNo,
+            items: cart,
+            total: total,
+            status: 'Yeni Sipariş',
+            time: new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })
+        };
+
+        const currentOrders = getOrders();
+        currentOrders.push(newOrder);
+        saveOrders(currentOrders);
+
+        alert('Siparişiniz başarıyla alındı! Teşekkür ederiz.');
+        cart = [];
+        updateCartUI();
+        cartModal.classList.remove('active');
+    });
+
+    renderCategories();
+    renderMenu();
+});
+`;
+
+// 3. Mutfak Ekranı
+const mutfakHtml = `<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mutfak Ekranı - Akıllı Kafe</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-nav">
+        <a href="index.html">☕ Müşteri (Menü)</a>
+        <a href="mutfak.html">🍳 Mutfak Ekranı</a>
+        <a href="kasa.html">💳 Kasa Ekranı</a>
+    </div>
+
+    <div class="dashboard">
+        <h2><i class="fa-solid fa-fire-burner"></i> MUTFAK SİPARİŞ EKRANI</h2>
+        <p style="color: var(--primary);">Fiyatlar gizlidir. Sadece ürünler ve masalar görünür.</p>
+        <div class="order-grid" id="mutfakGrid">
+            <!-- Siparişler JS ile gelecek -->
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="mutfak.js"></script>
+</body>
+</html>`;
+
+const mutfakJs = `
+function renderMutfakOrders() {
+    const grid = document.getElementById('mutfakGrid');
+    grid.innerHTML = '';
+    const orders = getOrders().filter(o => o.status !== 'Hazır'); // Hazır olanları mutfaktan gizle
+
+    if(orders.length === 0) {
+        grid.innerHTML = '<p>Bekleyen sipariş yok.</p>';
+        return;
+    }
+
+    orders.forEach(order => {
+        let itemsHTML = '';
+        order.items.forEach(i => {
+            itemsHTML += \`<li>\${i.quantity}x \${i.name}</li>\`;
+        });
+
+        const card = document.createElement('div');
+        card.className = 'order-card';
+        card.innerHTML = \`
+            <div class="order-header">
+                <span>Masa \${order.tableNo} <span class="status-badge status-new">\${order.time}</span></span>
+                <span>#\${order.id}</span>
+            </div>
+            <ul class="order-items">
+                \${itemsHTML}
+            </ul>
+            <div class="order-actions">
+                <button class="action-btn" style="background:#2ed573;" onclick="markAsReady(\${order.id})">Hazırlandı Seç</button>
+            </div>
+        \`;
+        grid.appendChild(card);
+    });
+}
+
+window.markAsReady = (id) => {
+    const orders = getOrders();
+    const order = orders.find(o => o.id === id);
+    if(order) {
+        order.status = 'Hazır';
+        saveOrders(orders);
+        renderMutfakOrders();
+    }
+};
+
+// Başlangıçta yükle
+renderMutfakOrders();
+
+// Başka sekmeden veri değişirse anında tetiklenir (GERÇEK ZAMANLI)
+window.addEventListener('storage', () => {
+    renderMutfakOrders();
+});
+`;
+
+// 4. Kasa Ekranı
+const kasaHtml = `<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kasa Ekranı - Akıllı Kafe</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-nav">
+        <a href="index.html">☕ Müşteri (Menü)</a>
+        <a href="mutfak.html">🍳 Mutfak Ekranı</a>
+        <a href="kasa.html">💳 Kasa Ekranı</a>
+    </div>
+
+    <div class="dashboard">
+        <h2><i class="fa-solid fa-cash-register"></i> KASA SİPARİŞ EKRANI</h2>
+        <p style="color: var(--primary);">Hesap tutarları ve mutfak durumu anlık görünür.</p>
+        <div class="order-grid" id="kasaGrid">
+            <!-- Siparişler JS ile gelecek -->
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="kasa.js"></script>
+</body>
+</html>`;
+
+const kasaJs = `
+function renderKasaOrders() {
+    const grid = document.getElementById('kasaGrid');
+    grid.innerHTML = '';
+    const orders = getOrders();
+
+    if(orders.length === 0) {
+        grid.innerHTML = '<p>Hiç aktif sipariş yok.</p>';
+        return;
+    }
+
+    orders.forEach(order => {
+        let itemsHTML = '';
+        order.items.forEach(i => {
+            itemsHTML += \`<li>\${i.quantity}x \${i.name} (\${i.price * i.quantity} ₺)</li>\`;
+        });
+
+        const statusClass = order.status === 'Hazır' ? 'status-ready' : 'status-new';
+
+        const card = document.createElement('div');
+        card.className = 'order-card';
+        card.innerHTML = \`
+            <div class="order-header">
+                <span>Masa \${order.tableNo} <span class="status-badge \${statusClass}">\${order.status}</span></span>
+                <span>#\${order.id}</span>
+            </div>
+            <ul class="order-items">
+                \${itemsHTML}
+            </ul>
+            <div class="order-header" style="margin-top: 15px; font-size:1.2rem; color:var(--primary);">
+                <span>Toplam Tutar:</span>
+                <span>\${order.total} ₺</span>
+            </div>
+            <div class="order-actions">
+                <button class="action-btn" style="background:#eccc68; color:black;" onclick="deleteOrder(\${order.id})">Ödeme Al & Kapat</button>
+            </div>
+        \`;
+        grid.appendChild(card);
+    });
+}
+
+window.deleteOrder = (id) => {
+    if(confirm('Ödeme alındı ve masa kapatılıyor. Emin misiniz?')) {
+        let orders = getOrders();
+        orders = orders.filter(o => o.id !== id);
+        saveOrders(orders);
+        renderKasaOrders();
+    }
+};
+
+// Başlangıçta yükle
+renderKasaOrders();
+
+// Başka sekmeden veri değişirse anında tetiklenir (GERÇEK ZAMANLI)
+window.addEventListener('storage', () => {
+    renderKasaOrders();
+});
+`;
+
+fs.writeFileSync(path.join(dirPath, 'data.js'), dataJs);
+fs.writeFileSync(path.join(dirPath, 'style.css'), styleCss);
+fs.writeFileSync(path.join(dirPath, 'index.html'), customerHtml);
+fs.writeFileSync(path.join(dirPath, 'customer.js'), customerJs);
+fs.writeFileSync(path.join(dirPath, 'mutfak.html'), mutfakHtml);
+fs.writeFileSync(path.join(dirPath, 'mutfak.js'), mutfakJs);
+fs.writeFileSync(path.join(dirPath, 'kasa.html'), kasaHtml);
+fs.writeFileSync(path.join(dirPath, 'kasa.js'), kasaJs);
+
+console.log('28-Akilli-Kafe-Sistemi created successfully!');
