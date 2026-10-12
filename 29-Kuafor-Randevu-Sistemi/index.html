@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suzi's Barber & Lounge - Online Randevu</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <i class="fa-solid fa-scissors"></i>
+            <div>
+                <h1>SUZI'S BARBER</h1>
+                <div style="font-size: 0.75rem; color: var(--accent); letter-spacing: 2px;">LUXURY GROOMING</div>
+            </div>
+        </div>
+        <div class="badge-tag"><i class="fa-solid fa-clock"></i> 10:00 - 20:00</div>
+    </header>
+
+    <div class="container">
+        <!-- Step Indicator -->
+        <div class="step-bar">
+            <div class="step-item active" id="stepIndicator1">
+                <div class="step-num">1</div>
+                <div class="step-text">Hizmet</div>
+            </div>
+            <div class="step-item" id="stepIndicator2">
+                <div class="step-num">2</div>
+                <div class="step-text">Uzman</div>
+            </div>
+            <div class="step-item" id="stepIndicator3">
+                <div class="step-num">3</div>
+                <div class="step-text">Tarih & Saat</div>
+            </div>
+            <div class="step-item" id="stepIndicator4">
+                <div class="step-num">4</div>
+                <div class="step-text">Bilgiler</div>
+            </div>
+        </div>
+
+        <!-- Adım 1: Hizmet Seçimi -->
+        <div class="booking-section active" id="step1">
+            <h2 class="page-title">Hangi Hizmeti Almak İstiyorsunuz?</h2>
+            <p class="page-subtitle">Usta ellerde kendinize bir mola verin.</p>
+            <div class="grid-cards" id="servicesGrid"></div>
+            <div class="btn-nav-row">
+                <div></div>
+                <button class="btn btn-primary" id="toStep2Btn" disabled>İleri: Uzman Seç <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Adım 2: Uzman Berber Seçimi -->
+        <div class="booking-section" id="step2">
+            <h2 class="page-title">Uzmanınızı Seçin</h2>
+            <p class="page-subtitle">Tarzınızı en iyi yansıtan berberimizle eşleşin.</p>
+            <div class="grid-cards" id="staffGrid"></div>
+            <div class="btn-nav-row">
+                <button class="btn btn-secondary" onclick="goToStep(1)"><i class="fa-solid fa-arrow-left"></i> Geri</button>
+                <button class="btn btn-primary" id="toStep3Btn" disabled>İleri: Tarih & Saat <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Adım 3: Tarih & Saat Seçimi -->
+        <div class="booking-section" id="step3">
+            <h2 class="page-title">Randevu Saatinizi Belirleyin</h2>
+            <p class="page-subtitle">Seçilen tarihteki müsait koltuk saatleri:</p>
+
+            <div class="form-group" style="max-width: 250px;">
+                <label><i class="fa-regular fa-calendar"></i> Tarih Seçin</label>
+                <input type="date" id="apptDate" class="form-input">
+            </div>
+
+            <div class="slots-grid" id="slotsContainer"></div>
+
+            <div class="btn-nav-row">
+                <button class="btn btn-secondary" onclick="goToStep(2)"><i class="fa-solid fa-arrow-left"></i> Geri</button>
+                <button class="btn btn-primary" id="toStep4Btn" disabled>İleri: Bilgiler <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Adım 4: İletişim & Onay -->
+        <div class="booking-section" id="step4">
+            <h2 class="page-title">Randevu Özeti & Onay</h2>
+            <p class="page-subtitle">Bilgilerinizi doldurun ve koltuğunuzu ayırtın.</p>
+
+            <div class="summary-card" id="summaryCard"></div>
+
+            <div style="background: var(--card-bg); padding: 24px; border-radius: 16px; border: 1px solid var(--border);">
+                <div class="form-group">
+                    <label><i class="fa-solid fa-user"></i> Adınız & Soyadınız</label>
+                    <input type="text" id="clientName" class="form-input" placeholder="Örn: Suzi Yılmaz">
+                </div>
+                <div class="form-group">
+                    <label><i class="fa-solid fa-phone"></i> Telefon Numaranız</label>
+                    <input type="tel" id="clientPhone" class="form-input" placeholder="05XX XXX XX XX">
+                </div>
+                <div class="form-group">
+                    <label><i class="fa-solid fa-note-sticky"></i> Özel Not (Opsiyonel)</label>
+                    <input type="text" id="clientNote" class="form-input" placeholder="İçecek ikramı, özel saç modeli talebi vb.">
+                </div>
+            </div>
+
+            <div class="btn-nav-row">
+                <button class="btn btn-secondary" onclick="goToStep(3)"><i class="fa-solid fa-arrow-left"></i> Geri</button>
+                <button class="btn btn-primary" id="confirmBookingBtn"><i class="fa-solid fa-check"></i> Randevuyu Tamamla</button>
+            </div>
+        </div>
+
+        <!-- Başarı Ekranı -->
+        <div class="booking-section" id="successSection">
+            <div style="text-align: center; padding: 60px 20px;">
+                <div style="width: 80px; height: 80px; background: rgba(16, 185, 129, 0.15); color: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 20px;">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h2 style="font-size: 1.8rem; margin-bottom: 8px;">Randevunuz Alındı!</h2>
+                <p style="color: var(--text-muted); max-width: 450px; margin: 0 auto 24px;">Randevunuz ustamızın paneline anında düşmüştür. Sizi ağırlamaktan mutluluk duyacağız.</p>
+                <div style="background: var(--card-bg); max-width: 400px; margin: 0 auto; padding: 20px; border-radius: 12px; border: 1px solid var(--border); text-align: left;" id="ticketInfo"></div>
+                <button class="btn btn-primary" onclick="location.reload()" style="margin-top: 24px;"><i class="fa-solid fa-rotate-right"></i> Yeni Randevu Al</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="customer.js"></script>
+</body>
+</html>

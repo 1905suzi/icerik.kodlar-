@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suzi CineVerse - Vizyondaki Filmler & Koltuk Seçimi</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <i class="fa-solid fa-film brand-icon"></i>
+            <div>
+                <h1>SUZI CINEVERSE</h1>
+                <div style="font-size: 0.7rem; color: var(--accent-red); letter-spacing: 2px;">PREMIUM CINEMA EXPERIENCE</div>
+            </div>
+        </div>
+        <div style="font-size: 0.9rem; color: var(--text-secondary);"><i class="fa-solid fa-location-dot"></i> Salon: İstanbul Galataport</div>
+    </header>
+
+    <div class="container">
+        <div style="margin-bottom: 24px;">
+            <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 6px;">Vizyondaki Filmler</h2>
+            <p style="color: var(--text-secondary);">İzlemek istediğiniz filmi ve seansı seçin, yerinizi hemen ayırtın.</p>
+        </div>
+
+        <div class="movies-grid" id="moviesGrid"></div>
+    </div>
+
+    <!-- Koltuk Seçim Modalı -->
+    <div class="booking-modal" id="bookingModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
+
+            <div style="margin-bottom: 20px;">
+                <h2 id="modalMovieTitle" style="font-size: 1.6rem; font-weight: 800;">Film Adı</h2>
+                <div style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px;" id="modalMovieMeta">Salon & Seans Bilgisi</div>
+            </div>
+
+            <!-- Sinema Perdesi -->
+            <div class="screen-area">
+                <div class="cinema-screen"></div>
+                <div class="screen-label">SİNEMA PERDESİ (SCREEN)</div>
+            </div>
+
+            <!-- Koltuk Düzeni -->
+            <div class="seats-layout" id="seatsLayout"></div>
+
+            <!-- Bilgilendirme -->
+            <div class="seat-legend">
+                <div class="legend-item"><div class="legend-box" style="background: var(--seat-available);"></div> Boş Koltuk (160 ₺)</div>
+                <div class="legend-item"><div class="legend-box" style="background: var(--seat-selected);"></div> Seçilen Koltuk</div>
+                <div class="legend-item"><div class="legend-box" style="background: var(--seat-vip);"></div> VIP Koltuk (220 ₺)</div>
+                <div class="legend-item"><div class="legend-box" style="background: var(--seat-occupied); opacity: 0.35;"></div> Dolu Koltuk</div>
+            </div>
+
+            <!-- Ödeme & Onay Barı -->
+            <div class="checkout-bar">
+                <div>
+                    <div style="font-size: 0.85rem; color: var(--text-secondary);">Seçilen Koltuklar: <strong id="selectedSeatsLabel" style="color:#fff;">Henüz seçilmedi</strong></div>
+                    <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top:4px;">Toplam Tutar:</div>
+                    <div class="total-sum" id="totalPriceLabel">0 ₺</div>
+                </div>
+                <button class="btn-book" id="confirmBookingBtn" disabled><i class="fa-solid fa-ticket"></i> Bileti Onayla & Al</button>
+            </div>
+
+            <!-- Bilet Çıktısı (E-Ticket) -->
+            <div id="eTicketBox" style="display: none;">
+                <div class="ticket-card">
+                    <div style="color: var(--accent-red); font-size: 0.85rem; font-weight: 800; letter-spacing: 2px;">E-BİLET GİRİŞ KARTI</div>
+                    <h3 id="tktMovie" style="margin: 10px 0 6px; font-size: 1.3rem;">Film</h3>
+                    <p id="tktMeta" style="color: var(--text-secondary); font-size: 0.85rem;">Tarih / Salon</p>
+                    <div class="ticket-barcode" id="tktBarcode">CINE-88219</div>
+                    <div style="font-size: 1.1rem; font-weight: 700; color: var(--gold); margin-bottom: 6px;">Koltuklar: <span id="tktSeats"></span></div>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Bu bilet gişe ekranına ve kapı kontrol görevlisine anında iletilmiştir.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="cinema.js"></script>
+</body>
+</html>

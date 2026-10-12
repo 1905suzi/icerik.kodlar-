@@ -1,0 +1,420 @@
+
+:root {
+    --bg-main: #0c0d14;
+    --card-surface: #151824;
+    --accent-red: #e50914;
+    --accent-glow: rgba(229, 9, 20, 0.4);
+    --gold: #f5c518;
+    --seat-available: #282e42;
+    --seat-selected: #e50914;
+    --seat-occupied: #475069;
+    --seat-vip: #d4af37;
+    --text-primary: #ffffff;
+    --text-secondary: #8e95a5;
+    --border-color: #232838;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    background: var(--bg-main);
+    color: var(--text-primary);
+    min-height: 100vh;
+}
+
+header {
+    background: rgba(21, 24, 36, 0.95);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 16px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-icon {
+    color: var(--accent-red);
+    font-size: 1.8rem;
+    text-shadow: 0 0 20px var(--accent-glow);
+}
+
+.brand h1 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+/* Movie Cards */
+.movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+.movie-card {
+    background: var(--card-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+.movie-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent-red);
+    box-shadow: 0 12px 30px rgba(229, 9, 20, 0.25);
+}
+
+.movie-poster-wrap {
+    height: 240px;
+    position: relative;
+    overflow: hidden;
+}
+
+.movie-poster-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.movie-badge-rating {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    color: var(--gold);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border: 1px solid rgba(245, 197, 24, 0.3);
+}
+
+.movie-body {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.movie-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.movie-genre {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+}
+
+.session-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+.session-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.session-btn:hover {
+    background: var(--accent-red);
+    border-color: var(--accent-red);
+}
+
+/* Booking View Modal / Screen */
+.booking-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(12, 13, 20, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 200;
+    display: none;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.booking-modal.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.modal-content {
+    max-width: 900px;
+    margin: 40px auto;
+    background: var(--card-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 32px;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    color: #fff;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.close-btn:hover {
+    background: var(--accent-red);
+}
+
+/* Cinema Screen */
+.screen-area {
+    margin: 30px 0 40px;
+    text-align: center;
+    perspective: 500px;
+}
+
+.cinema-screen {
+    height: 12px;
+    background: linear-gradient(to bottom, #ffffff, rgba(255, 255, 255, 0.2));
+    border-radius: 50%;
+    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.4);
+    transform: rotateX(-30deg);
+    margin-bottom: 12px;
+}
+
+.screen-label {
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+/* Seat Grid */
+.seats-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.seat-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.row-label {
+    width: 24px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.seat {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px 8px 4px 4px;
+    background: var(--seat-available);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.seat:hover:not(.occupied) {
+    transform: scale(1.15);
+    background: #3e4866;
+}
+
+.seat.selected {
+    background: var(--seat-selected);
+    color: #fff;
+    box-shadow: 0 0 14px var(--accent-glow);
+    border-color: var(--accent-red);
+}
+
+.seat.occupied {
+    background: var(--seat-occupied);
+    opacity: 0.35;
+    cursor: not-allowed;
+    border-color: transparent;
+}
+
+.seat.vip {
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+.seat.vip.selected {
+    background: var(--gold);
+    color: #000;
+}
+
+/* Legend */
+.seat-legend {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.legend-box {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+}
+
+/* Checkout Bar */
+.checkout-bar {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.total-sum {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent-red);
+}
+
+.btn-book {
+    background: var(--accent-red);
+    color: #fff;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 8px 24px var(--accent-glow);
+    transition: 0.25s;
+}
+
+.btn-book:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(229, 9, 20, 0.6);
+}
+
+.btn-book:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Ticket Modal (E-Bilet) */
+.ticket-card {
+    background: linear-gradient(135deg, #1f2334 0%, #151824 100%);
+    border: 2px dashed rgba(229, 9, 20, 0.6);
+    border-radius: 20px;
+    padding: 24px;
+    max-width: 420px;
+    margin: 20px auto 0;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+.ticket-barcode {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 5px;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin: 16px 0;
+    color: #fff;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+}
+
+/* Gise Ekranı (gise.html) */
+.gise-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.gise-card {
+    background: var(--card-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.ticket-row {
+    background: var(--card-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+}

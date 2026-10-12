@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinema Gişe & Bilet Doğrulama Paneli</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <i class="fa-solid fa-door-open brand-icon" style="color:#10b981;"></i>
+            <div>
+                <h1>SUZI CINEVERSE</h1>
+                <div style="font-size: 0.7rem; color: #10b981; letter-spacing: 2px;">GİŞE & SALON KAPI KONTROLÜ</div>
+            </div>
+        </div>
+        <div style="background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700;">
+            <i class="fa-solid fa-signal"></i> Canlı Senkronize
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Canlı İstatistikler -->
+        <div class="gise-stats">
+            <div class="gise-card">
+                <div style="color: var(--text-secondary); font-size: 0.85rem;">Satılan Toplam Bilet</div>
+                <div style="font-size: 1.8rem; font-weight: 800; margin-top: 4px;" id="statTotalTickets">0</div>
+            </div>
+            <div class="gise-card">
+                <div style="color: var(--text-secondary); font-size: 0.85rem;">Salona Giriş Yapanlar</div>
+                <div style="font-size: 1.8rem; font-weight: 800; margin-top: 4px; color: #10b981;" id="statEntered">0</div>
+            </div>
+            <div class="gise-card">
+                <div style="color: var(--text-secondary); font-size: 0.85rem;">Kasa Toplam Hasılat</div>
+                <div style="font-size: 1.8rem; font-weight: 800; margin-top: 4px; color: var(--gold);" id="statRevenue">0 ₺</div>
+            </div>
+        </div>
+
+        <!-- Hızlı Bilet Doğrulama -->
+        <div style="background: var(--card-surface); padding: 20px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 24px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 250px;">
+                <input type="text" id="barcodeSearch" placeholder="Bilet Barkod No Girin (Örn: CINE-12345)" style="width: 100%; padding: 12px 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 10px; color:#fff; font-size: 1rem; outline: none;">
+            </div>
+            <button class="btn-book" onclick="verifyTicketByInput()"><i class="fa-solid fa-barcode"></i> Barkod Kontrol Et</button>
+            <button class="btn-book" onclick="resetAllCinemaData()" style="background: #333;"><i class="fa-solid fa-trash"></i> Sıfırla</button>
+        </div>
+
+        <!-- Bilet Akışı -->
+        <h3 style="margin-bottom: 14px;">Gelen Rezervasyonlar & Biletler</h3>
+        <div id="ticketsList"></div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="gise.js"></script>
+</body>
+</html>

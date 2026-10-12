@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suzi Express - Kurye Sürücü Paneli</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <i class="fa-solid fa-motorcycle" style="color:var(--accent-teal);"></i>
+            <div>
+                <h1>SUZI EXPRESS</h1>
+                <div style="font-size: 0.7rem; color: var(--accent-teal); letter-spacing: 2px;">KURYE AKTİF GÖREV PANELİ</div>
+            </div>
+        </div>
+        <div style="background: rgba(0, 229, 163, 0.15); color: var(--accent-teal); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 700;">
+            <i class="fa-solid fa-satellite-dish"></i> GPS Açık
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="status-card">
+            <h2 style="font-size: 1.4rem; margin-bottom: 6px;">Aktif Görev: Paket #KRG-9482</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Durumu değiştirdiğinizde müşterinin haritasındaki kurye simgesi canlı hareket edecektir.</p>
+
+            <div style="background: rgba(0,0,0,0.2); padding: 16px; border-radius: 12px; margin: 20px 0; border: 1px solid var(--border);">
+                <div><strong>Müşteri:</strong> Suzi Yılmaz (0532 999 88 77)</div>
+                <div style="margin-top: 4px;"><strong>Adres:</strong> Kadıköy Moda Cad. No:42/B, İstanbul</div>
+                <div style="margin-top: 4px;"><strong>Sipariş:</strong> 2x Soğuk Kahve, 1x San Sebastian Cheesecake</div>
+            </div>
+
+            <h3 style="font-size: 1.1rem; margin-bottom: 12px;">Durum Güncelle (Müşteriye Anlık İlet)</h3>
+            <div class="action-grid">
+                <button class="btn-status" id="btnStep1" onclick="setCourierStatus(1, 'Hazırlanıyor', 25)">
+                    <i class="fa-solid fa-store"></i>
+                    <span>1. Hazırlanıyor</span>
+                </button>
+                <button class="btn-status" id="btnStep2" onclick="setCourierStatus(2, 'Kurye Yola Çıktı', 15)">
+                    <i class="fa-solid fa-motorcycle"></i>
+                    <span>2. Yola Çıktım</span>
+                </button>
+                <button class="btn-status" id="btnStep3" onclick="setCourierStatus(3, 'Kapıya Yaklaştım (2 dk)', 2)">
+                    <i class="fa-solid fa-location-crosshairs"></i>
+                    <span>3. Yaklaştım (2 dk)</span>
+                </button>
+                <button class="btn-status" id="btnStep4" onclick="setCourierStatus(4, 'Teslim Edildi', 0)">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>4. Teslim Ettim</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="kurye.js"></script>
+</body>
+</html>
