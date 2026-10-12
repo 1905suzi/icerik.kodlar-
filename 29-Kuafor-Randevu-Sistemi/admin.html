@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yönetici & Kuaför Randevu Takip Paneli</title>
+    <title>Suzi's Beauty - Salon Randevu & Koltuk Yönetimi</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -11,59 +11,57 @@
 <body>
     <header>
         <div class="brand">
-            <i class="fa-solid fa-scissors"></i>
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
             <div>
-                <h1>SUZI'S BARBER</h1>
-                <div style="font-size: 0.75rem; color: var(--accent); letter-spacing: 2px;">KUAFÖR & YÖNETİM PANELİ</div>
+                <h1>SUZI'S BEAUTY</h1>
+                <div style="font-size: 0.75rem; color: var(--accent); letter-spacing: 2px;">SALON & KOLTUK TAKİP PANELİ</div>
             </div>
         </div>
-        <div class="badge-tag" style="background: rgba(16, 185, 129, 0.15); color: var(--success);"><span class="live-dot"></span> Canlı Takip</div>
+        <div class="badge-tag" style="background: rgba(255, 94, 151, 0.15); color: var(--accent);"><span class="live-dot"></span> Canlı Panel</div>
     </header>
 
     <div class="container">
-        <!-- Canlı İstatistikler -->
+        <!-- İstatistikler -->
         <div class="admin-stats">
             <div class="stat-box">
-                <div class="stat-icon" style="background: rgba(212, 175, 55, 0.15); color: var(--accent);"><i class="fa-solid fa-calendar-check"></i></div>
+                <div class="stat-icon" style="background: rgba(255, 94, 151, 0.15); color: var(--accent);"><i class="fa-solid fa-calendar-check"></i></div>
                 <div>
                     <div class="stat-val" id="totalApptCount">0</div>
                     <div class="stat-lbl">Toplam Randevu</div>
                 </div>
             </div>
             <div class="stat-box">
-                <div class="stat-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;"><i class="fa-solid fa-chair"></i></div>
+                <div class="stat-icon" style="background: rgba(252, 194, 215, 0.15); color: var(--gold);"><i class="fa-solid fa-couch"></i></div>
                 <div>
                     <div class="stat-val" id="inChairCount">0</div>
-                    <div class="stat-lbl">Şu An Koltukta</div>
+                    <div class="stat-lbl">Şu An Bakımda / Koltukta</div>
                 </div>
             </div>
             <div class="stat-box">
                 <div class="stat-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--success);"><i class="fa-solid fa-turkish-lira-sign"></i></div>
                 <div>
                     <div class="stat-val" id="totalRevenue">0 ₺</div>
-                    <div class="stat-lbl">Tahmini Ciro</div>
+                    <div class="stat-lbl">Günlük Ciro</div>
                 </div>
             </div>
         </div>
 
-        <!-- Filtreler -->
+        <!-- Filtre Barı -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
             <h2 class="page-title" style="margin-bottom: 0;">Gelen Randevular</h2>
             <div style="display: flex; gap: 10px;">
                 <select id="filterStaff" class="form-input" style="padding: 8px 14px; width: auto;">
-                    <option value="all">Tüm Berberler</option>
-                    <option value="1">Burak Usta</option>
-                    <option value="2">Emre Keskin</option>
-                    <option value="3">Can Demir</option>
+                    <option value="all">Tüm Uzmanlar</option>
+                    <option value="1">Seda Yılmaz (Saç / Ombre)</option>
+                    <option value="2">Melis Kaya (Nail Art)</option>
+                    <option value="3">Ece Demir (Makyaj & Bakım)</option>
                 </select>
-                <button class="btn btn-secondary" onclick="clearAllData()" style="padding: 8px 16px; font-size: 0.85rem;"><i class="fa-solid fa-trash"></i> Verileri Temizle</button>
+                <button class="btn btn-secondary" onclick="clearAllData()" style="padding: 8px 16px; font-size: 0.85rem;"><i class="fa-solid fa-trash"></i> Verileri Sıfırla</button>
             </div>
         </div>
 
         <!-- Randevu Listesi -->
-        <div class="appt-list" id="adminApptList">
-            <!-- JS ile dolacak -->
-        </div>
+        <div class="appt-list" id="adminApptList"></div>
     </div>
 
     <script src="data.js"></script>

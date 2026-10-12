@@ -1,15 +1,16 @@
 
 const staffList = [
-    { id: 1, name: 'Burak Usta', role: 'Baş Berber & Saç Tasarım', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop' },
-    { id: 2, name: 'Emre Keskin', role: 'Sakal & Klasik Tıraş Uzmanı', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop' },
-    { id: 3, name: 'Can Demir', role: 'Cilt Bakımı & Renklendirme', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop' }
+    { id: 1, name: 'Seda Yılmaz', role: 'Kreatif Saç Tasarımcısı & Ombre Uzmanı', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&auto=format&fit=crop' },
+    { id: 2, name: 'Melis Kaya', role: 'Nail Art, Manikür & Protez Tırnak', img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&auto=format&fit=crop' },
+    { id: 3, name: 'Ece Demir', role: 'Profesyonel Makyaj & Cilt Bakımı', img: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&auto=format&fit=crop' }
 ];
 
 const servicesList = [
-    { id: 's1', name: 'Modern Saç Kesimi & Yıkama', duration: '40 dk', price: 250, icon: 'fa-scissors' },
-    { id: 's2', name: 'Sakal Tasarımı & Sıcak Havlu', duration: '25 dk', price: 150, icon: 'fa-razor' },
-    { id: 's3', name: 'Saç + Sakal Full Bakım', duration: '60 dk', price: 350, icon: 'fa-crown' },
-    { id: 's4', name: 'Cilt Bakımı & Siyah Maske', duration: '30 dk', price: 200, icon: 'fa-spa' }
+    { id: 's1', name: 'Saç Kesimi, Yıkama & Fön', duration: '45 dk', price: 350, icon: 'fa-scissors' },
+    { id: 's2', name: 'Nail Art & Kalıcı Oje / Manikür', duration: '60 dk', price: 400, icon: 'fa-hand-sparkles' },
+    { id: 's3', name: 'Sombre / Ombre & Saç Bakımı', duration: '120 dk', price: 1200, icon: 'fa-wand-magic-sparkles' },
+    { id: 's4', name: 'Gelin & Özel Gün Makyajı', duration: '90 dk', price: 850, icon: 'fa-heart' },
+    { id: 's5', name: 'Lifting & İpek Kirpik', duration: '50 dk', price: 500, icon: 'fa-eye' }
 ];
 
 const timeSlots = [
@@ -17,10 +18,10 @@ const timeSlots = [
 ];
 
 function getAppointments() {
-    const data = localStorage.getItem('barber_appointments');
+    const data = localStorage.getItem('beauty_appointments');
     return data ? JSON.parse(data) : [];
 }
 
 function saveAppointments(appts) {
-    localStorage.setItem('barber_appointments', JSON.stringify(appts));
+    localStorage.setItem('beauty_appointments', JSON.stringify(appts));
 }
