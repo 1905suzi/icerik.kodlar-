@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hastane Kuyruk - Yönetici</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>🩺 Yönetici Paneli</h1>
+    <a class="link" href="index.html" target="_blank" style="color:#fff">Bekleme ekranını aç ↗</a>
+  </header>
+  <main class="admin">
+    <section class="card">
+      <h2>Yeni Hasta Kaydı</h2>
+      <form id="form">
+        <input id="name" placeholder="Hasta adı soyadı" required />
+        <select id="dept"></select>
+        <button type="submit">Sıraya Ekle</button>
+      </form>
+      <br />
+      <button class="ghost" id="reset">Tümünü Sıfırla</button>
+    </section>
+    <section class="card">
+      <h2>Sıra Yönetimi</h2>
+      <div class="stats">
+        <div class="stat"><b id="wait">0</b>Bekleyen</div>
+        <div class="stat"><b id="cur">—</b>Çağrılan</div>
+      </div>
+      <button class="big" id="next">📣 Sıradakini Çağır</button>
+      <ul class="list" id="list"></ul>
+    </section>
+  </main>
+  <script src="data.js"></script>
+  <script>
+    const dept = document.getElementById('dept');
+    DEPTS.forEach(d => dept.add(new Option(d, d)));
+
+    document.getElementById('form').onsubmit = e => {
+      e.preventDefault();
+      const n = document.getElementById('name');
+      addPatient(n.value.trim(), dept.value);
+      n.value = ''; n.focus(); render();
+    };
+    document.getElementById('next').onclick = () => { callNext(); render(); };
+    document.getElementById('reset').onclick = () => { if (confirm('Tüm kuyruk silinsin mi?')) { resetAll(); render(); } };
+
+    function render() {
+      const s = getState();
+      document.getElementById('wait').textContent = s.queue.length;
+      document.getElementById('cur').textContent = s.current ? fmtNo(s.current.no) : '—';
+      const ul = document.getElementById('list');
+      ul.innerHTML = s.queue.length ? '' : '<div class="empty">Kuyruk boş</div>';
+      s.queue.forEach(p => {
+        const li = document.createElement('li');
+        li.innerHTML = `<div class="row grow"><b>${fmtNo(p.no)}</b><div class="grow">${p.name}<br><span>${p.dept}</span></div></div>`;
+        const x = document.createElement('button');
+        x.className = 'ghost'; x.textContent = '✕';
+        x.onclick = () => { removePatient(p.no); render(); };
+        li.appendChild(x);
+        ul.appendChild(li);
+      });
+    }
+    window.addEventListener('storage', render);
+    render();
+  </script>
+</body>
+</html>

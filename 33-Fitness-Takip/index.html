@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fitness Takip</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header><h1>🏋️ FİTNESS TAKİP</h1><span id="date"></span></header>
+  <main>
+    <div class="stack">
+      <section class="card">
+        <h2>Günlük İlerleme</h2>
+        <div class="ring" id="ring"><div id="pct">0%</div></div>
+        <div class="msg" id="msg"></div>
+      </section>
+      <section class="card timer">
+        <h2>Dinlenme Sayacı</h2>
+        <div class="big" id="tm">00:00</div>
+        <div class="btns">
+          <button data-s="30">30 sn</button><button data-s="60">60 sn</button><button data-s="90">90 sn</button>
+        </div>
+      </section>
+    </div>
+    <section class="card">
+      <h2>Bugünkü Program (tamamlamak için dokun)</h2>
+      <ul id="list" style="padding:0"></ul>
+    </section>
+  </main>
+  <script src="data.js"></script>
+  <script>
+    document.getElementById('date').textContent = new Date().toLocaleDateString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long' });
+    function render() {
+      const s = getState(), p = percent(s);
+      document.getElementById('ring').style.setProperty('--p', p);
+      document.getElementById('pct').textContent = p + '%';
+      document.getElementById('msg').textContent = p === 100 ? '🎉 Tebrikler, bugünkü program tamam!' : s.msg;
+      const ul = document.getElementById('list'); ul.innerHTML = '';
+      s.exercises.forEach(e => {
+        const li = document.createElement('li');
+        li.className = 'ex' + (e.done ? ' done' : '');
+        li.innerHTML = `<div class="chk">${e.done ? '✓' : ''}</div><div class="t">${esc(e.name)}<small>${e.sets} set × ${e.reps}</small></div>`;
+        li.onclick = () => { toggleEx(e.id); render(); };
+        ul.appendChild(li);
+      });
+    }
+    let iv;
+    document.querySelectorAll('[data-s]').forEach(b => b.onclick = () => {
+      clearInterval(iv); let t = +b.dataset.s;
+      const show = () => document.getElementById('tm').textContent = String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0');
+      show();
+      iv = setInterval(() => { t--; show(); if (t <= 0) { clearInterval(iv); document.getElementById('tm').textContent = 'BİTTİ!'; } }, 1000);
+    });
+    window.addEventListener('storage', render);
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Yılan Oyunu</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <h1>🐍 Yılan Oyunu</h1>
+    <div class="bar">
+      <div>Skor: <b id="score">0</b></div>
+      <div>Rekor: <b id="best">0</b></div>
+      <div>Seviye: <b id="lvl">1</b></div>
+    </div>
+    <div class="stage">
+      <canvas id="c" width="400" height="400"></canvas>
+      <div class="overlay" id="ov">
+        <h2 id="ovt">Hazır mısın?</h2>
+        <p id="ovp">Ok tuşları / WASD ile oyna<br>Boşluk: duraklat</p>
+        <div class="swrap">Yılan rengi: <span id="swatches"></span></div>
+        <button id="start">Başla</button>
+      </div>
+    </div>
+    <div class="pad">
+      <button data-d="up">▲</button>
+      <div><button data-d="left">◀</button><button data-d="down">▼</button><button data-d="right">▶</button></div>
+    </div>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

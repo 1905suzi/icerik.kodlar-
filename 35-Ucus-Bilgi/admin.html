@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Uçuş Yönetimi</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header><h1>🛠 UÇUŞ YÖNETİMİ</h1><a class="link" href="index.html" target="_blank">Panoyu aç ↗</a></header>
+  <main>
+    <section class="panel">
+      <h2>Yeni Uçuş</h2>
+      <form class="form" id="f">
+        <select id="ty"><option>Kalkış</option><option>Varış</option></select>
+        <input id="no" placeholder="Uçuş No (TK 123)" required />
+        <input id="ci" placeholder="Şehir" required />
+        <input id="tm" type="time" required />
+        <input id="ga" placeholder="Kapı" required />
+        <select id="st"></select>
+        <button>Ekle</button>
+      </form>
+    </section>
+    <section class="panel">
+      <h2>Uçuşlar (durum ve kapıyı buradan değiştir)</h2>
+      <table>
+        <thead><tr><th>Saat</th><th>Uçuş</th><th>Şehir</th><th>Kapı</th><th>Durum</th><th></th></tr></thead>
+        <tbody id="tb"></tbody>
+      </table>
+    </section>
+  </main>
+  <script src="data.js"></script>
+  <script>
+    STATUSES.forEach(x => st.add(new Option(x, x)));
+    f.onsubmit = e => {
+      e.preventDefault();
+      addFlight({ type: ty.value, airline: no.value.slice(0, 2).toUpperCase(), no: no.value.trim().toUpperCase(), city: ci.value.trim(), time: tm.value, gate: ga.value.trim().toUpperCase(), status: st.value });
+      f.reset(); render();
+    };
+    function render() {
+      tb.innerHTML = '';
+      sorted(getState()).forEach(fl => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td class="tm">${esc(fl.time)}</td><td>${esc(fl.no)}</td><td class="city">${esc(fl.city)}</td><td></td><td></td><td></td>`;
+        const g = document.createElement('input'); g.value = fl.gate; g.style.width = '80px';
+        g.onchange = () => updateFlight(fl.id, { gate: g.value.trim().toUpperCase() });
+        const s = document.createElement('select');
+        STATUSES.forEach(x => s.add(new Option(x, x, false, x === fl.status)));
+        s.onchange = () => { updateFlight(fl.id, { status: s.value }); render(); };
+        const d = document.createElement('button'); d.className = 'ghost'; d.textContent = '✕';
+        d.onclick = () => { removeFlight(fl.id); render(); };
+        tr.children[3].appendChild(g); tr.children[4].appendChild(s); tr.children[5].appendChild(d);
+        tb.appendChild(tr);
+      });
+    }
+    window.addEventListener('storage', render);
+    render();
+  </script>
+</body>
+</html>

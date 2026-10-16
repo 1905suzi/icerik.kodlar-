@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fitness - Koç Paneli</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header><h1>📋 KOÇ PANELİ</h1><a class="link" href="index.html" target="_blank">Kullanıcı ekranını aç ↗</a></header>
+  <main>
+    <div class="stack">
+      <section class="card">
+        <h2>Egzersiz Ekle</h2>
+        <form id="f">
+          <input id="n" placeholder="Egzersiz adı" required />
+          <div class="two"><input id="s" type="number" min="1" placeholder="Set" required /><input id="r" type="number" min="1" placeholder="Tekrar/sn" required /></div>
+          <button>Programa Ekle</button>
+        </form>
+      </section>
+      <section class="card">
+        <h2>Kullanıcıya Mesaj</h2>
+        <form id="mf"><input id="m" placeholder="Motivasyon mesajı yaz" /><button>Gönder</button></form>
+        <br /><button class="ghost" id="rs">Günü Sıfırla</button>
+      </section>
+    </div>
+    <section class="card">
+      <h2>Kullanıcı İlerlemesi: <span id="p" style="color:var(--g)">0%</span></h2>
+      <ul id="list" style="padding:0"></ul>
+    </section>
+  </main>
+  <script src="data.js"></script>
+  <script>
+    f.onsubmit = e => { e.preventDefault(); addEx(n.value.trim(), +s.value, +r.value); f.reset(); render(); };
+    mf.onsubmit = e => { e.preventDefault(); if (m.value.trim()) setMsg(m.value.trim()); m.value = ''; };
+    rs.onclick = () => { resetDay(); render(); };
+    function render() {
+      const st = getState();
+      p.textContent = percent(st) + '%';
+      list.innerHTML = '';
+      st.exercises.forEach(e => {
+        const li = document.createElement('li');
+        li.className = 'ex' + (e.done ? ' done' : ''); li.style.cursor = 'default';
+        li.innerHTML = `<div class="chk">${e.done ? '✓' : ''}</div><div class="t">${esc(e.name)}<small>${e.sets} set × ${e.reps}</small></div>`;
+        const x = document.createElement('button'); x.className = 'ghost'; x.textContent = '✕';
+        x.onclick = () => { removeEx(e.id); render(); };
+        li.appendChild(x); list.appendChild(li);
+      });
+    }
+    window.addEventListener('storage', render);
+    render();
+  </script>
+</body>
+</html>

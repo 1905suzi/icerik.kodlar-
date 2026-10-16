@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hastane Kuyruk Ekranı</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>🏥 Hastane Sıra Ekranı</h1>
+    <div id="clock"></div>
+  </header>
+  <main class="display">
+    <section class="card now" id="now">
+      <h2>Şu An Çağrılan</h2>
+      <div class="no" id="no">—</div>
+      <div class="nm" id="nm">Henüz çağrı yok</div>
+      <div class="rm" id="rm"></div>
+    </section>
+    <section class="card">
+      <h2>Bekleyenler</h2>
+      <ul class="list" id="list"></ul>
+    </section>
+  </main>
+  <button class="sound" id="sound">🔔 Sesi Aç</button>
+  <script src="data.js"></script>
+  <script>
+    let audio = null, lastCall = getState().callId;
+
+    document.getElementById('sound').onclick = e => {
+      audio = new (window.AudioContext || window.webkitAudioContext)();
+      e.target.textContent = '🔔 Ses Açık';
+    };
+    function beep() {
+      if (!audio) return;
+      [660, 880].forEach((f, i) => {
+        const o = audio.createOscillator(), g = audio.createGain();
+        o.frequency.value = f; o.connect(g); g.connect(audio.destination);
+        g.gain.setValueAtTime(.2, audio.currentTime + i * .3);
+        g.gain.exponentialRampToValueAtTime(.001, audio.currentTime + i * .3 + .28);
+        o.start(audio.currentTime + i * .3); o.stop(audio.currentTime + i * .3 + .3);
+      });
+    }
+    function render() {
+      const s = getState();
+      const c = s.current;
+      document.getElementById('no').textContent = c ? fmtNo(c.no) : '—';
+      document.getElementById('nm').textContent = c ? c.name : 'Henüz çağrı yok';
+      document.getElementById('rm').textContent = c ? c.dept + ' • ' + c.room : '';
+      const ul = document.getElementById('list');
+      ul.innerHTML = s.queue.length ? '' : '<div class="empty">Bekleyen hasta yok</div>';
+      s.queue.slice(0, 8).forEach(p => {
+        const li = document.createElement('li');
+        li.innerHTML = `<b>${fmtNo(p.no)}</b><span>${p.dept}</span>`;
+        ul.appendChild(li);
+      });
+      if (s.callId !== lastCall) {
+        lastCall = s.callId;
+        const el = document.getElementById('now');
+        el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+        beep();
+      }
+    }
+    setInterval(() => document.getElementById('clock').textContent = new Date().toLocaleTimeString('tr-TR'), 1000);
+    window.addEventListener('storage', render);
+    render();
+  </script>
+</body>
+</html>

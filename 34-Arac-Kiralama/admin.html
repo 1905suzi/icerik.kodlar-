@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Araç Kiralama - Yönetici</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header><h1>📊 Yönetici <span>Paneli</span></h1><a class="link" href="index.html" target="_blank">Müşteri ekranını aç ↗</a></header>
+  <main>
+    <div class="stats">
+      <div class="stat"><b id="a">0</b>Müsait Araç</div>
+      <div class="stat"><b id="b">0</b>Kirada</div>
+      <div class="stat"><b id="c">0 ₺</b>Toplam Ciro</div>
+    </div>
+    <section class="panel">
+      <h2>Araç Ekle</h2>
+      <form class="form" id="af">
+        <input id="nm" placeholder="Marka / Model" required />
+        <select id="cl"><option>Ekonomik</option><option>Konfor</option><option>Premium</option><option>SUV</option><option>Minibüs</option></select>
+        <input id="pr" type="number" min="1" placeholder="Günlük ₺" required />
+        <select id="ic"><option>🚗</option><option>🚘</option><option>🏎️</option><option>🚙</option><option>🚐</option></select>
+        <button style="width:auto">Ekle</button>
+      </form>
+    </section>
+    <section class="panel">
+      <h2>Filo Durumu</h2>
+      <table><thead><tr><th>Araç</th><th>Durum</th><th>Müşteri</th><th>Süre</th><th></th></tr></thead><tbody id="tb"></tbody></table>
+    </section>
+  </main>
+  <script src="data.js"></script>
+  <script>
+    af.onsubmit = e => { e.preventDefault(); addCar(nm.value.trim(), cl.value, +pr.value, ic.value); af.reset(); render(); };
+    function render() {
+      const s = getState();
+      a.textContent = s.cars.filter(x => !x.rented).length;
+      b.textContent = s.cars.filter(x => x.rented).length;
+      c.textContent = tl(s.history.reduce((t, h) => t + h.total, 0));
+      tb.innerHTML = '';
+      s.cars.forEach(car => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${car.icon} ${esc(car.name)}</td>
+          <td><span class="badge ${car.rented ? 'bad' : 'ok'}">${car.rented ? 'Kirada' : 'Müsait'}</span></td>
+          <td>${car.rented ? esc(car.rented.customer) : '—'}</td><td>${car.rented ? car.rented.days + ' gün' : '—'}</td><td></td>`;
+        const td = tr.lastElementChild;
+        if (car.rented) { const r = document.createElement('button'); r.textContent = 'Teslim Al'; r.onclick = () => { returnCar(car.id); render(); }; td.appendChild(r); }
+        const x = document.createElement('button'); x.className = 'ghost'; x.textContent = '✕'; x.style.marginLeft = '6px';
+        x.onclick = () => { removeCar(car.id); render(); };
+        td.appendChild(x); tb.appendChild(tr);
+      });
+    }
+    window.addEventListener('storage', render);
+    render();
+  </script>
+</body>
+</html>

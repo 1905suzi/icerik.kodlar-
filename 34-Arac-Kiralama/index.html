@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Araç Kiralama</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header><h1>🚗 Hızlı<span>Kirala</span></h1><span style="color:var(--mut)">Size uygun aracı seçin</span></header>
+  <main><div class="grid" id="grid"></div></main>
+
+  <div class="modal" id="modal">
+    <form class="box" id="form">
+      <h2 id="mt"></h2>
+      <input id="cust" placeholder="Ad Soyad" required />
+      <input id="days" type="number" min="1" max="30" value="1" required />
+      <div class="total" id="tot"></div>
+      <button>Kiralamayı Onayla</button>
+      <button type="button" class="ghost" id="cancel" style="width:100%">Vazgeç</button>
+    </form>
+  </div>
+
+  <script src="data.js"></script>
+  <script>
+    let sel = null;
+    function render() {
+      const s = getState(); grid.innerHTML = '';
+      s.cars.forEach(c => {
+        const d = document.createElement('div');
+        d.className = 'car' + (c.rented ? ' rented' : '');
+        d.innerHTML = `<div class="ic">${c.icon}</div><h3>${esc(c.name)}</h3><div class="cls">${esc(c.cls)}</div>
+          <div class="pr">${tl(c.price)} <small>/ gün</small></div>
+          <span class="badge ${c.rented ? 'bad' : 'ok'}">${c.rented ? 'Kiralandı' : 'Müsait'}</span><br><br>`;
+        const b = document.createElement('button');
+        b.textContent = c.rented ? 'Müsait Değil' : 'Kirala'; b.disabled = !!c.rented;
+        b.onclick = () => { sel = c; mt.textContent = c.name; days.value = 1; upd(); cust.value = ''; modal.classList.add('on'); };
+        d.appendChild(b); grid.appendChild(d);
+      });
+    }
+    function upd() { tot.textContent = 'Toplam: ' + tl(sel.price * (+days.value || 1)); }
+    days.oninput = upd;
+    cancel.onclick = () => modal.classList.remove('on');
+    form.onsubmit = e => {
+      e.preventDefault();
+      if (rentCar(sel.id, cust.value.trim(), +days.value)) alert('✅ Kiralama başarılı! Toplam: ' + tl(sel.price * +days.value));
+      else alert('Bu araç az önce kiralandı.');
+      modal.classList.remove('on'); render();
+    };
+    window.addEventListener('storage', render);
+    render();
+  </script>
+</body>
+</html>

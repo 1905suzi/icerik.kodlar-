@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Uçuş Bilgi Panosu</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header><h1>✈ UÇUŞ BİLGİ PANOSU</h1><div id="clock"></div></header>
+  <main>
+    <table>
+      <thead><tr><th>Saat</th><th>Tür</th><th>Uçuş</th><th>Şehir</th><th>Kapı</th><th>Durum</th></tr></thead>
+      <tbody id="tb"></tbody>
+    </table>
+  </main>
+  <script src="data.js"></script>
+  <script>
+    function render() {
+      const list = sorted(getState()); tb.innerHTML = '';
+      if (!list.length) tb.innerHTML = '<tr><td colspan="6" class="empty">Uçuş bulunmuyor</td></tr>';
+      list.forEach(f => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td class="tm">${esc(f.time)}</td><td><span class="type">${esc(f.type)}</span></td><td>${esc(f.no)}</td>
+          <td class="city">${esc(f.city)}</td><td>${esc(f.gate)}</td><td><span class="st ${statusClass(f.status)}">${esc(f.status)}</span></td>`;
+        tb.appendChild(tr);
+      });
+    }
+    const tick = () => clock.textContent = new Date().toLocaleTimeString('tr-TR');
+    setInterval(tick, 1000); tick();
+    window.addEventListener('storage', render);
+    render();
+  </script>
+</body>
+</html>
