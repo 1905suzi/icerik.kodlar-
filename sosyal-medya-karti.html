@@ -2,279 +2,270 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>5 Frontend Mini Proje - Sosyal Medya Kartı</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>5 Frontend Proje Fikri - Mobil Hikaye & Kart</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=JetBrains+Mono:wght@600;800&display=swap');
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
       background: #060813;
       color: #fff;
-      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 30px 15px;
+      justify-content: center;
+      padding: 10px;
     }
 
-    /* İndirme Barı */
+    /* İndirme ve Kontrol Butonları (Mobilde üstte sabit ufak bar) */
     .action-bar {
       display: flex;
-      gap: 12px;
-      margin-bottom: 24px;
-      background: rgba(255, 255, 255, 0.06);
-      padding: 10px 20px;
-      border-radius: 50px;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 10px;
+      margin-bottom: 12px;
+      width: 100%;
+      max-width: 420px;
+      justify-content: center;
     }
     .action-btn {
+      flex: 1;
       background: linear-gradient(135deg, #a855f7, #ec4899);
       color: #fff;
       border: 0;
-      padding: 10px 22px;
-      border-radius: 30px;
+      padding: 10px 14px;
+      border-radius: 12px;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
-      transition: all 0.2s;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.35);
     }
-    .action-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6);
-    }
-    .action-btn.secondary {
-      background: rgba(255, 255, 255, 0.1);
+    .action-btn.sec {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       box-shadow: none;
     }
 
-    /* GÖRSEL ALANI (1080 x 1350 - Instagram Dikey 4:5 / LinkedIn Standart Post Formatı) */
-    #capture-card {
-      width: 1080px;
-      height: 1350px;
-      background: #090d1a radial-gradient(circle at 15% 10%, rgba(168, 85, 247, 0.22) 0%, transparent 40%),
-                  radial-gradient(circle at 90% 25%, rgba(236, 72, 153, 0.2) 0%, transparent 40%),
-                  radial-gradient(circle at 50% 90%, rgba(56, 189, 248, 0.18) 0%, transparent 45%);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 36px;
-      padding: 60px 55px;
+    /* MOBİL TEK EKRAN KARTI (Telefon ekranına tam oturan 9:16 oran) */
+    #mobile-card {
+      width: 100%;
+      max-width: 410px;
+      aspect-ratio: 9 / 16;
+      background: #090d1c radial-gradient(circle at 15% 10%, rgba(168, 85, 247, 0.28) 0%, transparent 45%),
+                  radial-gradient(circle at 90% 25%, rgba(236, 72, 153, 0.25) 0%, transparent 45%),
+                  radial-gradient(circle at 50% 90%, rgba(56, 189, 248, 0.22) 0%, transparent 50%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 26px;
+      padding: 20px 18px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 100px rgba(168, 85, 247, 0.15);
-      transform-origin: top center;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
     }
 
     /* Üst Başlık */
     .header {
-      position: relative;
-      z-index: 2;
+      text-align: center;
     }
     .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      display: inline-block;
       background: linear-gradient(90deg, rgba(168, 85, 247, 0.25), rgba(236, 72, 153, 0.25));
       border: 1px solid rgba(236, 72, 153, 0.5);
-      padding: 8px 18px;
-      border-radius: 30px;
-      font-size: 0.95rem;
-      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.68rem;
+      font-weight: 800;
       color: #f472b6;
-      letter-spacing: 1.5px;
+      letter-spacing: 1.2px;
       text-transform: uppercase;
-      margin-bottom: 16px;
+      margin-bottom: 6px;
     }
     .title {
-      font-size: 3.2rem;
+      font-size: 1.35rem;
       font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -1px;
-      background: linear-gradient(135deg, #ffffff 30%, #e2e8f0 70%, #c084fc 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin-bottom: 12px;
+      line-height: 1.2;
+      color: #fff;
+      margin-bottom: 3px;
     }
     .title span {
-      background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
+      background: linear-gradient(135deg, #38bdf8, #c084fc, #f472b6);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
     .subtitle {
-      font-size: 1.35rem;
+      font-size: 0.75rem;
       color: #94a3b8;
       font-weight: 500;
-      line-height: 1.4;
     }
 
-    /* 5 Proje Listesi */
+    /* 5 Proje Kompakt Liste (Tek ekrana sığacak şekilde) */
     .project-list {
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      position: relative;
-      z-index: 2;
-      margin: 20px 0;
+      gap: 7px;
+      margin: 8px 0;
     }
 
     .card-item {
       display: flex;
       align-items: center;
-      gap: 20px;
-      background: rgba(255, 255, 255, 0.035);
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 22px;
-      padding: 18px 24px;
-      backdrop-filter: blur(12px);
-      position: relative;
-      transition: all 0.2s;
+      border-radius: 14px;
+      padding: 8px 10px;
+      backdrop-filter: blur(8px);
     }
 
     .icon-box {
-      width: 72px;
-      height: 72px;
-      border-radius: 18px;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
       display: grid;
       place-items: center;
-      font-size: 2.2rem;
+      font-size: 1.25rem;
       flex-shrink: 0;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     }
-
-    .c-snake   { background: linear-gradient(135deg, #10b981, #059669); color: #fff; }
-    .c-puzzle  { background: linear-gradient(135deg, #f59e0b, #ec4899); color: #fff; }
-    .c-courier { background: linear-gradient(135deg, #38bdf8, #2563eb); color: #fff; }
-    .c-cinema  { background: linear-gradient(135deg, #a855f7, #6366f1); color: #fff; }
-    .c-queue   { background: linear-gradient(135deg, #14b8a6, #0d9488); color: #fff; }
+    .c-snake   { background: linear-gradient(135deg, #10b981, #059669); }
+    .c-puzzle  { background: linear-gradient(135deg, #f59e0b, #ec4899); }
+    .c-courier { background: linear-gradient(135deg, #38bdf8, #2563eb); }
+    .c-cinema  { background: linear-gradient(135deg, #a855f7, #6366f1); }
+    .c-queue   { background: linear-gradient(135deg, #14b8a6, #0d9488); }
 
     .content {
       flex: 1;
+      min-width: 0;
     }
     .top-line {
       display: flex;
-      align-items: baseline;
+      align-items: center;
       justify-content: space-between;
-      margin-bottom: 5px;
+      gap: 4px;
+      margin-bottom: 2px;
     }
     .proj-title {
-      font-size: 1.45rem;
-      font-weight: 800;
+      font-size: 0.88rem;
+      font-weight: 700;
       color: #f8fafc;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .proj-num {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #a855f7;
-      background: rgba(168, 85, 247, 0.15);
-      padding: 3px 10px;
-      border-radius: 8px;
-      border: 1px solid rgba(168, 85, 247, 0.3);
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: #c084fc;
+      background: rgba(192, 132, 252, 0.15);
+      padding: 1px 6px;
+      border-radius: 5px;
     }
     .proj-desc {
-      font-size: 1.05rem;
+      font-size: 0.68rem;
       color: #94a3b8;
-      line-height: 1.35;
-      margin-bottom: 8px;
+      line-height: 1.25;
+      margin-bottom: 3px;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
     .github-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.88rem;
+      font-size: 0.62rem;
       color: #38bdf8;
       background: rgba(56, 189, 248, 0.08);
-      padding: 4px 12px;
-      border-radius: 6px;
-      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
     .github-link span {
       color: #64748b;
     }
 
-    /* Footer / Alt Alan */
+    /* Alt Bilgi / Profil */
     .footer {
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 22px;
-      padding: 22px 28px;
+      border-radius: 14px;
+      padding: 8px 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      position: relative;
-      z-index: 2;
     }
     .repo-info {
       display: flex;
       flex-direction: column;
-      gap: 4px;
     }
     .repo-label {
-      font-size: 0.95rem;
+      font-size: 0.62rem;
       color: #94a3b8;
       font-weight: 600;
     }
     .repo-url {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 1.35rem;
+      font-size: 0.78rem;
       font-weight: 800;
       color: #f472b6;
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
     .repo-url b {
       color: #fff;
     }
-    .tags {
-      display: flex;
-      gap: 8px;
-    }
-    .tag {
-      font-size: 0.9rem;
+    .tech-pill {
+      font-size: 0.62rem;
       font-weight: 700;
-      padding: 8px 16px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.06);
-      color: #cbd5e1;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 4px 8px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #38bdf8;
+    }
+
+    /* İpucu */
+    .hint-text {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-top: 8px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
 
-  <!-- İndirme Kontrol Çubuğu -->
+  <!-- Mobil İndirme Butonları -->
   <div class="action-bar">
     <button class="action-btn" onclick="downloadImage()">
-      📥 Görseli PNG Olarak İndir (HD 1080x1350)
+      📥 Görseli İndir (PNG)
     </button>
-    <button class="action-btn secondary" onclick="window.open('https://1905suzi.github.io/icerik.kodlar-/', '_blank')">
-      🌐 Canlı Siteyi Aç
+    <button class="action-btn sec" onclick="window.open('https://1905suzi.github.io/icerik.kodlar-/', '_blank')">
+      🌐 Projeleri Aç
     </button>
   </div>
 
-  <!-- SOSYAL MEDYA KARTI (İndirilecek Alan) -->
-  <div id="capture-card">
+  <!-- MOBİL TEK EKRAN KARTI (Story / Ekran Görüntüsü Boyutu) -->
+  <div id="mobile-card">
     
-    <!-- Üst Başlık -->
+    <!-- Başlık -->
     <div class="header">
       <div class="badge">🔥 PORTFOLYO PROJELERİ</div>
-      <h1 class="title">Frontend Geliştiriciler İçin<br><span>5 Mini Proje Fikri</span></h1>
-      <p class="subtitle">HTML, CSS & Vanilla JS ile sıfırdan kodladığım gerçek zamanlı projeler ve oyunlar.</p>
+      <h1 class="title">Frontend İçin<br><span>5 Mini Proje Fikri</span></h1>
+      <p class="subtitle">HTML, CSS & Vanilla JS ile kodladığım canlı projeler</p>
     </div>
 
-    <!-- 5 Proje Kartı -->
+    <!-- 5 Proje Kompakt Kartları -->
     <div class="project-list">
 
       <!-- 1. Yılan Oyunu -->
@@ -282,12 +273,12 @@
         <div class="icon-box c-snake">🐍</div>
         <div class="content">
           <div class="top-line">
-            <h3 class="proj-title">Özelleştirilebilir Yılan Oyunu</h3>
+            <h3 class="proj-title">Yılan Oyunu (Özelleştirilebilir)</h3>
             <span class="proj-num">#36</span>
           </div>
-          <p class="proj-desc">6 farklı yılan rengi paleti, yöne bakan gözler, mobil dokunmatik & klavye desteği, skor ve rekor sistemi.</p>
+          <p class="proj-desc">Renk paleti, yöne bakan gözler, mobil dokunmatik & rekor</p>
           <div class="github-link">
-            <span>(GitHub'da mevcut:</span> 1905suzi.github.io/icerik.kodlar-/36-Yilan-Oyunu/ <span>)</span>
+            <span>(GitHub:</span> 1905suzi.github.io/icerik.kodlar-/36-Yilan-Oyunu/ <span>)</span>
           </div>
         </div>
       </div>
@@ -297,12 +288,12 @@
         <div class="icon-box c-puzzle">🎲</div>
         <div class="content">
           <div class="top-line">
-            <h3 class="proj-title">2048 Neon Puzzle Oyunu</h3>
+            <h3 class="proj-title">2048 Neon Puzzle</h3>
             <span class="proj-num">#37</span>
           </div>
-          <p class="proj-desc">Neon gradyan taşlar, akıcı birleşme efektleri, hamle geri alma (undo), dokunmatik kaydırma ve yerel kayıt.</p>
+          <p class="proj-desc">Neon gradyan taşlar, hamle geri alma, mobil kaydırma kontrolü</p>
           <div class="github-link">
-            <span>(GitHub'da mevcut:</span> 1905suzi.github.io/icerik.kodlar-/37-2048/ <span>)</span>
+            <span>(GitHub:</span> 1905suzi.github.io/icerik.kodlar-/37-2048/ <span>)</span>
           </div>
         </div>
       </div>
@@ -315,9 +306,9 @@
             <h3 class="proj-title">Kurye Canlı Takip Sistemi</h3>
             <span class="proj-num">#31</span>
           </div>
-          <p class="proj-desc">Kurye & müşteri çift ekranı, canlı harita animasyonu, gerçek zamanlı sipariş adımları ve tahmini süre sayacı.</p>
+          <p class="proj-desc">Kurye & müşteri çift ekranı, canlı rota ve teslimat aşamaları</p>
           <div class="github-link">
-            <span>(GitHub'da mevcut:</span> 1905suzi.github.io/icerik.kodlar-/31-Kurye-Canli-Takip/ <span>)</span>
+            <span>(GitHub:</span> 1905suzi.github.io/icerik.kodlar-/31-Kurye-Canli-Takip/ <span>)</span>
           </div>
         </div>
       </div>
@@ -327,12 +318,12 @@
         <div class="icon-box c-cinema">🎬</div>
         <div class="content">
           <div class="top-line">
-            <h3 class="proj-title">Sinema Koltuk & Bilet Rezervasyonu</h3>
+            <h3 class="proj-title">Sinema Koltuk & Bilet Sistemi</h3>
             <span class="proj-num">#30</span>
           </div>
-          <p class="proj-desc">Kavisli 3D sinema salonu, VIP / Standart koltuk seçimi, anlık toplam hesaplama ve dolu koltuk yönetimi.</p>
+          <p class="proj-desc">3D kavisli salon, VIP koltuklar ve anlık bilet sepet tutarı</p>
           <div class="github-link">
-            <span>(GitHub'da mevcut:</span> 1905suzi.github.io/icerik.kodlar-/30-Sinema-Bilet-Rezervasyon/ <span>)</span>
+            <span>(GitHub:</span> 1905suzi.github.io/icerik.kodlar-/30-Sinema-Bilet-Rezervasyon/ <span>)</span>
           </div>
         </div>
       </div>
@@ -345,53 +336,50 @@
             <h3 class="proj-title">Hastane Sıra & Çağrı Paneli</h3>
             <span class="proj-num">#32</span>
           </div>
-          <p class="proj-desc">Bekleme salonu TV ekranı, doktor/sekreter yönetim paneli, sesli bildirim (Web Audio chime) ve canlı senkronizasyon.</p>
+          <p class="proj-desc">Bekleme salonu ekranı, sesli çağrı zili ve sekmeler arası senkron</p>
           <div class="github-link">
-            <span>(GitHub'da mevcut:</span> 1905suzi.github.io/icerik.kodlar-/32-Hastane-Kuyruk/ <span>)</span>
+            <span>(GitHub:</span> 1905suzi.github.io/icerik.kodlar-/32-Hastane-Kuyruk/ <span>)</span>
           </div>
         </div>
       </div>
 
     </div>
 
-    <!-- Alt Bilgi / GitHub Adresi -->
+    <!-- Alt Alan (Footer) -->
     <div class="footer">
       <div class="repo-info">
-        <div class="repo-label">⚡ Canlı Demolar ve Tüm Kaynak Kodlar:</div>
-        <div class="repo-url">🌐 <b>1905suzi.github.io/icerik.kodlar-</b></div>
+        <span class="repo-label">⚡ Canlı Demolar & Kodlar:</span>
+        <span class="repo-url">1905suzi.github.io/<b>icerik.kodlar-</b></span>
       </div>
-      <div class="tags">
-        <span class="tag">HTML5</span>
-        <span class="tag">CSS3</span>
-        <span class="tag">Vanilla JS</span>
-      </div>
+      <span class="tech-pill">JS • CSS • HTML</span>
     </div>
 
   </div>
 
+  <p class="hint-text">💡 Mobilde doğrudan ekran görüntüsü alabilir veya "İndir" butonuna basabilirsin.</p>
+
   <script>
     function downloadImage() {
-      const card = document.getElementById('capture-card');
+      const card = document.getElementById('mobile-card');
       const btn = document.querySelector('.action-btn');
       btn.innerText = '⏳ Hazırlanıyor...';
 
       html2canvas(card, {
-        scale: 2, // 2x çözünürlük ile Ultra HD (2160 x 2700 piksel)
+        scale: 3, // Netlik için 3 kat çözünürlük
         backgroundColor: '#060813',
-        useCORS: true,
-        allowTaint: true
+        useCORS: true
       }).then(canvas => {
         const link = document.createElement('a');
-        link.download = '5-Frontend-Mini-Proje-1905suzi.png';
+        link.download = '5-Frontend-Proje-Fikri-Mobil.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
         btn.innerText = '✅ PNG İndirildi!';
         setTimeout(() => {
-          btn.innerText = '📥 Görseli PNG Olarak İndir (HD 1080x1350)';
-        }, 2500);
+          btn.innerText = '📥 Görseli İndir (PNG)';
+        }, 2000);
       }).catch(err => {
-        alert('Görsel oluşturulurken hata: ' + err);
-        btn.innerText = '📥 Görseli PNG Olarak İndir (HD 1080x1350)';
+        alert('İndirme hatası: ' + err);
+        btn.innerText = '📥 Görseli İndir (PNG)';
       });
     }
   </script>
