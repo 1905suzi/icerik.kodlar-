@@ -104,9 +104,14 @@ document.addEventListener('keydown', e => {
   if (m[k]) { e.preventDefault(); if (!running) return; setDir(...m[k]); }
   else if (k === ' ') { e.preventDefault(); running ? togglePause() : startGame(); }
 });
-document.querySelectorAll('.pad [data-d]').forEach(b => b.onclick = () => {
+const handleDir = (d, e) => {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
   if (!running) return;
-  ({ up: () => setDir(0, -1), down: () => setDir(0, 1), left: () => setDir(-1, 0), right: () => setDir(1, 0) })[b.dataset.d]();
+  ({ up: () => setDir(0, -1), down: () => setDir(0, 1), left: () => setDir(-1, 0), right: () => setDir(1, 0) })[d]();
+};
+document.querySelectorAll('.pad [data-d]').forEach(b => {
+  b.addEventListener('pointerdown', e => handleDir(b.dataset.d, e));
+  b.addEventListener('click', e => handleDir(b.dataset.d, e));
 });
 // Mobilde kaydırma ile yön
 let tx, ty;

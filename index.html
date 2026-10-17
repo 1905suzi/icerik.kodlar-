@@ -2,30 +2,36 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projelerim - İçerik Kodları</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Frontend Projelerim & Oyunlar - 1905suzi</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
+            --bg-color: #0b101e;
+            --card-bg: #141c2e;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --accent: #38bdf8;
-            --accent-hover: #0284c7;
+            --accent-pink: #ec4899;
+            --accent-green: #22c55e;
+            --border: rgba(255, 255, 255, 0.08);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.12) 0%, transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.12) 0%, transparent 40%);
             color: var(--text-main);
             line-height: 1.6;
-            padding: 20px;
+            padding: 16px;
+            min-height: 100vh;
         }
 
         .container {
@@ -35,179 +41,471 @@
 
         header {
             text-align: center;
-            margin-bottom: 50px;
-            padding-top: 20px;
+            margin: 20px 0 30px;
         }
 
         h1 {
-            color: var(--accent);
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: clamp(2rem, 6vw, 2.8rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #94a3b8, var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
         }
 
         p.subtitle {
             color: var(--text-muted);
-            font-size: 1.1rem;
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto 20px;
         }
 
+        /* Hızlı Butonlar / Filtre & Arama */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 440px;
+            padding: 12px 18px;
+            border-radius: 25px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s;
+        }
+        .search-input:focus {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--accent);
+            color: #0b101e;
+            border-color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* Proje Kartları Izgarası */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
         }
 
         .card {
             background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 24px;
+            border-radius: 16px;
+            padding: 20px;
             text-decoration: none;
             color: var(--text-main);
-            transition: all 0.3s ease;
-            border: 1px solid #334155;
+            transition: all 0.25s ease;
+            border: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            text-align: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        .card:hover, .card:active {
+            transform: translateY(-4px);
             border-color: var(--accent);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
         }
 
         .badge {
-            background-color: rgba(56, 189, 248, 0.1);
+            background: rgba(56, 189, 248, 0.12);
             color: var(--accent);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 15px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
             letter-spacing: 0.5px;
         }
 
-        .card h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
+        .badge.game {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--accent-green);
+        }
+        .badge.sys {
+            background: rgba(236, 72, 153, 0.15);
+            color: var(--accent-pink);
         }
 
-        /* Mobile Adjustments */
+        .card-icon {
+            font-size: 1.5rem;
+        }
+
+        .card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 6px;
+        }
+
+        .card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Boş durum */
+        .empty-msg {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
         @media (max-width: 600px) {
-            h1 { font-size: 2rem; }
-            .grid { grid-template-columns: 1fr; }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .card {
+                padding: 16px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🚀 Proje Galerisi</h1>
-            <p class="subtitle">HTML, CSS ve JavaScript Çalışmalarım</p>
+            <h1>🚀 Frontend Proje Galerisi</h1>
+            <p class="subtitle">HTML5, CSS3 ve Vanilla JavaScript ile geliştirilmiş 37 interaktif proje ve oyun.</p>
+            
+            <div class="controls">
+                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Proje veya oyun ara... (örn: yılan, 2048, kafe)">
+                <div class="filters">
+                    <button class="filter-btn active" data-filter="all">Tümü (37)</button>
+                    <button class="filter-btn" data-filter="game">🎮 Oyunlar</button>
+                    <button class="filter-btn" data-filter="sys">📱 Canlı Sistemler</button>
+                    <button class="filter-btn" data-filter="ui">✨ UI & Efektler</button>
+                </div>
+            </div>
         </header>
 
-        <div class="grid">
-            <a href="01-Neon-Buton/" class="card">
-                <span class="badge">#01</span>
-                <h3>Neon Buton</h3>
-            </a>
-            <a href="02-Kalp-Patlamasi/" class="card">
-                <span class="badge">#02</span>
-                <h3>Kalp Patlaması</h3>
-            </a>
-            <a href="03-Seni-Seviyorum/" class="card">
-                <span class="badge">#03</span>
-                <h3>Seni Seviyorum</h3>
-            </a>
-            <a href="04-Glassmorphism/" class="card">
-                <span class="badge">#04</span>
-                <h3>Glassmorphism</h3>
-            </a>
-            <a href="05-Cizilen-Lazer-Kalp/" class="card">
-                <span class="badge">#05</span>
-                <h3>Çizilen Lazer Kalp</h3>
-            </a>
-            <a href="06-Matrix-Yagmuru/" class="card">
-                <span class="badge">#06</span>
-                <h3>Matrix Yağmuru</h3>
-            </a>
-            <a href="07-Sifre-Cozucu-Yazi/" class="card">
-                <span class="badge">#07</span>
-                <h3>Şifre Çözücü Yazı</h3>
-            </a>
-            <a href="08-Dark-Mode-Gecis/" class="card">
-                <span class="badge">#08</span>
-                <h3>Dark Mode Geçiş</h3>
-            </a>
-            <a href="09-3D-Suzulen-Kalp/" class="card">
-                <span class="badge">#09</span>
-                <h3>3D Süzülen Kalp</h3>
-            </a>
-            <a href="10-Kafe-Menusu/" class="card">
-                <span class="badge">#10</span>
-                <h3>Kafe Menüsü</h3>
-            </a>
-            <a href="11-Rastgele-Kullanici-API/" class="card">
-                <span class="badge">#11</span>
-                <h3>Rastgele Kullanıcı API</h3>
-            </a>
-            <a href="12-3D-Urun-Karti/" class="card">
-                <span class="badge">#12</span>
-                <h3>3D Ürün Kartı</h3>
-            </a>
-            <a href="13-Robot-Kalp-Firlatma/" class="card">
-                <span class="badge">#13</span>
-                <h3>Robot Kalp Fırlatma</h3>
-            </a>
-            <a href="14-3D-Acan-Gul/" class="card">
-                <span class="badge">#14</span>
-                <h3>3D Açan Gül</h3>
-            </a>
-            <a href="16-Robot-Login/" class="card">
-                <span class="badge">#16</span>
-                <h3>Robot Login</h3>
-            </a>
-            <a href="17-Galaksi-Kalp/" class="card">
-                <span class="badge">#17</span>
-                <h3>Galaksi Kalp</h3>
-            </a>
-            <a href="18-3D-Asik-Kalp/" class="card">
-                <span class="badge">#18</span>
-                <h3>3D Aşık Kalp</h3>
-            </a>
-            <a href="19-Karakter-Animasyonlu-Giris/" class="card">
-                <span class="badge">#19</span>
-                <h3>Karakter Animasyonlu Giriş</h3>
-            </a>
-            <a href="20-Stream-Duygu-Analizi-UI/" class="card">
-                <span class="badge">#20</span>
-                <h3>Stream Duygu Analizi UI</h3>
-            </a>
-            <a href="32-Hastane-Kuyruk/" class="card">
-                <span class="badge">#32</span>
-                <h3>Hastane Kuyruk Sistemi</h3>
-            </a>
-            <a href="33-Fitness-Takip/" class="card">
-                <span class="badge">#33</span>
-                <h3>Fitness Takip</h3>
-            </a>
-            <a href="34-Arac-Kiralama/" class="card">
-                <span class="badge">#34</span>
-                <h3>Araç Kiralama</h3>
-            </a>
-            <a href="35-Ucus-Bilgi/" class="card">
-                <span class="badge">#35</span>
-                <h3>Uçuş Bilgi Panosu</h3>
-            </a>
-            <a href="36-Yilan-Oyunu/" class="card">
-                <span class="badge">#36</span>
+        <div class="grid" id="projectGrid">
+
+            <!-- OYUNLAR -->
+            <a href="./36-Yilan-Oyunu/index.html" class="card" data-cat="game">
+                <div class="card-top"><span class="badge game">#36 Oyun</span><span class="card-icon">🐍</span></div>
                 <h3>Yılan Oyunu</h3>
+                <p>6 renk paleti, yöne bakan gözler, mobil dokunmatik kontroller ve rekor kaydı.</p>
             </a>
-            <a href="37-2048/" class="card">
-                <span class="badge">#37</span>
-                <h3>2048</h3>
+
+            <a href="./37-2048/index.html" class="card" data-cat="game">
+                <div class="card-top"><span class="badge game">#37 Oyun</span><span class="card-icon">🎲</span></div>
+                <h3>2048 Neon Puzzle</h3>
+                <p>Neon gradyan taşlar, hamle geri alma (undo), dokunmatik kaydırma kontrolü.</p>
             </a>
+
+            <a href="./27-Hafiza-Oyunu/index.html" class="card" data-cat="game">
+                <div class="card-top"><span class="badge game">#27 Oyun</span><span class="card-icon">🃏</span></div>
+                <h3>Kart Hafıza Oyunu</h3>
+                <p>Kart eşleştirme, hamle sayacı ve süre takipli beyin jimnastiği oyunu.</p>
+            </a>
+
+            <!-- CANLI SİSTEMLER & PANELLER -->
+            <a href="./31-Kurye-Canli-Takip/index.html" class="card" data-cat="sys">
+                <div class="card-top"><span class="badge sys">#31 Sistem</span><span class="card-icon">🛵</span></div>
+                <h3>Kurye Canlı Takip Sistemi</h3>
+                <p>Kurye & müşteri çift ekranı, canlı harita simülasyonu ve teslimat sayacı.</p>
+            </a>
+
+            <a href="./30-Sinema-Bilet-Rezervasyon/index.html" class="card" data-cat="sys">
+                <div class="card-top"><span class="badge sys">#30 Sistem</span><span class="card-icon">🎬</span></div>
+                <h3>Sinema Bilet & Koltuk Rezervasyonu</h3>
+                <p>3D kavisli salon, VIP koltuklar ve anlık toplam sepet tutarı.</p>
+            </a>
+
+            <a href="./28-Akilli-Kafe-Sistemi/index.html" class="card" data-cat="sys">
+                <div class="card-top"><span class="badge sys">#28 Sistem</span><span class="card-icon">☕</span></div>
+                <h3>Akıllı Kafe Sipariş Sistemi</h3>
+                <p>Müşteri menüsü ve mutfak/kasa paneli arasında anlık çift ekranlı sipariş akışı.</p>
+            </a>
+
+            <a href="./32-Hastane-Kuyruk/index.html" class="card" data-cat="sys">
+                <div class="card-top"><span class="badge sys">#32 Sistem</span><span class="card-icon">🏥</span></div>
+                <h3>Hastane Sıra & Çağrı Paneli</h3>
+                <p>Bekleme salonu ekranı, doktor paneli ve sesli çağrı zili (Web Audio).</p>
+            </a>
+
+            <a href="./33-Fitness-Takip/index.html" class="card" data-cat="sys">
+                <div class="card-top"><span class="badge sys">#33 Sistem</span><span class="card-icon">🏋️</span></div>
+                <h3>Fitness Takip & Koç Paneli</h3>
+                <p>İlerleme halkası, set sayaçları, koç mesajlaşması ve dinlenme kronometresi.</p>
+            </a>
+
+            <a href="./34-Arac-Kiralama/index.html" class="card" data-cat="sys">
+                <div class="card-top"><span class="badge sys">#34 Sistem</span><span class="card-icon">🚗</span></div>
+                <h3>Araç Kiralama Portalı</h3>
+                <p>Filo yönetimi, anlık kiralama modalı ve yönetici ciro paneli.</p>
+            </a>
+
+            <a href="./35-Ucus-Bilgi/index.html" class="card" data-cat="sys">
+                <div class="card-top"><span class="badge sys">#35 Sistem</span><span class="card-icon">✈️</span></div>
+                <h3>Havalimanı Uçuş Bilgi Panosu</h3>
+                <p>Canlı kalkış/varış tablosu, kapı güncellemeleri ve durum panosu.</p>
+            </a>
+
+            <a href="./29-Kuafor-Randevu-Sistemi/index.html" class="card" data-cat="sys">
+                <div class="card-top"><span class="badge sys">#29 Sistem</span><span class="card-icon">💇‍♀️</span></div>
+                <h3>Güzellik & Kuaför Randevu Sistemi</h3>
+                <p>Hizmet ve uzman seçimi, takvim randevu oluşturma ve randevu yönetimi.</p>
+            </a>
+
+            <!-- DİĞER UI & ETKİLEŞİMLİ PROJELER -->
+            <a href="./23-Hava-Durumu-App/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#23 UI</span><span class="card-icon">🌤️</span></div>
+                <h3>Hava Durumu Uygulaması</h3>
+                <p>Şehir bazlı anlık hava durumu ve tahmin kartları.</p>
+            </a>
+
+            <a href="./22-Renk-Paleti-Uretici/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#22 UI</span><span class="card-icon">🎨</span></div>
+                <h3>Renk Paleti Üretici</h3>
+                <p>Uyumlu renk kombinasyonları ve tek tıkla HEX kopyalama.</p>
+            </a>
+
+            <a href="./21-Hesap-Makineleri/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#21 UI</span><span class="card-icon">🔢</span></div>
+                <h3>Hesap Makineleri</h3>
+                <p>Modern arayüzlü ve geçmiş hafızalı hesap makinesi.</p>
+            </a>
+
+            <a href="./24-Confetti-Efekti/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#24 Efekt</span><span class="card-icon">🎉</span></div>
+                <h3>Konfeti Patlaması</h3>
+                <p>Kutlama ve tebrik butonları için fizik tabanlı konfeti efekti.</p>
+            </a>
+
+            <a href="./25-Drum-Kit/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#25 Ses</span><span class="card-icon">🥁</span></div>
+                <h3>Sanal Bateri (Drum Kit)</h3>
+                <p>Klavye ve dokunmatik destekli gerçek enstrüman sesleri.</p>
+            </a>
+
+            <a href="./26-Parallax-Scroll/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#26 Efekt</span><span class="card-icon">🌌</span></div>
+                <h3>Parallax Scroll Efekti</h3>
+                <p>Sayfa kaydırmasıyla derinlik hissi veren katmanlı animasyon.</p>
+            </a>
+
+            <a href="./20-Stream-Duygu-Analizi-UI/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#20 UI</span><span class="card-icon">📊</span></div>
+                <h3>Stream Duygu Analizi UI</h3>
+                <p>Canlı metin ve akış üzerinden duygu durumu görselleştirme paneli.</p>
+            </a>
+
+            <a href="./19-Karakter-Animasyonlu-Giris/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#19 UI</span><span class="card-icon">🐱</span></div>
+                <h3>Karakter Animasyonlu Giriş</h3>
+                <p>Şifre yazarken gözlerini kapatan interaktif giriş formu.</p>
+            </a>
+
+            <a href="./16-Robot-Login/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#16 UI</span><span class="card-icon">🤖</span></div>
+                <h3>Robot Login Paneli</h3>
+                <p>İmleci ve inputları takip eden mekanik robot animasyonu.</p>
+            </a>
+
+            <a href="./14-3D-Acan-Gul/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#14 3D</span><span class="card-icon">🌹</span></div>
+                <h3>3D Açan Gül</h3>
+                <p>Three.js ile 3D gül animasyonu ve yaprak fiziği.</p>
+            </a>
+
+            <a href="./17-Galaksi-Kalp/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#17 3D</span><span class="card-icon">✨</span></div>
+                <h3>Galaksi Kalp</h3>
+                <p>Parçacık efektiyle uzayda süzülen interaktif kalp.</p>
+            </a>
+
+            <a href="./18-3D-Asik-Kalp/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#18 3D</span><span class="card-icon">💖</span></div>
+                <h3>3D Aşık Kalp</h3>
+                <p>Dinamik 3D kalp atanışı ve ışık oyunları.</p>
+            </a>
+
+            <a href="./13-Robot-Kalp-Firlatma/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#13 UI</span><span class="card-icon">🚀</span></div>
+                <h3>Robot Kalp Fırlatma</h3>
+                <p>Kullanıcı etkileşimiyle roket ve kalp ateşleme demosu.</p>
+            </a>
+
+            <a href="./12-3D-Urun-Karti/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#12 3D</span><span class="card-icon">👟</span></div>
+                <h3>3D Ürün Kartı</h3>
+                <p>Farenin/dokunmanın açısına göre eğilen perspektifli ürün vitrini.</p>
+            </a>
+
+            <a href="./11-Rastgele-Kullanici-API/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#11 API</span><span class="card-icon">👥</span></div>
+                <h3>Rastgele Kullanıcı API</h3>
+                <p>Asenkron fetch ile rastgele profil kartı üretimi.</p>
+            </a>
+
+            <a href="./10-Kafe-Menusu/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#10 UI</span><span class="card-icon">📋</span></div>
+                <h3>Kafe QR Menü</h3>
+                <p>Kategori bazlı filtrelemeli mobil menü tasarımı.</p>
+            </a>
+
+            <a href="./09-3D-Suzulen-Kalp/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#09 3D</span><span class="card-icon">🎈</span></div>
+                <h3>3D Süzülen Kalp</h3>
+                <p>WebGL ile uzayda süzülen 3 boyutlu kalp animasyonu.</p>
+            </a>
+
+            <a href="./08-Dark-Mode-Gecis/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#08 UI</span><span class="card-icon">🌓</span></div>
+                <h3>Dark Mode Geçiş</h3>
+                <p>Gece ve gündüz modları arasında yumuşak renk animasyonu.</p>
+            </a>
+
+            <a href="./07-Sifre-Cozucu-Yazi/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#07 Efekt</span><span class="card-icon">🔐</span></div>
+                <h3>Şifre Çözücü Yazı Efekti</h3>
+                <p>Hacker temalı deşifre olan yazı animasyonu.</p>
+            </a>
+
+            <a href="./06-Matrix-Yagmuru/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#06 Efekt</span><span class="card-icon">🟢</span></div>
+                <h3>Matrix Kodu Yağmuru</h3>
+                <p>HTML5 Canvas ile akan yeşil karakterler ve neon parlamalar.</p>
+            </a>
+
+            <a href="./05-Cizilen-Lazer-Kalp/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#05 Efekt</span><span class="card-icon">⚡</span></div>
+                <h3>Çizilen Lazer Kalp</h3>
+                <p>SVG stroke animasyonu ile lazerle çizilen neon kalp.</p>
+            </a>
+
+            <a href="./04-Glassmorphism/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#04 UI</span><span class="card-icon">🪟</span></div>
+                <h3>Glassmorphism Kartı</h3>
+                <p>Buzlu cam efekti ve arka plan ışık dağılımı.</p>
+            </a>
+
+            <a href="./03-Seni-Seviyorum/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#03 UI</span><span class="card-icon">💌</span></div>
+                <h3>Seni Seviyorum Mektubu</h3>
+                <p>Açılan zarf ve interaktif aşk mektubu animasyonu.</p>
+            </a>
+
+            <a href="./02-Kalp-Patlamasi/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#02 Efekt</span><span class="card-icon">💥</span></div>
+                <h3>Kalp Patlaması</h3>
+                <p>Tıklanan noktadan etrafa yayılan kalpler.</p>
+            </a>
+
+            <a href="./01-Neon-Buton/index.html" class="card" data-cat="ui">
+                <div class="card-top"><span class="badge">#01 UI</span><span class="card-icon">💡</span></div>
+                <h3>Neon Glow Buton</h3>
+                <p>Işık huzmesi dolaşan parlak neon buton animasyonu.</p>
+            </a>
+
         </div>
+
+        <div id="emptyMsg" class="empty-msg">Aradığınız kriterlere uygun proje bulunamadı 🔍</div>
+
+        <footer>
+            <p>GitHub Profilim: <a href="https://github.com/1905suzi" target="_blank">@1905suzi</a> • Kodlar: <a href="https://github.com/1905suzi/icerik.kodlar-" target="_blank">icerik.kodlar-</a></p>
+        </footer>
     </div>
+
+    <script>
+        // Arama ve Filtreleme
+        const searchInput = document.getElementById('searchInput');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const cards = document.querySelectorAll('.card');
+        const emptyMsg = document.getElementById('emptyMsg');
+
+        let currentFilter = 'all';
+
+        function filterProjects() {
+            const query = searchInput.value.toLowerCase().trim();
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const desc = card.querySelector('p').textContent.toLowerCase();
+                const cat = card.dataset.cat || 'ui';
+
+                const matchesSearch = title.includes(query) || desc.includes(query);
+                const matchesCategory = (currentFilter === 'all') || (cat === currentFilter);
+
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            emptyMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+
+        searchInput.addEventListener('input', filterProjects);
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                filterProjects();
+            });
+        });
+    </script>
 </body>
 </html>

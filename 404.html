@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Sayfa Yönlendiriliyor... - 1905suzi</title>
+  <style>
+    body {
+      background: #0b101e;
+      color: #fff;
+      font-family: system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+    }
+    .box {
+      background: #141c2e;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 30px 24px;
+      border-radius: 20px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    h1 { font-size: 2.5rem; margin-bottom: 10px; color: #38bdf8; }
+    p { color: #94a3b8; margin-bottom: 20px; font-size: 0.95rem; }
+    .btn {
+      display: block;
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      color: #fff;
+      text-decoration: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+    .btn.sec {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>🚀 404</h1>
+    <p id="msg">Sayfa yönlendiriliyor, lütfen bekleyin...</p>
+    <a href="./36-Yilan-Oyunu/index.html" class="btn">🐍 Yılan Oyunu'na Git</a>
+    <a href="./37-2048/index.html" class="btn">🎲 2048 Oyununa Git</a>
+    <a href="./index.html" class="btn sec">🏠 Tüm Projeler Galerisi</a>
+  </div>
+
+  <script>
+    const path = window.location.pathname.toLowerCase();
+    const repoBase = '/icerik.kodlar-/';
+
+    // Akıllı Yönlendirme Kontrolü
+    if (path.includes('yilan') || path.includes('snake')) {
+      window.location.replace(repoBase + '36-Yilan-Oyunu/index.html');
+    } else if (path.includes('2048')) {
+      window.location.replace(repoBase + '37-2048/index.html');
+    } else if (path.includes('kurye')) {
+      window.location.replace(repoBase + '31-Kurye-Canli-Takip/index.html');
+    } else if (path.includes('sinema')) {
+      window.location.replace(repoBase + '30-Sinema-Bilet-Rezervasyon/index.html');
+    } else if (path.includes('hastane')) {
+      window.location.replace(repoBase + '32-Hastane-Kuyruk/index.html');
+    } else {
+      document.getElementById('msg').innerText = 'Aradığınız sayfa adresi değişmiş olabilir. Aşağıdaki butonlardan hemen istediğiniz oyuna veya ana sayfaya geçebilirsiniz:';
+    }
+  </script>
+</body>
+</html>
