@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>5 Frontend Mini Proje - Sosyal Medya Kartı</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #060813;
+      color: #fff;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 15px;
+    }
+
+    /* İndirme Barı */
+    .action-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 10px 20px;
+      border-radius: 50px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .action-btn {
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      color: #fff;
+      border: 0;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+      transition: all 0.2s;
+    }
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6);
+    }
+    .action-btn.secondary {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: none;
+    }
+
+    /* GÖRSEL ALANI (1080 x 1350 - Instagram Dikey 4:5 / LinkedIn Standart Post Formatı) */
+    #capture-card {
+      width: 1080px;
+      height: 1350px;
+      background: #090d1a radial-gradient(circle at 15% 10%, rgba(168, 85, 247, 0.22) 0%, transparent 40%),
+                  radial-gradient(circle at 90% 25%, rgba(236, 72, 153, 0.2) 0%, transparent 40%),
+                  radial-gradient(circle at 50% 90%, rgba(56, 189, 248, 0.18) 0%, transparent 45%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 36px;
+      padding: 60px 55px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 100px rgba(168, 85, 247, 0.15);
+      transform-origin: top center;
+    }
+
+    /* Üst Başlık */
+    .header {
+      position: relative;
+      z-index: 2;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(90deg, rgba(168, 85, 247, 0.25), rgba(236, 72, 153, 0.25));
+      border: 1px solid rgba(236, 72, 153, 0.5);
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #f472b6;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 3.2rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #ffffff 30%, #e2e8f0 70%, #c084fc 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 12px;
+    }
+    .title span {
+      background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .subtitle {
+      font-size: 1.35rem;
+      color: #94a3b8;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    /* 5 Proje Listesi */
+    .project-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      z-index: 2;
+      margin: 20px 0;
+    }
+
+    .card-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 22px;
+      padding: 18px 24px;
+      backdrop-filter: blur(12px);
+      position: relative;
+      transition: all 0.2s;
+    }
+
+    .icon-box {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      font-size: 2.2rem;
+      flex-shrink: 0;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .c-snake   { background: linear-gradient(135deg, #10b981, #059669); color: #fff; }
+    .c-puzzle  { background: linear-gradient(135deg, #f59e0b, #ec4899); color: #fff; }
+    .c-courier { background: linear-gradient(135deg, #38bdf8, #2563eb); color: #fff; }
+    .c-cinema  { background: linear-gradient(135deg, #a855f7, #6366f1); color: #fff; }
+    .c-queue   { background: linear-gradient(135deg, #14b8a6, #0d9488); color: #fff; }
+
+    .content {
+      flex: 1;
+    }
+    .top-line {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+    .proj-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+    .proj-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #a855f7;
+      background: rgba(168, 85, 247, 0.15);
+      padding: 3px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+    }
+    .proj-desc {
+      font-size: 1.05rem;
+      color: #94a3b8;
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.08);
+      padding: 4px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .github-link span {
+      color: #64748b;
+    }
+
+    /* Footer / Alt Alan */
+    .footer {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 22px;
+      padding: 22px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+    }
+    .repo-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .repo-label {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+    .repo-url {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #f472b6;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .repo-url b {
+      color: #fff;
+    }
+    .tags {
+      display: flex;
+      gap: 8px;
+    }
+    .tag {
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #cbd5e1;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- İndirme Kontrol Çubuğu -->
+  <div class="action-bar">
+    <button class="action-btn" onclick="downloadImage()">
+      📥 Görseli PNG Olarak İndir (HD 1080x1350)
+    </button>
+    <button class="action-btn secondary" onclick="window.open('https://1905suzi.github.io/icerik.kodlar-/', '_blank')">
+      🌐 Canlı Siteyi Aç
+    </button>
+  </div>
+
+  <!-- SOSYAL MEDYA KARTI (İndirilecek Alan) -->
+  <div id="capture-card">
+    
+    <!-- Üst Başlık -->
+    <div class="header">
+      <div class="badge">🔥 PORTFOLYO PROJELERİ</div>
+      <h1 class="title">Frontend Geliştiriciler İçin<br><span>5 Mini Proje Fikri</span></h1>
+      <p class="subtitle">HTML, CSS & Vanilla JS ile sıfırdan kodladığım gerçek zamanlı projeler ve oyunlar.</p>
+    </div>
+
+    <!-- 5 Proje Kartı -->
+    <div class="project-list">
+
+      <!-- 1. Yılan Oyunu -->
+      <div class="card-item">
+        <div class="icon-box c-snake">🐍</div>
+        <div class="content">
+          <div class="top-line">
+            <h3 class="proj-title">Özelleştirilebilir Yılan Oyunu</h3>
+            <span class="proj-num">#36</span>
+          </div>
+          <p class="proj-desc">6 farklı yılan rengi paleti, yöne bakan gözler, mobil dokunmatik & klavye desteği, skor ve rekor sistemi.</p>
+          <div class="github-link">
+            <span>(GitHub'da mevcut:</span> 1905suzi.github.io/icerik.kodlar-/36-Yilan-Oyunu/ <span>)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. 2048 Neon Oyunu -->
+      <div class="card-item">
+        <div class="icon-box c-puzzle">🎲</div>
+        <div class="content">
+          <div class="top-line">
+            <h3 class="proj-title">2048 Neon Puzzle Oyunu</h3>
+            <span class="proj-num">#37</span>
+          </div>
+          <p class="proj-desc">Neon gradyan taşlar, akıcı birleşme efektleri, hamle geri alma (undo), dokunmatik kaydırma ve yerel kayıt.</p>
+          <div class="github-link">
+            <span>(GitHub'da mevcut:</span> 1905suzi.github.io/icerik.kodlar-/37-2048/ <span>)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Kurye Takip -->
+      <div class="card-item">
+        <div class="icon-box c-courier">🛵</div>
+        <div class="content">
+          <div class="top-line">
+            <h3 class="proj-title">Kurye Canlı Takip Sistemi</h3>
+            <span class="proj-num">#31</span>
+          </div>
+          <p class="proj-desc">Kurye & müşteri çift ekranı, canlı harita animasyonu, gerçek zamanlı sipariş adımları ve tahmini süre sayacı.</p>
+          <div class="github-link">
+            <span>(GitHub'da mevcut:</span> 1905suzi.github.io/icerik.kodlar-/31-Kurye-Canli-Takip/ <span>)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Sinema Rezervasyon -->
+      <div class="card-item">
+        <div class="icon-box c-cinema">🎬</div>
+        <div class="content">
+          <div class="top-line">
+            <h3 class="proj-title">Sinema Koltuk & Bilet Rezervasyonu</h3>
+            <span class="proj-num">#30</span>
+          </div>
+          <p class="proj-desc">Kavisli 3D sinema salonu, VIP / Standart koltuk seçimi, anlık toplam hesaplama ve dolu koltuk yönetimi.</p>
+          <div class="github-link">
+            <span>(GitHub'da mevcut:</span> 1905suzi.github.io/icerik.kodlar-/30-Sinema-Bilet-Rezervasyon/ <span>)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Hastane Sıra Sistemi -->
+      <div class="card-item">
+        <div class="icon-box c-queue">🏥</div>
+        <div class="content">
+          <div class="top-line">
+            <h3 class="proj-title">Hastane Sıra & Çağrı Paneli</h3>
+            <span class="proj-num">#32</span>
+          </div>
+          <p class="proj-desc">Bekleme salonu TV ekranı, doktor/sekreter yönetim paneli, sesli bildirim (Web Audio chime) ve canlı senkronizasyon.</p>
+          <div class="github-link">
+            <span>(GitHub'da mevcut:</span> 1905suzi.github.io/icerik.kodlar-/32-Hastane-Kuyruk/ <span>)</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Alt Bilgi / GitHub Adresi -->
+    <div class="footer">
+      <div class="repo-info">
+        <div class="repo-label">⚡ Canlı Demolar ve Tüm Kaynak Kodlar:</div>
+        <div class="repo-url">🌐 <b>1905suzi.github.io/icerik.kodlar-</b></div>
+      </div>
+      <div class="tags">
+        <span class="tag">HTML5</span>
+        <span class="tag">CSS3</span>
+        <span class="tag">Vanilla JS</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function downloadImage() {
+      const card = document.getElementById('capture-card');
+      const btn = document.querySelector('.action-btn');
+      btn.innerText = '⏳ Hazırlanıyor...';
+
+      html2canvas(card, {
+        scale: 2, // 2x çözünürlük ile Ultra HD (2160 x 2700 piksel)
+        backgroundColor: '#060813',
+        useCORS: true,
+        allowTaint: true
+      }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = '5-Frontend-Mini-Proje-1905suzi.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        btn.innerText = '✅ PNG İndirildi!';
+        setTimeout(() => {
+          btn.innerText = '📥 Görseli PNG Olarak İndir (HD 1080x1350)';
+        }, 2500);
+      }).catch(err => {
+        alert('Görsel oluşturulurken hata: ' + err);
+        btn.innerText = '📥 Görseli PNG Olarak İndir (HD 1080x1350)';
+      });
+    }
+  </script>
+
+</body>
+</html>
