@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>2048</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <h1>2048</h1>
+      <div class="scores">
+        <div class="box">SKOR<b id="score">0</b></div>
+        <div class="box">REKOR<b id="best">0</b></div>
+      </div>
+    </div>
+    <div class="actions">
+      <p>Aynı sayıları birleştirip <b>2048</b>'e ulaş!</p>
+      <div>
+        <button id="undo">↶ Geri Al</button>
+        <button id="new">Yeni Oyun</button>
+      </div>
+    </div>
+    <div class="board" id="board">
+      <div class="overlay hide" id="ov">
+        <h2 id="ovt"></h2>
+        <button id="ovb">Tekrar Dene</button>
+      </div>
+    </div>
+    <p class="hint">Ok tuşları / WASD veya ekranda kaydır</p>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>
