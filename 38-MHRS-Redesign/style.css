@@ -145,11 +145,31 @@ body {
   border: 1px solid var(--primary-border);
   display: grid;
   place-items: center;
-  color: var(--primary-green);
+  position: relative;
+  overflow: hidden;
 }
 .mhrs-pulse {
-  width: 32px;
-  height: 32px;
+  width: 38px;
+  height: 38px;
+}
+.pulse-line {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: drawPulse 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes drawPulse {
+  0% {
+    stroke-dashoffset: 100;
+    opacity: 0.3;
+  }
+  50% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0.3;
+  }
 }
 
 .brand-titles h1 {
