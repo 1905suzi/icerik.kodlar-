@@ -477,3 +477,310 @@ body {
     justify-content: center;
   }
 }
+
+
+/* ==========================================================
+   NEYİMVAR? YAPAY ZEKA SOHBET MODALI
+   ========================================================== */
+
+.chat-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s ease-out;
+}
+
+.chat-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.chat-modal {
+  background: #ffffff;
+  width: 100%;
+  max-width: 520px;
+  height: 640px;
+  max-height: 90vh;
+  border-radius: 24px;
+  border: 1px solid var(--card-border);
+  box-shadow: 0 25px 50px -12px rgba(27, 107, 80, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(20px) scale(0.96);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.chat-overlay.active .chat-modal {
+  transform: translateY(0) scale(1);
+}
+
+/* Chat Header */
+.chat-header {
+  padding: 16px 20px;
+  background: #f8faf9;
+  border-bottom: 1px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chat-header-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ai-avatar {
+  width: 42px;
+  height: 42px;
+  background: var(--primary-light);
+  border: 1px solid var(--primary-border);
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 1.3rem;
+  position: relative;
+}
+
+.online-dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #10b981;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  bottom: -1px;
+  right: -1px;
+}
+
+.chat-header h3 {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.chat-header p {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+.chat-close-btn {
+  background: transparent;
+  border: 0;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: all 0.15s;
+}
+
+.chat-close-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text-main);
+}
+
+/* Chat Gövdesi */
+.chat-body {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #fcfdfd;
+}
+
+.msg-row {
+  display: flex;
+  width: 100%;
+}
+
+.msg-row.bot {
+  justify-content: flex-start;
+}
+
+.msg-row.user {
+  justify-content: flex-end;
+}
+
+.msg-bubble {
+  max-width: 82%;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.msg-row.bot .msg-bubble {
+  background: #ffffff;
+  border: 1px solid var(--card-border);
+  color: var(--text-main);
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.msg-row.user .msg-bubble {
+  background: var(--primary-green);
+  color: #ffffff;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 4px 12px rgba(27, 107, 80, 0.2);
+}
+
+.msg-bubble p + p {
+  margin-top: 8px;
+}
+
+/* Poliklinik Yönlendirme Kartı (Botun Yanıtı İçinde) */
+.clinic-result-card {
+  margin-top: 10px;
+  background: var(--primary-light);
+  border: 1px solid var(--primary-border);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.clinic-result-header {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  margin-bottom: 4px;
+}
+
+.clinic-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--primary-green);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.clinic-reason {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  line-height: 1.35;
+}
+
+.btn-book-direct {
+  margin-top: 10px;
+  width: 100%;
+  background: var(--primary-green);
+  color: #ffffff;
+  border: 0;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.btn-book-direct:hover {
+  background: var(--primary-hover);
+}
+
+/* Hızlı Örnek Şikayetler */
+.quick-prompts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.prompt-chip {
+  background: #ffffff;
+  border: 1px solid var(--card-border);
+  color: var(--text-main);
+  padding: 7px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.prompt-chip:hover {
+  background: var(--primary-light);
+  border-color: var(--primary-border);
+  color: var(--primary-green);
+}
+
+/* Chat Footer & Input */
+.chat-footer {
+  padding: 14px 18px;
+  background: #ffffff;
+  border-top: 1px solid var(--card-border);
+}
+
+.chat-input-wrapper {
+  display: flex;
+  gap: 8px;
+}
+
+.chat-input-wrapper input {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--card-border);
+  font-size: 0.88rem;
+  font-family: inherit;
+  color: var(--text-main);
+  outline: none;
+  background: #fcfdfd;
+  transition: all 0.2s;
+}
+
+.chat-input-wrapper input:focus {
+  border-color: var(--primary-green);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(27, 107, 80, 0.1);
+}
+
+.chat-send-btn {
+  background: var(--primary-green);
+  color: #ffffff;
+  border: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.chat-send-btn:hover {
+  background: var(--primary-hover);
+}
+
+.chat-send-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.chat-disclaimer {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--text-light);
+  margin-top: 8px;
+  text-align: center;
+}

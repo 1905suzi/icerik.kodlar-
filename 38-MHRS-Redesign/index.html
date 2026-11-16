@@ -181,6 +181,63 @@
     </div>
   </footer>
 
+  <!-- NEYİMVAR? YAPAY ZEKA SAĞLIK ASİSTANI MODAL / CHAT -->
+  <div class="chat-overlay" id="chatOverlay">
+    <div class="chat-modal">
+      
+      <!-- Chat Üst Başlık -->
+      <div class="chat-header">
+        <div class="chat-header-info">
+          <div class="ai-avatar">
+            <span>🩺</span>
+            <span class="online-dot"></span>
+          </div>
+          <div>
+            <h3>NeyimVar? Sağlık Asistanı</h3>
+            <p>T.C. Sağlık Bakanlığı Yapay Zeka Ön Tanı Sistemi</p>
+          </div>
+        </div>
+        <button class="chat-close-btn" id="closeChatBtn">&times;</button>
+      </div>
+
+      <!-- Chat Mesaj Alanı -->
+      <div class="chat-body" id="chatBody">
+        
+        <!-- Bot Hoş Geldin Mesajı -->
+        <div class="msg-row bot">
+          <div class="msg-bubble">
+            <p>Merhaba! Ben Sağlık Bakanlığı'nın <b>NeyimVar?</b> yapay zeka asistanıyım. 👋</p>
+            <p>Bugün nasıl hissediyorsunuz? Şikayetlerinizi (örn: <i>"Başım çok ağrıyor ve gözlerim kararıyor"</i> veya <i>"Dizim bükünce batıyor"</i>) bana anlatırsanız, sizin için en doğru polikliniği belirleyebilirim.</p>
+          </div>
+        </div>
+
+        <!-- Hızlı Örnek Şikayet Butonları -->
+        <div class="quick-prompts" id="quickPrompts">
+          <button class="prompt-chip" data-text="Şiddetli baş ağrısı ve mide bulantım var">🧠 Baş Ağrısı & Bulantı</button>
+          <button class="prompt-chip" data-text="Gözümde yanma, kuruluk ve batma hissi var">👁️ Gözde Batma & Yanma</button>
+          <button class="prompt-chip" data-text="Boğazım ağrıyor, yutkunamıyorum ve halsizim">🤒 Boğaz Ağrısı & Halsizlik</button>
+          <button class="prompt-chip" data-text="Dizimde şişlik ve merdiven inerken ağrı var">🦵 Diz Ağrısı & Şişlik</button>
+        </div>
+
+      </div>
+
+      <!-- Chat Alt Giriş Barı -->
+      <div class="chat-footer">
+        <form id="chatForm" class="chat-input-wrapper">
+          <input type="text" id="chatInput" placeholder="Şikayetinizi buraya yazın..." autocomplete="off">
+          <button type="submit" class="chat-send-btn" id="sendBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </form>
+        <span class="chat-disclaimer">⚠️ Bu sistem tıbbi teşhis yerine geçmez, sadece poliklinik ve randevu yönlendirmesi içindir.</span>
+      </div>
+
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
