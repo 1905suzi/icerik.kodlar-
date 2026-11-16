@@ -1,4 +1,4 @@
-// Flappy Bird - Fizik Motoru ve Akıcı Oynanış
+// Flappy Dino - Mavi-Turuncu Çizgili Dinozor ve Renk Değiştiren Ağaçlar
 const canvas = document.getElementById('flappyCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -8,76 +8,64 @@ const gameOverlay = document.getElementById('gameOverlay');
 const overlayTitle = document.getElementById('overlayTitle');
 const overlayDesc = document.getElementById('overlayDesc');
 const startBtn = document.getElementById('startBtn');
-const previewBird = document.getElementById('previewBird');
-const themeBtns = document.querySelectorAll('.theme-btn');
 
 let isRunning = false;
 let score = 0;
-let highScore = localStorage.getItem('flappyBirdHighScore') || 0;
+let highScore = localStorage.getItem('flappyDinoHighScore') || 0;
 highScoreDisplay.innerText = highScore;
 
 let animationId;
 let frames = 0;
 
-// Renk Seçenekleri
-let birdColor = '#facc15'; // Varsayılan: Sarı
-const colorEmjis = {
-  '#facc15': '🐥',
-  '#38bdf8': '🐦',
-  '#ec4899': '🦩',
-  '#4ade80': '🦜'
-};
-
-themeBtns.forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    themeBtns.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    birdColor = btn.dataset.color;
-    previewBird.innerText = colorEmjis[birdColor] || '🐥';
-  });
-});
-
-// 1. KUŞ FİZİĞİ
-const bird = {
+// 1. DİNOZOR FİZİĞİ & ÖZELLİKLERİ
+const dino = {
   x: 75,
   y: canvas.height / 2,
-  radius: 16,
+  radius: 17,
   velocity: 0,
-  gravity: 0.28,    // Çok sert düşmesin, akıcı olsun
-  jumpStrength: -6.4, // Zıplama gücü
+  gravity: 0.29,
+  jumpStrength: -6.5,
   rotation: 0
 };
 
-// 2. BORULAR (Engeller)
-let pipes = [];
-const PIPE_WIDTH = 58;
-const PIPE_GAP = 145; // Geçiş aralığı (mobil için adil ve dengeli)
-let pipeInterval = 115; // Yeni boru gelme sıklığı (frame)
+// 2. AĞAÇ ENGEL RENK PALETLERİ (Her 2 ağaçta bir değişir)
+const TREE_THEMES = [
+  { trunk: '#22c55e', trunkDark: '#15803d', leaves: '#16a34a', border: '#14532d', name: 'Zümrüt Ormanı' },
+  { trunk: '#a855f7', trunkDark: '#7e22ce', leaves: '#9333ea', border: '#581c87', name: 'Mor Sihir Ağaçları' },
+  { trunk: '#f97316', trunkDark: '#c2410c', leaves: '#ea580c', border: '#7c2d12', name: 'Kızıl Sonbahar' },
+  { trunk: '#06b6d4', trunkDark: '#0e7490', leaves: '#0891b2', border: '#155e75', name: 'Mavi Kristal Koru' },
+  { trunk: '#eab308', trunkDark: '#a16207', leaves: '#ca8a04', border: '#713f12', name: 'Altın Vadi' },
+  { trunk: '#ec4899', trunkDark: '#be185d', leaves: '#db2777', border: '#831843', name: 'Kiraz Çiçeği (Sakura)' }
+];
 
-// 3. ARKA PLAN BULUTLARI & ŞEHİR SİLUETİ
+// 3. AĞAÇLAR (ENGEL LİSTESİ)
+let trees = [];
+const TREE_WIDTH = 58;
+const TREE_GAP = 148; // Geçiş açıklığı
+let treeCounter = 0;  // Ağaç sayacı (Her 2 ağaçta bir renk değişimi için)
+
+// 4. ARKA PLAN BULUTLARI & SÜZÜLEN YAPRAKLAR
 const clouds = [
   { x: 30, y: 70, size: 45, speed: 0.4 },
   { x: 190, y: 120, size: 35, speed: 0.3 },
   { x: 320, y: 55, size: 50, speed: 0.5 }
 ];
 
-// Zıplama Fonksiyonu
-function flap() {
+function jump() {
   if (!isRunning) return;
-  bird.velocity = bird.jumpStrength;
+  dino.velocity = dino.jumpStrength;
 }
 
-// Kontroller (Dokunmatik + Mouse + Klavye)
+// Kontroller
 canvas.addEventListener('pointerdown', (e) => {
   e.preventDefault();
-  flap();
+  jump();
 });
 
 window.addEventListener('keydown', (e) => {
   if (e.code === 'Space' || e.code === 'ArrowUp') {
     e.preventDefault();
-    if (isRunning) flap();
+    if (isRunning) jump();
     else if (gameOverlay.classList.contains('active')) startGame();
   }
 });
@@ -86,18 +74,17 @@ window.addEventListener('keydown', (e) => {
 // ÇİZİM FONKSİYONLARI
 // ==========================================================
 
-// 1. Gökyüzü ve Gece Şehri Arka Planı
+// 1. Arka Plan Gökyüzü & Doğa Zemin
 function drawBackground() {
-  // Gece Gökyüzü Gradyanı
   const skyGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  skyGrad.addColorStop(0, '#0c1a30');
-  skyGrad.addColorStop(0.7, '#162b4c');
-  skyGrad.addColorStop(1, '#1e3a5f');
+  skyGrad.addColorStop(0, '#081726');
+  skyGrad.addColorStop(0.6, '#132b40');
+  skyGrad.addColorStop(1, '#1b3d4f');
 
   ctx.fillStyle = skyGrad;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Süzülen Gece Bulutları
+  // Bulutlar
   ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
   clouds.forEach(cloud => {
     ctx.beginPath();
@@ -112,167 +99,252 @@ function drawBackground() {
     }
   });
 
-  // Arka Plan Şehir Binaları Silueti
-  ctx.fillStyle = 'rgba(7, 14, 26, 0.45)';
-  const bWidth = 40;
-  for (let i = 0; i < canvas.width / bWidth + 2; i++) {
-    const bHeight = 45 + (Math.sin(i * 1.5) * 20 + 20);
-    ctx.fillRect(i * bWidth, canvas.height - bHeight - 35, bWidth - 4, bHeight);
-  }
-
-  // Zemin Çizgisi
+  // Orman Zemin Çizgisi
   ctx.fillStyle = '#0f172a';
   ctx.fillRect(0, canvas.height - 35, canvas.width, 35);
   ctx.fillStyle = '#22c55e';
   ctx.fillRect(0, canvas.height - 35, canvas.width, 4);
 }
 
-// 2. Kuş Çizimi (Gözler, Gaga, Kanat ve Renk)
-function drawBird() {
+// 2. MAVİ & TURUNCU ÇİZGİLİ SEVİMLİ DİNOZOR
+function drawDino() {
   ctx.save();
-  ctx.translate(bird.x, bird.y);
+  ctx.translate(dino.x, dino.y);
 
-  // Zıplarken yukarı, düşerken aşağı yönelme
-  bird.rotation = Math.min(Math.PI / 4, Math.max(-Math.PI / 5, bird.velocity * 0.07));
-  ctx.rotate(bird.rotation);
+  // Hıza göre rotasyon
+  dino.rotation = Math.min(Math.PI / 4, Math.max(-Math.PI / 5, dino.velocity * 0.07));
+  ctx.rotate(dino.rotation);
 
-  // Kuş Gövdesi
-  ctx.fillStyle = birdColor;
-  ctx.shadowBlur = 10;
-  ctx.shadowColor = birdColor;
+  // A. Dinozor Ana Gövdesi (Mavi Zemin)
+  ctx.fillStyle = '#0284c7';
+  ctx.shadowBlur = 8;
+  ctx.shadowColor = '#38bdf8';
   ctx.beginPath();
-  ctx.ellipse(0, 0, bird.radius, bird.radius * 0.88, 0, 0, Math.PI * 2);
+  ctx.ellipse(0, 0, 19, 15, 0, 0, Math.PI * 2);
   ctx.fill();
   ctx.shadowBlur = 0;
 
-  // Sevimli Beyaz Göz & Gözbebeği
+  // B. Dinozorun Arkasındaki Minik Kuyruk
+  ctx.fillStyle = '#0284c7';
+  ctx.beginPath();
+  ctx.moveTo(-15, 3);
+  ctx.lineTo(-26, 0);
+  ctx.lineTo(-17, 9);
+  ctx.closePath();
+  ctx.fill();
+
+  // C. DİNOZORUN TURUNCU ÇİZGİLERİ (Tiger / Rex Stripes)
+  ctx.fillStyle = '#f97316';
+  // Çizgi 1
+  ctx.beginPath();
+  ctx.moveTo(-9, -14);
+  ctx.lineTo(-4, 0);
+  ctx.lineTo(-12, -4);
+  ctx.closePath();
+  ctx.fill();
+
+  // Çizgi 2
+  ctx.beginPath();
+  ctx.moveTo(1, -15);
+  ctx.lineTo(6, -2);
+  ctx.lineTo(-3, -3);
+  ctx.closePath();
+  ctx.fill();
+
+  // Çizgi 3
+  ctx.beginPath();
+  ctx.moveTo(10, -11);
+  ctx.lineTo(14, 2);
+  ctx.lineTo(7, 0);
+  ctx.closePath();
+  ctx.fill();
+
+  // D. Sırt Dikeni (Turuncu Dinozor Dikenleri)
+  ctx.fillStyle = '#ea580c';
+  ctx.beginPath();
+  ctx.moveTo(-14, -10);
+  ctx.lineTo(-11, -19);
+  ctx.lineTo(-6, -12);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(-4, -13);
+  ctx.lineTo(0, -21);
+  ctx.lineTo(4, -13);
+  ctx.closePath();
+  ctx.fill();
+
+  // E. Dinozorun Sevimli Kafası ve Ağzı
+  ctx.fillStyle = '#38bdf8';
+  ctx.beginPath();
+  ctx.arc(14, -6, 12, 0, Math.PI * 2);
+  ctx.fill();
+
+  // F. Büyük Sevimli Göz
   ctx.fillStyle = '#ffffff';
   ctx.beginPath();
-  ctx.arc(7, -4, 6, 0, Math.PI * 2);
+  ctx.arc(15, -9, 5.5, 0, Math.PI * 2);
   ctx.fill();
 
   ctx.fillStyle = '#0f172a';
   ctx.beginPath();
-  ctx.arc(8.5, -4, 2.8, 0, Math.PI * 2);
+  ctx.arc(16.5, -9, 2.5, 0, Math.PI * 2);
   ctx.fill();
 
-  // Turuncu Gaga
+  // Göz Parıltısı
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(17.5, -10, 1.2, 0, Math.PI * 2);
+  ctx.fill();
+
+  // F. Minik Turuncu Yanak Allığı
+  ctx.fillStyle = 'rgba(249, 115, 22, 0.7)';
+  ctx.beginPath();
+  ctx.arc(13, -1, 3.2, 0, Math.PI * 2);
+  ctx.fill();
+
+  // G. Zıplayan Dinozor Minik Kolları
+  const armOffset = Math.sin(frames * 0.28) * 3;
   ctx.fillStyle = '#f97316';
   ctx.beginPath();
-  ctx.moveTo(11, -1);
-  ctx.lineTo(21, 2);
-  ctx.lineTo(11, 6);
-  ctx.closePath();
-  ctx.fill();
-
-  // Kanat Çırpma Hareketi
-  const wingOffset = Math.sin(frames * 0.25) * 4;
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-  ctx.beginPath();
-  ctx.ellipse(-5, 2 + wingOffset, 7, 5, 0.2, 0, Math.PI * 2);
+  ctx.ellipse(4, 5 + armOffset, 4, 2.5, 0.4, 0, Math.PI * 2);
   ctx.fill();
 
   ctx.restore();
 }
 
-// 3. Neon Yeşil Borular (Klasik Flappy Pipes)
-function drawPipes() {
-  pipes.forEach(pipe => {
-    // Üst ve Alt Borunun Rengi
-    const pipeGrad = ctx.createLinearGradient(pipe.x, 0, pipe.x + PIPE_WIDTH, 0);
-    pipeGrad.addColorStop(0, '#4ade80');
-    pipeGrad.addColorStop(0.3, '#22c55e');
-    pipeGrad.addColorStop(0.8, '#16a34a');
-    pipeGrad.addColorStop(1, '#14532d');
+// 3. RENK DEĞİŞTİREN ORMAN AĞAÇLARI (Her 2 Ağaçta Bir Yeni Renk Paleti)
+function drawTrees() {
+  trees.forEach(tree => {
+    const theme = tree.theme;
 
-    ctx.fillStyle = pipeGrad;
-    ctx.strokeStyle = '#14532d';
+    // Gövde Gradyanı (Ağaç Dokusu)
+    const treeGrad = ctx.createLinearGradient(tree.x, 0, tree.x + TREE_WIDTH, 0);
+    treeGrad.addColorStop(0, theme.trunk);
+    treeGrad.addColorStop(0.35, theme.leaves);
+    treeGrad.addColorStop(0.8, theme.trunkDark);
+    treeGrad.addColorStop(1, theme.border);
+
+    ctx.fillStyle = treeGrad;
+    ctx.strokeStyle = theme.border;
     ctx.lineWidth = 2.5;
 
-    // Üst Boru
-    ctx.fillRect(pipe.x, 0, PIPE_WIDTH, pipe.top);
-    ctx.strokeRect(pipe.x, 0, PIPE_WIDTH, pipe.top);
+    // --- ÜST AĞAÇ SARKITI ---
+    ctx.fillRect(tree.x, 0, TREE_WIDTH, tree.top);
+    ctx.strokeRect(tree.x, 0, TREE_WIDTH, tree.top);
 
-    // Üst Boru Başlığı (Kapak)
-    ctx.fillRect(pipe.x - 3, pipe.top - 20, PIPE_WIDTH + 6, 20);
-    ctx.strokeRect(pipe.x - 3, pipe.top - 20, PIPE_WIDTH + 6, 20);
+    // Ağaç Uç Tacı / Çalı Yaprağı (Üst)
+    ctx.fillStyle = theme.leaves;
+    ctx.beginPath();
+    ctx.arc(tree.x + TREE_WIDTH / 2, tree.top - 6, TREE_WIDTH * 0.45, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
 
-    // Alt Boru
-    const bottomY = pipe.top + PIPE_GAP;
+    // Üst Kapak
+    ctx.fillStyle = treeGrad;
+    ctx.fillRect(tree.x - 3, tree.top - 18, TREE_WIDTH + 6, 18);
+    ctx.strokeRect(tree.x - 3, tree.top - 18, TREE_WIDTH + 6, 18);
+
+    // --- ALT AĞAÇ GÖVDESİ ---
+    const bottomY = tree.top + TREE_GAP;
     const bottomHeight = canvas.height - bottomY - 35;
-    ctx.fillRect(pipe.x, bottomY, PIPE_WIDTH, bottomHeight);
-    ctx.strokeRect(pipe.x, bottomY, PIPE_WIDTH, bottomHeight);
 
-    // Alt Boru Başlığı (Kapak)
-    ctx.fillRect(pipe.x - 3, bottomY, PIPE_WIDTH + 6, 20);
-    ctx.strokeRect(pipe.x - 3, bottomY, PIPE_WIDTH + 6, 20);
+    ctx.fillRect(tree.x, bottomY, TREE_WIDTH, bottomHeight);
+    ctx.strokeRect(tree.x, bottomY, TREE_WIDTH, bottomHeight);
+
+    // Ağaç Uç Tacı / Çalı Yaprağı (Alt)
+    ctx.fillStyle = theme.leaves;
+    ctx.beginPath();
+    ctx.arc(tree.x + TREE_WIDTH / 2, bottomY + 6, TREE_WIDTH * 0.45, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+
+    // Alt Kapak
+    ctx.fillStyle = treeGrad;
+    ctx.fillRect(tree.x - 3, bottomY, TREE_WIDTH + 6, 18);
+    ctx.strokeRect(tree.x - 3, bottomY, TREE_WIDTH + 6, 18);
   });
 }
 
 // ==========================================================
-// OYUN DÖNGÜSÜ & ÇARPIŞMA
+// OYUN DÖNGÜSÜ & HIZLANMA
 // ==========================================================
+let spawnTimer = 0;
+
 function updateGame() {
   if (!isRunning) return;
 
   frames++;
   drawBackground();
 
-  // Kuş Fizik Güncellemesi
-  bird.velocity += bird.gravity;
-  bird.y += bird.velocity;
+  // Dinozor Yerçekimi
+  dino.velocity += dino.gravity;
+  dino.y += dino.velocity;
 
-  // Yeni Boru Ekleme (Skor ilerledikçe hafifçe sıklaşır)
-  if (frames % pipeInterval === 0) {
-    const minTop = 50;
-    const maxTop = canvas.height - PIPE_GAP - 90;
+  // DİNAMİK HIZLANMA (Skor arttıkça ağaçlar adım adım hızlanır!)
+  const speedBoost = Math.min(1.8, (score * 0.055)); // Skora göre kademeli hızlanma
+  const treeSpeed = 2.4 + speedBoost;
+
+  // Ağaç Geliş Sıklığı (Hızlandıkça aralık da dengeli ayarlanır)
+  spawnTimer++;
+  const currentInterval = Math.max(90, Math.floor(120 - (speedBoost * 14)));
+
+  if (spawnTimer >= currentInterval) {
+    spawnTimer = 0;
+    treeCounter++;
+
+    // HER 2 AĞAÇTA BİR RENK DEĞİŞİMİ
+    const themeIndex = Math.floor((treeCounter - 1) / 2) % TREE_THEMES.length;
+    const currentTheme = TREE_THEMES[themeIndex];
+
+    const minTop = 60;
+    const maxTop = canvas.height - TREE_GAP - 95;
     const randomTop = Math.floor(Math.random() * (maxTop - minTop + 1)) + minTop;
 
-    pipes.push({
+    trees.push({
       x: canvas.width,
       top: randomTop,
+      theme: currentTheme,
       passed: false
     });
   }
 
-  // Boruları Sola Kaydırma & Kontrol
-  const pipeSpeed = 2.3 + Math.min(1.2, score * 0.04); // Yavaşça hızlanır
+  // Ağaçları İlerlet ve Çarpışmaları Kontrol Et
+  for (let i = trees.length - 1; i >= 0; i--) {
+    const t = trees[i];
+    t.x -= treeSpeed;
 
-  for (let i = pipes.length - 1; i >= 0; i--) {
-    const p = pipes[i];
-    p.x -= pipeSpeed;
-
-    // Skoru Artır (Kuş boruyu geçtiğinde)
-    if (!p.passed && p.x + PIPE_WIDTH < bird.x) {
-      p.passed = true;
+    // Skor Artışı (Ağaç geçildiğinde)
+    if (!t.passed && t.x + TREE_WIDTH < dino.x) {
+      t.passed = true;
       score++;
       scoreDisplay.innerText = score;
     }
 
-    // ÇARPIŞMA KONTROLÜ
-    // Kuşun boru yatay eksenine girmesi
-    if (bird.x + bird.radius > p.x && bird.x - bird.radius < p.x + PIPE_WIDTH) {
-      // Üst boruya çarpma veya Alt boruya çarpma
-      if (bird.y - bird.radius < p.top || bird.y + bird.radius > p.top + PIPE_GAP) {
+    // Çarpışma Testi
+    if (dino.x + dino.radius > t.x && dino.x - dino.radius < t.x + TREE_WIDTH) {
+      // Üst ağaç veya Alt ağaca çarpma
+      if (dino.y - dino.radius + 3 < t.top || dino.y + dino.radius - 3 > t.top + TREE_GAP) {
         gameOver();
         return;
       }
     }
 
-    // Ekran dışına çıkan boruyu sil
-    if (p.x + PIPE_WIDTH < -20) {
-      pipes.splice(i, 1);
+    // Ekran dışına çıkan ağacı temizle
+    if (t.x + TREE_WIDTH < -20) {
+      trees.splice(i, 1);
     }
   }
 
-  // Zemin veya Tavan Çarpması
-  if (bird.y + bird.radius >= canvas.height - 35 || bird.y - bird.radius <= 0) {
+  // Zemine veya Tavana Çarpma
+  if (dino.y + dino.radius >= canvas.height - 35 || dino.y - dino.radius <= 0) {
     gameOver();
     return;
   }
 
-  drawPipes();
-  drawBird();
+  drawTrees();
+  drawDino();
 
   animationId = requestAnimationFrame(updateGame);
 }
@@ -281,12 +353,14 @@ function startGame() {
   score = 0;
   scoreDisplay.innerText = '0';
   frames = 0;
+  spawnTimer = 0;
+  treeCounter = 0;
 
-  bird.y = canvas.height / 2;
-  bird.velocity = 0;
-  bird.rotation = 0;
+  dino.y = canvas.height / 2;
+  dino.velocity = 0;
+  dino.rotation = 0;
 
-  pipes = [];
+  trees = [];
 
   gameOverlay.classList.remove('active');
   isRunning = true;
@@ -299,15 +373,14 @@ function gameOver() {
   isRunning = false;
   cancelAnimationFrame(animationId);
 
-  // Rekor Kontrolü
   if (score > highScore) {
     highScore = score;
-    localStorage.setItem('flappyBirdHighScore', highScore);
+    localStorage.setItem('flappyDinoHighScore', highScore);
     highScoreDisplay.innerText = highScore;
   }
 
-  overlayTitle.innerText = 'OYUN BİTTİ';
-  overlayDesc.innerHTML = `Boruya çarptın!<br><b>Skorun:</b> ${score} • <b>En Yüksek Rekorun:</b> ${highScore}`;
+  overlayTitle.innerText = 'DİNO DÜŞTÜ!';
+  overlayDesc.innerHTML = `Ormandaki ağaca çarptın!<br><b>Skorun:</b> ${score} • <b>Rekorun:</b> ${highScore}`;
   startBtn.innerText = 'TEKRAR DENE';
   gameOverlay.classList.add('active');
 }
@@ -317,6 +390,5 @@ startBtn.addEventListener('click', (e) => {
   startGame();
 });
 
-// İlk ekran çizimi
 drawBackground();
-drawBird();
+drawDino();
