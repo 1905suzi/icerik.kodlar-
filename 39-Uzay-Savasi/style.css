@@ -227,3 +227,12 @@ canvas {
   font-size: 0.72rem;
   color: #64748b;
 }
+
+
+.wave-level {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #38bdf8;
+  margin-top: 2px;
+}

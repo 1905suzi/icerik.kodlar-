@@ -4,6 +4,7 @@ const ctx = canvas.getContext('2d');
 
 const scoreDisplay = document.getElementById('scoreDisplay');
 const highScoreDisplay = document.getElementById('highScoreDisplay');
+const waveDisplay = document.getElementById('waveDisplay');
 const healthFill = document.getElementById('healthFill');
 const healthText = document.getElementById('healthText');
 const gameOverlay = document.getElementById('gameOverlay');
@@ -414,45 +415,52 @@ let spawnTimer = 0;
 function updateGame(timestamp) {
   if (!isRunning) return;
 
+  // DİNAMİK HIZLANMA KATSAYISI (Skor arttıkça yavaş yavaş hızlanır)
+  // Her 100 puanda hız %10 civarı artar
+  const speedMultiplier = 1 + (score / 450);
+  const currentLevel = Math.floor(score / 150) + 1;
+  if (waveDisplay) waveDisplay.innerText = `SEVİYE: ${currentLevel}`;
+
   drawStars();
 
-  // Otomatik Ateşleme
-  if (timestamp - lastShotTime > shotInterval) {
+  // Otomatik Ateşleme (Oyuncu atış hızı da seviyeyle hafifçe hızlanır)
+  const currentShotInterval = Math.max(110, shotInterval - (currentLevel * 6));
+  if (timestamp - lastShotTime > currentShotInterval) {
     if (player.powerLevel === 1) {
-      lasers.push({ x: player.x, y: player.y - 20, speed: 11 });
+      lasers.push({ x: player.x, y: player.y - 20, speed: 11 * Math.min(1.4, speedMultiplier) });
     } else {
-      lasers.push({ x: player.x - 12, y: player.y - 16, speed: 11 });
-      lasers.push({ x: player.x + 12, y: player.y - 16, speed: 11 });
+      lasers.push({ x: player.x - 12, y: player.y - 16, speed: 11 * Math.min(1.4, speedMultiplier) });
+      lasers.push({ x: player.x + 12, y: player.y - 16, speed: 11 * Math.min(1.4, speedMultiplier) });
     }
     lastShotTime = timestamp;
   }
 
-  // Düşman Üretim Döngüsü (Meteor, Hızlı Avcı veya Ateş Eden Kruvazör)
+  // Düşman Üretim Döngüsü (Skor arttıkça daha sık ve daha hızlı gelirler)
   spawnTimer++;
-  const spawnRate = Math.max(38, 70 - Math.floor(score / 90));
+  const spawnRate = Math.max(24, Math.floor(70 / speedMultiplier));
   if (spawnTimer % spawnRate === 0) {
     const roll = Math.random();
     let enemyType = 'meteor';
     let canShoot = false;
     let radius = 18;
-    let speed = 2.4;
+    let baseSpeed = 2.4;
 
-    if (roll < 0.45) {
+    if (roll < 0.42) {
       // Meteor
       enemyType = 'meteor';
       radius = Math.random() * 12 + 16;
-      speed = Math.random() * 2 + 1.8;
-    } else if (roll < 0.8) {
+      baseSpeed = Math.random() * 1.8 + 1.8;
+    } else if (roll < 0.75) {
       // Hızlı Avcı Gemi
       enemyType = 'fighter';
       radius = 16;
-      speed = Math.random() * 1.5 + 3.2;
+      baseSpeed = Math.random() * 1.5 + 3.0;
     } else {
       // Ateş Eden Ağır Kruvazör
       enemyType = 'cruiser';
       canShoot = true;
       radius = 22;
-      speed = 1.6;
+      baseSpeed = 1.6;
     }
 
     enemies.push({
@@ -460,11 +468,11 @@ function updateGame(timestamp) {
       y: -35,
       type: enemyType,
       radius: radius,
-      speed: speed,
+      speed: baseSpeed * speedMultiplier, // Skora göre artan hız!
       rotation: 0,
       canShoot: canShoot,
       shootTimer: 0,
-      shootInterval: Math.floor(Math.random() * 30 + 55)
+      shootInterval: Math.max(30, Math.floor((Math.random() * 25 + 50) / speedMultiplier))
     });
   }
 
