@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Flappy Bird • Neon Gökyüzü</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="game-wrapper">
+    
+    <!-- Üst HUD Bar -->
+    <header class="hud-bar">
+      <div class="hud-item">
+        <span class="hud-label">SKOR</span>
+        <span class="hud-value" id="scoreDisplay">0</span>
+      </div>
+      <div class="hud-item center">
+        <div class="theme-selector">
+          <button class="theme-btn active" data-color="#facc15" title="Sarı Kuş"></button>
+          <button class="theme-btn" data-color="#38bdf8" title="Mavi Kuş"></button>
+          <button class="theme-btn" data-color="#ec4899" title="Pembe Kuş"></button>
+          <button class="theme-btn" data-color="#4ade80" title="Yeşil Kuş"></button>
+        </div>
+      </div>
+      <div class="hud-item right">
+        <span class="hud-label">REKOR</span>
+        <span class="hud-value" id="highScoreDisplay">0</span>
+      </div>
+    </header>
+
+    <!-- Oyun Tuvali -->
+    <div class="canvas-container">
+      <canvas id="flappyCanvas" width="400" height="600"></canvas>
+
+      <!-- Başlangıç / Game Over Modalı -->
+      <div class="overlay-screen active" id="gameOverlay">
+        <div class="overlay-card">
+          <div class="overlay-icon" id="previewBird">🐥</div>
+          <h1 id="overlayTitle">FLAPPY BIRD</h1>
+          <p id="overlayDesc">Zıplamak için ekrana dokun veya Boşluk (Space) tuşuna bas. Borulara çarpmadan en yüksek skoru yap!</p>
+          
+          <div class="controls-hint">
+            <span>📱 Ekrana dokunarak kanat çırp</span>
+            <span>💻 Boşluk veya Sol Tık</span>
+          </div>
+
+          <button class="btn-start" id="startBtn">OYUNA BAŞLA</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alt İpucu -->
+    <footer class="game-footer">
+      <p>💡 İpucu: Tepedeki renk butonlarına dokunarak kuşunun rengini dilediğin gibi değiştirebilirsin!</p>
+    </footer>
+
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
