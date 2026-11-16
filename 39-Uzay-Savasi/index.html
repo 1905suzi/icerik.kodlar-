@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Uzay Savaşı • Neon Galaxy Shooter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Oyun Alanı Kapsayıcısı -->
+  <div class="game-wrapper">
+    
+    <!-- Üst Skor ve Can Barı -->
+    <header class="hud-bar">
+      <div class="hud-item">
+        <span class="hud-label">SKOR</span>
+        <span class="hud-value" id="scoreDisplay">0</span>
+      </div>
+      <div class="hud-item center">
+        <div class="health-bar-wrapper">
+          <div class="health-fill" id="healthFill"></div>
+        </div>
+        <span class="shield-label" id="healthText">100% KALKAN</span>
+      </div>
+      <div class="hud-item right">
+        <span class="hud-label">REKOR</span>
+        <span class="hud-value" id="highScoreDisplay">0</span>
+      </div>
+    </header>
+
+    <!-- Oyun Tuvali (Canvas) -->
+    <div class="canvas-container">
+      <canvas id="gameCanvas" width="450" height="700"></canvas>
+
+      <!-- Başlangıç / Pause / Game Over Ekranı -->
+      <div class="overlay-screen active" id="gameOverlay">
+        <div class="overlay-card">
+          <div class="overlay-icon">🚀</div>
+          <h1 id="overlayTitle">UZAY SAVAŞI</h1>
+          <p id="overlayDesc">Parmağını veya fareyi ekranda kaydırarak gemini yönet. Lazerler otomatik ateşlenir!</p>
+          
+          <div class="controls-hint">
+            <span>📱 Mobilde: Parmağınla sürükle</span>
+            <span>💻 Masaüstünde: Mouse veya A/D tuşları</span>
+          </div>
+
+          <button class="btn-start" id="startBtn">GÖREVE BAŞLA</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobil Yönlendirici Alt İpucu -->
+    <footer class="game-footer">
+      <p>💡 İpucu: Düşen mavi enerji küplerini toplayarak çift lazer gücü kazan!</p>
+    </footer>
+
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
