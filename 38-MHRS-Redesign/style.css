@@ -54,9 +54,11 @@ body {
   align-items: center;
   gap: 12px;
 }
-.sb-icon {
-  width: 36px;
-  height: 36px;
+.sb-logo-img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(201, 42, 42, 0.15));
 }
 .sb-text {
   display: flex;
