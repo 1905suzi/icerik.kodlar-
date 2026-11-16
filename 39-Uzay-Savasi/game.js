@@ -1,4 +1,4 @@
-// Uzay Savaşı - HTML5 Canvas Motoru
+// Uzay Savaşı - Gelişmiş Düşmanlar, Ateş Eden Gemiler ve Can Paketi Motoru
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -11,7 +11,6 @@ const overlayTitle = document.getElementById('overlayTitle');
 const overlayDesc = document.getElementById('overlayDesc');
 const startBtn = document.getElementById('startBtn');
 
-// Oyun Durum Değişkenleri
 let isRunning = false;
 let score = 0;
 let highScore = localStorage.getItem('spaceShooterHighScore') || 0;
@@ -19,9 +18,9 @@ highScoreDisplay.innerText = highScore;
 
 let animationId;
 let lastShotTime = 0;
-let shotInterval = 180; // ms cinsinden ateşleme aralığı
+let shotInterval = 170; // ms
 
-// 1. DERİN UZAY YILDIZLARI (Derinlik ve Titreşen Işıklar)
+// 1. DERİN UZAY YILDIZLARI (Akan & Parlayan)
 const stars = [];
 const STAR_COUNT = 90;
 
@@ -36,27 +35,28 @@ for (let i = 0; i < STAR_COUNT; i++) {
   });
 }
 
-// 2. OYUNCU UZAY GEMİSİ (Gri Gövde + Mavi Neon Detaylar)
+// 2. OYUNCU UZAY GEMİSİ (Gri Gövde + Mavi Neon)
 const player = {
   x: canvas.width / 2,
   y: canvas.height - 90,
   width: 44,
   height: 54,
   targetX: canvas.width / 2,
-  speed: 0.18, // Yumuşak takip (lerp)
+  speed: 0.18,
   health: 100,
   maxHealth: 100,
-  powerLevel: 1 // 1: Tek Lazer, 2: Çift Lazer
+  powerLevel: 1 // 1: Tek, 2: Çift Lazer
 };
 
-// Mermiler, Düşmanlar ve Patlama Parçacıkları
-let lasers = [];
-let enemies = [];
-let particles = [];
-let powerups = [];
+// Varlık Havuzları
+let lasers = [];            // Oyuncunun sıktığı mavi lazerler
+let enemyLasers = [];       // Düşman gemilerinin sıktığı kırmızı plazmalar
+let enemies = [];           // Meteorlar, Avcılar, Zırhlı Gemiler
+let particles = [];         // Patlama parçacıkları
+let items = [];             // Can Paketi (Yeşil) ve 2X Lazer (Mavi)
 
 // ==========================================================
-// KONTROLLER (Mobil Dokunmatik + Masaüstü Fare & Klavye)
+// KONTROLLER
 // ==========================================================
 function updatePlayerPosition(clientX) {
   const rect = canvas.getBoundingClientRect();
@@ -65,12 +65,10 @@ function updatePlayerPosition(clientX) {
   player.targetX = Math.max(player.width / 2, Math.min(canvas.width - player.width / 2, relativeX));
 }
 
-// Masaüstü Fare
 canvas.addEventListener('mousemove', (e) => {
   if (isRunning) updatePlayerPosition(e.clientX);
 });
 
-// Mobil Dokunmatik
 canvas.addEventListener('touchmove', (e) => {
   if (isRunning && e.touches.length > 0) {
     e.preventDefault();
@@ -84,7 +82,6 @@ canvas.addEventListener('touchstart', (e) => {
   }
 }, { passive: true });
 
-// Klavye Desteği
 window.addEventListener('keydown', (e) => {
   if (!isRunning) return;
   if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
@@ -98,13 +95,11 @@ window.addEventListener('keydown', (e) => {
 // ÇİZİM FONKSİYONLARI
 // ==========================================================
 
-// 1. Yıldızlı Gökyüzü Çizimi (Sonsuz Akan Uzay Boşluğu)
 function drawStars() {
   ctx.fillStyle = '#020408';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   stars.forEach(star => {
-    // Parlama titreşimi
     star.brightness += star.twinkleSpeed;
     if (star.brightness > 1 || star.brightness < 0.2) {
       star.twinkleSpeed = -star.twinkleSpeed;
@@ -118,7 +113,6 @@ function drawStars() {
     ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
     ctx.fill();
 
-    // Yıldızları aşağı doğru kaydır
     star.y += star.speed;
     if (star.y > canvas.height) {
       star.y = 0;
@@ -129,20 +123,16 @@ function drawStars() {
   ctx.shadowBlur = 0;
 }
 
-// 2. Uzay Gemisi Çizimi (Gri Zırh & Mavi Işık/Neon Detaylar)
+// Oyuncu Gemisi
 function drawPlayer() {
-  // Yumuşak pozisyon geçişi (lerp)
   player.x += (player.targetX - player.x) * player.speed;
 
-  const cx = player.x;
-  const cy = player.y;
-
   ctx.save();
-  ctx.translate(cx, cy);
+  ctx.translate(player.x, player.y);
 
-  // Roket İtki Alevi (Mavi Plazma Parıltısı)
-  const flameHeight = Math.random() * 14 + 16;
-  const flameGrad = ctx.createLinearGradient(0, 20, 0, 20 + flameHeight);
+  // Mavi Roket Ateşi
+  const flameH = Math.random() * 14 + 16;
+  const flameGrad = ctx.createLinearGradient(0, 20, 0, 20 + flameH);
   flameGrad.addColorStop(0, '#38bdf8');
   flameGrad.addColorStop(0.6, '#0284c7');
   flameGrad.addColorStop(1, 'transparent');
@@ -150,15 +140,15 @@ function drawPlayer() {
   ctx.fillStyle = flameGrad;
   ctx.beginPath();
   ctx.moveTo(-7, 22);
-  ctx.lineTo(0, 22 + flameHeight);
+  ctx.lineTo(0, 22 + flameH);
   ctx.lineTo(7, 22);
   ctx.closePath();
   ctx.fill();
 
-  // Geminin Ana Gri Gövdesi (Titanyum Plaka)
-  ctx.fillStyle = '#64748b'; // Orta Gri
+  // Titanyum Gri Gövde
+  ctx.fillStyle = '#64748b';
   ctx.beginPath();
-  ctx.moveTo(0, -26); // Burun
+  ctx.moveTo(0, -26);
   ctx.lineTo(16, 12);
   ctx.lineTo(22, 22);
   ctx.lineTo(10, 22);
@@ -170,7 +160,7 @@ function drawPlayer() {
   ctx.closePath();
   ctx.fill();
 
-  // İç Gövde Katmanı (Daha Açık Metalik Gri)
+  // Açık Gri Zırh Plakaları
   ctx.fillStyle = '#94a3b8';
   ctx.beginPath();
   ctx.moveTo(0, -22);
@@ -179,21 +169,18 @@ function drawPlayer() {
   ctx.closePath();
   ctx.fill();
 
-  // MAVİ NEON DEKORLAR & KOKPİT (İstediğin Mavi Çizgiler)
+  // Neon Mavi Detaylar & Kokpit
   ctx.fillStyle = '#38bdf8';
   ctx.shadowBlur = 8;
   ctx.shadowColor = '#00f0ff';
 
-  // Kokpit Camı (Mavi Kristal)
   ctx.beginPath();
   ctx.ellipse(0, -4, 4, 9, 0, 0, Math.PI * 2);
   ctx.fill();
 
-  // Kanat Ucu Mavi Enerji Şeritleri
   ctx.fillRect(-18, 16, 3, 6);
   ctx.fillRect(15, 16, 3, 6);
 
-  // Yan Mavi Paneller
   ctx.strokeStyle = '#00f0ff';
   ctx.lineWidth = 1.8;
   ctx.beginPath();
@@ -203,75 +190,103 @@ function drawPlayer() {
   ctx.lineTo(12, 14);
   ctx.stroke();
 
-  // Kalkan Efekti (Hasar Alındığında veya Güçlü Durumda)
-  if (player.health < 40) {
-    ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)';
-    ctx.beginPath();
-    ctx.arc(0, 0, 30, 0, Math.PI * 2);
-    ctx.stroke();
-  } else {
-    ctx.strokeStyle = 'rgba(56, 189, 248, 0.2)';
-    ctx.beginPath();
-    ctx.arc(0, 0, 28, 0, Math.PI * 2);
-    ctx.stroke();
-  }
+  // Kalkan Dairesi
+  ctx.strokeStyle = player.health < 35 ? 'rgba(239, 68, 68, 0.4)' : 'rgba(56, 189, 248, 0.25)';
+  ctx.beginPath();
+  ctx.arc(0, 0, 29, 0, Math.PI * 2);
+  ctx.stroke();
 
   ctx.restore();
 }
 
-// 3. Ateşlenen Mavi Lazerler
+// Oyuncu Mavi Lazerleri
 function drawLasers() {
   ctx.shadowBlur = 10;
   ctx.shadowColor = '#00f0ff';
 
-  lasers.forEach((laser, index) => {
-    laser.y -= laser.speed;
+  lasers.forEach((l, idx) => {
+    l.y -= l.speed;
 
     ctx.fillStyle = '#38bdf8';
-    ctx.fillRect(laser.x - 2, laser.y - 10, 4, 18);
+    ctx.fillRect(l.x - 2, l.y - 10, 4, 18);
 
     ctx.fillStyle = '#ffffff';
-    ctx.fillRect(laser.x - 1, laser.y - 7, 2, 12);
+    ctx.fillRect(l.x - 1, l.y - 7, 2, 12);
 
-    // Ekran dışına çıkanları sil
-    if (laser.y < -20) {
-      lasers.splice(index, 1);
-    }
+    if (l.y < -20) lasers.splice(idx, 1);
   });
 
   ctx.shadowBlur = 0;
 }
 
-// 4. Düşmanlar (Meteorlar ve Düşman Gemileri)
+// Düşman Kırmızı Lazerleri
+function drawEnemyLasers() {
+  ctx.shadowBlur = 8;
+  ctx.shadowColor = '#ef4444';
+
+  enemyLasers.forEach((el, idx) => {
+    el.y += el.speed;
+
+    ctx.fillStyle = '#ef4444';
+    ctx.beginPath();
+    ctx.arc(el.x, el.y, 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = '#fef2f2';
+    ctx.beginPath();
+    ctx.arc(el.x, el.y, 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    if (el.y > canvas.height + 20) enemyLasers.splice(idx, 1);
+  });
+
+  ctx.shadowBlur = 0;
+}
+
+// Çeşitli Düşmanlar (Meteor, Hızlı Avcı, Ateş Eden Ağır Kruvazör)
 function drawEnemies() {
-  enemies.forEach((enemy, index) => {
+  enemies.forEach((enemy, idx) => {
     enemy.y += enemy.speed;
+
+    // Ateş Eden Düşman Gemisi Mantığı
+    if (enemy.canShoot) {
+      enemy.shootTimer++;
+      if (enemy.shootTimer >= enemy.shootInterval) {
+        enemy.shootTimer = 0;
+        enemyLasers.push({
+          x: enemy.x,
+          y: enemy.y + enemy.radius + 4,
+          speed: 4.8
+        });
+      }
+    }
 
     ctx.save();
     ctx.translate(enemy.x, enemy.y);
 
     if (enemy.type === 'meteor') {
-      // Dönen Kraterli Meteor
-      enemy.rotation += 0.02;
+      // 1. DÖNEN DEV METEOR TAŞI
+      enemy.rotation += 0.015;
       ctx.rotate(enemy.rotation);
 
-      ctx.fillStyle = '#475569';
+      ctx.fillStyle = '#52525b';
       ctx.beginPath();
       ctx.arc(0, 0, enemy.radius, 0, Math.PI * 2);
       ctx.fill();
 
-      // Krater Detayı
-      ctx.fillStyle = '#334155';
+      // Kraterler
+      ctx.fillStyle = '#27272a';
       ctx.beginPath();
-      ctx.arc(-enemy.radius * 0.3, -enemy.radius * 0.2, enemy.radius * 0.25, 0, Math.PI * 2);
-      ctx.arc(enemy.radius * 0.3, enemy.radius * 0.3, enemy.radius * 0.2, 0, Math.PI * 2);
+      ctx.arc(-enemy.radius * 0.35, -enemy.radius * 0.2, enemy.radius * 0.28, 0, Math.PI * 2);
+      ctx.arc(enemy.radius * 0.25, enemy.radius * 0.3, enemy.radius * 0.22, 0, Math.PI * 2);
+      ctx.arc(enemy.radius * 0.1, -enemy.radius * 0.4, enemy.radius * 0.18, 0, Math.PI * 2);
       ctx.fill();
 
-    } else {
-      // Düşman Savaş Kruvazörü (Kırmızı Neon)
-      ctx.fillStyle = '#e11d48';
+    } else if (enemy.type === 'fighter') {
+      // 2. HIZLI AVCI GEMİ (Mor/Kırmızı Çift Kanatlı)
+      ctx.fillStyle = '#dc2626';
       ctx.shadowBlur = 8;
-      ctx.shadowColor = '#f43f5e';
+      ctx.shadowColor = '#f87171';
 
       ctx.beginPath();
       ctx.moveTo(0, 18);
@@ -281,22 +296,85 @@ function drawEnemies() {
       ctx.closePath();
       ctx.fill();
 
-      ctx.fillStyle = '#ffe4e6';
-      ctx.fillRect(-2, -4, 4, 8);
+      ctx.fillStyle = '#fef08a';
+      ctx.fillRect(-2, -2, 4, 6);
+
+    } else if (enemy.type === 'cruiser') {
+      // 3. ATEŞ EDEN AĞIR SAVAŞ KRUVAZÖRÜ (Kırmızı Zırhlı & Çift Toplu)
+      ctx.fillStyle = '#991b1b';
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = '#ef4444';
+
+      ctx.beginPath();
+      ctx.moveTo(0, 22);
+      ctx.lineTo(22, -8);
+      ctx.lineTo(14, -18);
+      ctx.lineTo(-14, -18);
+      ctx.lineTo(-22, -8);
+      ctx.closePath();
+      ctx.fill();
+
+      // Lazer Namluları
+      ctx.fillStyle = '#fca5a5';
+      ctx.fillRect(-12, 10, 4, 8);
+      ctx.fillRect(8, 10, 4, 8);
     }
 
     ctx.restore();
 
-    // Ekranın altına geçen düşman
-    if (enemy.y > canvas.height + 40) {
-      enemies.splice(index, 1);
+    if (enemy.y > canvas.height + 50) {
+      enemies.splice(idx, 1);
     }
   });
 }
 
-// 5. Patlama Parçacıkları (Neon Sparkles)
+// Düşen Eşyalar (Yeşil Can Paketi + Mavi Çift Lazer)
+function drawItems() {
+  items.forEach((item, idx) => {
+    item.y += 1.8;
+
+    ctx.save();
+    ctx.translate(item.x, item.y);
+
+    if (item.type === 'heal') {
+      // YEŞİL CAN PAKETİ (+)
+      ctx.shadowBlur = 14;
+      ctx.shadowColor = '#22c55e';
+      ctx.fillStyle = '#15803d';
+      ctx.beginPath();
+      ctx.arc(0, 0, 13, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Beyaz Artı
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(-2, -7, 4, 14);
+      ctx.fillRect(-7, -2, 14, 4);
+
+    } else {
+      // MAVİ 2X ÇİFT LAZER KÜPÜ
+      ctx.shadowBlur = 14;
+      ctx.shadowColor = '#00f0ff';
+      ctx.fillStyle = '#0284c7';
+      ctx.fillRect(-11, -11, 22, 22);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 11px JetBrains Mono';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('2X', 0, 0);
+    }
+
+    ctx.restore();
+
+    if (item.y > canvas.height + 30) {
+      items.splice(idx, 1);
+    }
+  });
+}
+
+// Patlama Parçacıkları
 function drawParticles() {
-  particles.forEach((p, index) => {
+  particles.forEach((p, idx) => {
     p.x += p.vx;
     p.y += p.vy;
     p.alpha -= 0.025;
@@ -307,108 +385,108 @@ function drawParticles() {
     ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
     ctx.fill();
 
-    if (p.alpha <= 0) {
-      particles.splice(index, 1);
-    }
+    if (p.alpha <= 0) particles.splice(idx, 1);
   });
   ctx.globalAlpha = 1.0;
 }
 
-// 6. Güçlendirme Küpleri (Power-up)
-function drawPowerups() {
-  powerups.forEach((pu, index) => {
-    pu.y += 1.6;
-
-    ctx.save();
-    ctx.translate(pu.x, pu.y);
-    ctx.fillStyle = '#38bdf8';
-    ctx.shadowBlur = 12;
-    ctx.shadowColor = '#00f0ff';
-
-    ctx.fillRect(-10, -10, 20, 20);
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 11px JetBrains Mono';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('2X', 0, 0);
-
-    ctx.restore();
-
-    if (pu.y > canvas.height + 20) {
-      powerups.splice(index, 1);
-    }
-  });
-}
-
-// Patlama Efekti Oluşturucu
-function createExplosion(x, y, color = '#38bdf8') {
-  for (let i = 0; i < 18; i++) {
+function createExplosion(x, y, color = '#38bdf8', count = 18) {
+  for (let i = 0; i < count; i++) {
     const angle = Math.random() * Math.PI * 2;
-    const speed = Math.random() * 4 + 1;
+    const speed = Math.random() * 4.5 + 1;
     particles.push({
       x: x,
       y: y,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
       size: Math.random() * 3 + 1,
-      color: Math.random() > 0.4 ? color : '#ffffff',
+      color: Math.random() > 0.35 ? color : '#ffffff',
       alpha: 1.0
     });
   }
 }
 
 // ==========================================================
-// OYUN DÖNGÜSÜ & MANTIK
+// OYUN DÖNGÜSÜ
 // ==========================================================
-let enemySpawnTimer = 0;
+let spawnTimer = 0;
 
 function updateGame(timestamp) {
   if (!isRunning) return;
 
   drawStars();
 
-  // Otomatik Ateşleme Sistemi
+  // Otomatik Ateşleme
   if (timestamp - lastShotTime > shotInterval) {
     if (player.powerLevel === 1) {
       lasers.push({ x: player.x, y: player.y - 20, speed: 11 });
     } else {
-      // Çift Lazer
       lasers.push({ x: player.x - 12, y: player.y - 16, speed: 11 });
       lasers.push({ x: player.x + 12, y: player.y - 16, speed: 11 });
     }
     lastShotTime = timestamp;
   }
 
-  // Düşman Üretimi (Zamanla Zorlaşan)
-  enemySpawnTimer++;
-  const spawnRate = Math.max(35, 75 - Math.floor(score / 80));
-  if (enemySpawnTimer % spawnRate === 0) {
-    const isMeteor = Math.random() > 0.35;
+  // Düşman Üretim Döngüsü (Meteor, Hızlı Avcı veya Ateş Eden Kruvazör)
+  spawnTimer++;
+  const spawnRate = Math.max(38, 70 - Math.floor(score / 90));
+  if (spawnTimer % spawnRate === 0) {
+    const roll = Math.random();
+    let enemyType = 'meteor';
+    let canShoot = false;
+    let radius = 18;
+    let speed = 2.4;
+
+    if (roll < 0.45) {
+      // Meteor
+      enemyType = 'meteor';
+      radius = Math.random() * 12 + 16;
+      speed = Math.random() * 2 + 1.8;
+    } else if (roll < 0.8) {
+      // Hızlı Avcı Gemi
+      enemyType = 'fighter';
+      radius = 16;
+      speed = Math.random() * 1.5 + 3.2;
+    } else {
+      // Ateş Eden Ağır Kruvazör
+      enemyType = 'cruiser';
+      canShoot = true;
+      radius = 22;
+      speed = 1.6;
+    }
+
     enemies.push({
       x: Math.random() * (canvas.width - 60) + 30,
-      y: -30,
-      type: isMeteor ? 'meteor' : 'ship',
-      radius: isMeteor ? (Math.random() * 12 + 16) : 18,
-      speed: Math.random() * 2 + 2.2,
-      rotation: 0
+      y: -35,
+      type: enemyType,
+      radius: radius,
+      speed: speed,
+      rotation: 0,
+      canShoot: canShoot,
+      shootTimer: 0,
+      shootInterval: Math.floor(Math.random() * 30 + 55)
     });
   }
 
-  // Çarpışma Testi (Lazer vs Düşman)
+  // Çarpışma: Oyuncu Lazeri vs Düşman
   lasers.forEach((laser, lIdx) => {
     enemies.forEach((enemy, eIdx) => {
       const dist = Math.hypot(laser.x - enemy.x, laser.y - enemy.y);
       if (dist < enemy.radius + 6) {
-        // Vuruldu!
-        createExplosion(enemy.x, enemy.y, enemy.type === 'meteor' ? '#94a3b8' : '#f43f5e');
-        
-        // Puan
-        score += enemy.type === 'meteor' ? 10 : 25;
+        createExplosion(enemy.x, enemy.y, enemy.type === 'meteor' ? '#a1a1aa' : '#ef4444');
+
+        // Skor
+        score += enemy.type === 'meteor' ? 10 : (enemy.canShoot ? 35 : 20);
         scoreDisplay.innerText = score;
 
-        // Şans eseri Power-up düşür
-        if (Math.random() < 0.12) {
-          powerups.push({ x: enemy.x, y: enemy.y });
+        // EŞYA DÜŞME ŞANSI (%18)
+        const dropRoll = Math.random();
+        if (dropRoll < 0.08) {
+          // Can Paketi Düşür!
+          items.push({ x: enemy.x, y: enemy.y, type: 'heal' });
+        } else if (dropRoll < 0.18) {
+          // Çift Lazer Düşür!
+          items.push({ x: enemy.x, y: enemy.y, type: 'power' });
         }
 
         lasers.splice(lIdx, 1);
@@ -417,39 +495,55 @@ function updateGame(timestamp) {
     });
   });
 
-  // Çarpışma Testi (Oyuncu vs Düşman)
+  // Çarpışma: Düşman Kırmızı Lazeri vs Oyuncu
+  enemyLasers.forEach((el, elIdx) => {
+    const dist = Math.hypot(player.x - el.x, player.y - el.y);
+    if (dist < 24) {
+      createExplosion(el.x, el.y, '#ef4444', 12);
+      enemyLasers.splice(elIdx, 1);
+
+      player.health -= 15;
+      updateHealthUI();
+
+      if (player.health <= 0) gameOver();
+    }
+  });
+
+  // Çarpışma: Düşman Gövdesi vs Oyuncu
   enemies.forEach((enemy, eIdx) => {
     const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y);
     if (dist < enemy.radius + 18) {
-      // Oyuncu hasar aldı!
-      createExplosion(enemy.x, enemy.y, '#ef4444');
+      createExplosion(enemy.x, enemy.y, '#ef4444', 24);
       enemies.splice(eIdx, 1);
-      
-      player.health -= 25;
+
+      player.health -= enemy.type === 'meteor' ? 25 : 30;
       updateHealthUI();
 
-      if (player.health <= 0) {
-        gameOver();
+      if (player.health <= 0) gameOver();
+    }
+  });
+
+  // Çarpışma: Oyuncu vs Eşyalar (Can veya Güç)
+  items.forEach((item, iIdx) => {
+    const dist = Math.hypot(player.x - item.x, player.y - item.y);
+    if (dist < 26) {
+      if (item.type === 'heal') {
+        // Can Toplama (+35 Can)
+        player.health = Math.min(100, player.health + 35);
+        updateHealthUI();
+        createExplosion(item.x, item.y, '#22c55e', 20);
+      } else {
+        // Çift Lazer (8 Saniye)
+        player.powerLevel = 2;
+        createExplosion(item.x, item.y, '#00f0ff', 20);
+        setTimeout(() => { player.powerLevel = 1; }, 8000);
       }
+      items.splice(iIdx, 1);
     }
   });
 
-  // Çarpışma Testi (Oyuncu vs Power-up)
-  powerups.forEach((pu, puIdx) => {
-    const dist = Math.hypot(player.x - pu.x, player.y - pu.y);
-    if (dist < 28) {
-      createExplosion(pu.x, pu.y, '#00f0ff');
-      player.powerLevel = 2; // Çift lazere geç
-      powerups.splice(puIdx, 1);
-      
-      // 8 saniye sonra tek lazere dön
-      setTimeout(() => {
-        player.powerLevel = 1;
-      }, 8000);
-    }
-  });
-
-  drawPowerups();
+  drawItems();
+  drawEnemyLasers();
   drawLasers();
   drawEnemies();
   drawParticles();
@@ -478,11 +572,12 @@ function startGame() {
   player.powerLevel = 1;
   player.x = canvas.width / 2;
   player.targetX = canvas.width / 2;
-  
+
   lasers = [];
+  enemyLasers = [];
   enemies = [];
   particles = [];
-  powerups = [];
+  items = [];
 
   scoreDisplay.innerText = '0';
   updateHealthUI();
@@ -499,7 +594,6 @@ function gameOver() {
   isRunning = false;
   cancelAnimationFrame(animationId);
 
-  // Rekor kontrolü
   if (score > highScore) {
     highScore = score;
     localStorage.setItem('spaceShooterHighScore', highScore);
@@ -507,12 +601,11 @@ function gameOver() {
   }
 
   overlayTitle.innerText = 'GÖREV BAŞARISIZ';
-  overlayDesc.innerHTML = `Uzay gemisi imha edildi!<br><b>Skorun:</b> ${score} • <b>Rekorun:</b> ${highScore}`;
-  startBtn.innerText = 'YENİDEN DENE';
+  overlayDesc.innerHTML = `Uzay gemisi vuruldu!<br><b>Skorun:</b> ${score} • <b>Rekorun:</b> ${highScore}`;
+  startBtn.innerText = 'TEKRAR DENE';
   gameOverlay.classList.add('active');
 }
 
 startBtn.addEventListener('click', startGame);
 
-// İlk ekran için arka planı bir kere çiz
 drawStars();
