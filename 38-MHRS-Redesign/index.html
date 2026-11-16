@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>MHRS • Merkezi Hekim Randevu Sistemi (Yeniden Tasarım)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Arka plan hareketli ışık parıltıları (Mesh Gradient) -->
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div class="glow-orb orb-3"></div>
+
+  <!-- Üst Bar -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <!-- T.C. Sağlık Bakanlığı Rozeti -->
+      <div class="sb-badge">
+        <svg class="sb-icon" viewBox="0 0 48 48" fill="none">
+          <circle cx="24" cy="24" r="22" stroke="url(#sbGrad)" stroke-width="2" fill="rgba(220, 38, 38, 0.1)"/>
+          <path d="M24 10V38M16 18H32M18 30H30" stroke="#f87171" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="24" cy="24" r="5" fill="#ef4444"/>
+          <defs>
+            <linearGradient id="sbGrad" x1="0" y1="0" x2="48" y2="48">
+              <stop stop-color="#ef4444"/>
+              <stop offset="1" stop-color="#991b1b"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="sb-text">
+          <span>T.C. SAĞLIK BAKANLIĞI</span>
+          <small>Merkezi Hekim Randevu Sistemi</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-right">
+      <div class="lang-pill">
+        <span class="flag">🇹🇷</span>
+        <span>Türkçe</span>
+      </div>
+      <button class="ghost-pill" title="Yazı boyutunu ayarla">
+        <span>Aa</span>
+        <small>Erişilebilirlik</small>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Ana İçerik Alanı -->
+  <main class="hero-container">
+    <div class="login-wrapper">
+
+      <!-- Sol Bölüm: Modern Giriş Kartı -->
+      <div class="login-card">
+        
+        <!-- Yeni Modern MHRS Logosu (Kalp Atışı + Stetoskop + Onay) -->
+        <div class="brand-header">
+          <div class="logo-mark">
+            <svg class="mhrs-pulse" viewBox="0 0 64 64" fill="none">
+              <!-- Dış halka & parıltı -->
+              <rect x="4" y="4" width="56" height="56" rx="20" fill="url(#logoBg)" stroke="rgba(45, 212, 191, 0.4)" stroke-width="1.5"/>
+              <!-- Nabız çizgisi (ECG Pulse) -->
+              <path class="pulse-line" d="M12 34 H22 L26 22 L32 44 L38 28 L42 34 H52" stroke="#5eead4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Kalp ve Onay Parıltısı -->
+              <circle cx="48" cy="18" r="4" fill="#38bdf8"/>
+              <defs>
+                <linearGradient id="logoBg" x1="0" y1="0" x2="64" y2="64">
+                  <stop stop-color="#0f766e"/>
+                  <stop offset="1" stop-color="#042f2e"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="logo-glow"></div>
+          </div>
+          <div class="brand-titles">
+            <h1>mhrs</h1>
+            <p>Hızlı & Güvenli Randevu Portalı</p>
+          </div>
+        </div>
+
+        <div class="welcome-text">
+          <h2>Hoş Geldiniz</h2>
+          <p>Sağlık hizmetlerine tek tıkla ulaşın, randevunuzu kolayca planlayın.</p>
+        </div>
+
+        <!-- Giriş Butonları (Yumuşak & Dikkat Çekici) -->
+        <div class="auth-buttons">
+
+          <!-- e-Devlet Girişi (Birincil) -->
+          <a href="#" class="btn-auth btn-edevlet" id="btnEdevlet">
+            <div class="btn-icon">
+              <!-- e-devlet sembolik kapı ikonu -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 10V20C4 20.6 4.4 21 5 21H19C19.6 21 20 20.6 20 20V10"/>
+                <path d="M2 10L12 3L22 10"/>
+                <path d="M9 21V12H15V21"/>
+              </svg>
+            </div>
+            <div class="btn-content">
+              <span class="btn-main">e-Devlet ile Giriş</span>
+              <span class="btn-sub">T.C. Kimlik No & Şifre ile</span>
+            </div>
+            <div class="btn-arrow">→</div>
+          </a>
+
+          <!-- e-Nabız Girişi (İkincil) -->
+          <a href="#" class="btn-auth btn-enabiz" id="btnEnabiz">
+            <div class="btn-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </div>
+            <div class="btn-content">
+              <span class="btn-main">e-Nabız ile Giriş</span>
+              <span class="btn-sub">Sağlık profili bağlantısıyla</span>
+            </div>
+            <div class="btn-arrow">→</div>
+          </a>
+
+        </div>
+
+        <!-- Hızlı Randevu / Ön Tanı Asistanı Kartı -->
+        <div class="ai-assist-box">
+          <div class="ai-header">
+            <div class="ai-badge">
+              <span class="sparkle">✨</span>
+              <span>YENİ NESİL ASİSTAN</span>
+            </div>
+          </div>
+          <h3>Hangi bölüme gideceğinizi bilmiyor musunuz?</h3>
+          <p>Şikayetinizi yazın, yapay zeka destekli <b>NeyimVar?</b> en doğru polikliniği ve uygun saatleri sizin için önersin.</p>
+          <button class="btn-neyimvar">
+            <span>NeyimVar? ile Hızlı Randevu</span>
+            <span class="tag">Önerilen</span>
+          </button>
+        </div>
+
+        <!-- Güvenlik Bilgisi -->
+        <div class="card-footer">
+          <span class="shield-icon">🛡️</span>
+          <span>Tüm verileriniz <b>Sağlık Bakanlığı KVKK</b> güvencesi altındadır.</span>
+        </div>
+
+      </div>
+
+      <!-- Sağ Bölüm: Modern İnfografik / Neden Yeni MHRS? -->
+      <div class="hero-showcase">
+        <div class="showcase-content">
+          <div class="showcase-badge">DAHA HIZLI • DAHA ERİŞİLEBİLİR</div>
+          <h2>Sağlığınız için tasarlandı.</h2>
+          <p class="showcase-desc">Artık karmaşık formlar yok. 3 adımda randevunuzu oluşturun, bildirimlerle takip edin.</p>
+
+          <!-- 3 Adımlı Akış Önizlemesi -->
+          <div class="feature-steps">
+            <div class="step-card">
+              <div class="step-num">01</div>
+              <div class="step-info">
+                <h4>Akıllı Arama</h4>
+                <p>Şikayetinizi veya doktorunuzu tek bir arama kutusuna yazın.</p>
+              </div>
+            </div>
+            <div class="step-card">
+              <div class="step-num">02</div>
+              <div class="step-info">
+                <h4>En Erken Randevular</h4>
+                <p>Yakınınızdaki en erken boş saatler anında önünüze gelsin.</p>
+              </div>
+            </div>
+            <div class="step-card">
+              <div class="step-num">03</div>
+              <div class="step-info">
+                <h4>Tek Tıkla Onay</h4>
+                <p>SMS veya e-posta hatırlatıcısıyla randevunuz cepte.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Canlı İstatistik / Güvenilirlik -->
+          <div class="stats-bar">
+            <div class="stat-item">
+              <b>30 Sn.</b>
+              <span>Ortalama Randevu Alma Süresi</span>
+            </div>
+            <div class="stat-div"></div>
+            <div class="stat-item">
+              <b>%100</b>
+              <span>Mobil Uyumlu Arayüz</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-links">
+      <a href="#">Sıkça Sorulan Sorular</a>
+      <a href="#">Aydınlatma Metni</a>
+      <a href="#">ALO 182</a>
+      <a href="#">e-Nabız Portalı</a>
+    </div>
+    <div class="copyright">
+      <span>T.C. Sağlık Bakanlığı © 2026 • Konsept Yeniden Tasarım</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
