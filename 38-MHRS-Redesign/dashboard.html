@@ -100,11 +100,10 @@
               <div class="form-group">
                 <label>İl</label>
                 <select id="selectCity">
-                  <option value="İstanbul">İstanbul</option>
+                  <option value="Mersin" selected>Mersin (Seçili)</option>
+                  <option value="Adana">Adana</option>
                   <option value="Ankara">Ankara</option>
-                  <option value="İzmir">İzmir</option>
-                  <option value="Bursa">Bursa</option>
-                  <option value="Antalya">Antalya</option>
+                  <option value="İstanbul">İstanbul</option>
                 </select>
               </div>
 
@@ -112,36 +111,70 @@
               <div class="form-group">
                 <label>İlçe</label>
                 <select id="selectDistrict">
-                  <option value="Tümü">Fark Etmez (Tüm İlçeler)</option>
-                  <option value="Kadıköy">Kadıköy</option>
-                  <option value="Şişli">Şişli</option>
-                  <option value="Üsküdar">Üsküdar</option>
-                  <option value="Bakırköy">Bakırköy</option>
+                  <option value="Tümü">Tüm Mersin (Fark Etmez)</option>
+                  <option value="Toroslar">Toroslar (Şehir Hastanesi)</option>
+                  <option value="Akdeniz">Akdeniz (Toros Devlet)</option>
+                  <option value="Tarsus">Tarsus</option>
+                  <option value="Erdemli">Erdemli</option>
+                  <option value="Silifke">Silifke</option>
+                  <option value="Mezitli">Mezitli</option>
+                  <option value="Yenişehir">Yenişehir</option>
+                  <option value="Anamur">Anamur</option>
+                  <option value="Mut">Mut</option>
                 </select>
               </div>
             </div>
 
-            <!-- Klinik / Poliklinik Hızlı Seçim -->
+            <div class="input-row">
+              <!-- Hastane Seçimi (Dinamik / Filtrelenebilir) -->
+              <div class="form-group">
+                <label>Hastane</label>
+                <select id="selectHospital">
+                  <option value="Tümü">Fark Etmez (Tüm Hastaneler)</option>
+                  <option value="Mersin Şehir Eğitim ve Araştırma Hastanesi">Mersin Şehir Eğitim ve Araştırma Hastanesi</option>
+                  <option value="Mersin Toros Devlet Hastanesi">Mersin Toros Devlet Hastanesi</option>
+                  <option value="Tarsus Devlet Hastanesi">Tarsus Devlet Hastanesi</option>
+                  <option value="Erdemli Devlet Hastanesi">Erdemli Devlet Hastanesi</option>
+                  <option value="Silifke Devlet Hastanesi">Silifke Devlet Hastanesi</option>
+                  <option value="Anamur Devlet Hastanesi">Anamur Devlet Hastanesi</option>
+                  <option value="Mersin Üniversitesi Tıp Fakültesi Hastanesi">Mersin Üniversitesi Tıp Fakültesi Hastanesi</option>
+                </select>
+              </div>
+
+              <!-- Klinik / Poliklinik -->
+              <div class="form-group">
+                <label>Klinik / Branş</label>
+                <select id="selectClinic">
+                  <option value="Tümü">Tüm Branşlar</option>
+                  <option value="Göz Hastalıkları">Göz Hastalıkları</option>
+                  <option value="Dahiliye (İç Hastalıkları)">Dahiliye (İç Hastalıkları)</option>
+                  <option value="Kardiyoloji">Kardiyoloji</option>
+                  <option value="Kulak Burun Boğaz (KBB)">Kulak Burun Boğaz (KBB)</option>
+                  <option value="Ortopedi ve Travmatoloji">Ortopedi ve Travmatoloji</option>
+                  <option value="Cildiye (Dermatoloji)">Cildiye (Dermatoloji)</option>
+                  <option value="Nöroloji">Nöroloji</option>
+                  <option value="Çocuk Sağlığı ve Hastalıkları">Çocuk Sağlığı</option>
+                  <option value="Genel Cerrahi">Genel Cerrahi</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Canlı Arama Çubuğu (Doktor Adı veya Hastane Arama) -->
             <div class="form-group">
-              <label>Klinik / Branş</label>
-              <select id="selectClinic">
-                <option value="Göz Hastalıkları">Göz Hastalıkları</option>
-                <option value="Dahiliye (İç Hastalıkları)">Dahiliye (İç Hastalıkları)</option>
-                <option value="Kulak Burun Boğaz (KBB)">Kulak Burun Boğaz (KBB)</option>
-                <option value="Ortopedi ve Travmatoloji">Ortopedi ve Travmatoloji</option>
-                <option value="Kardiyoloji">Kardiyoloji</option>
-                <option value="Cildiye (Dermatoloji)">Cildiye (Dermatoloji)</option>
-              </select>
+              <label>Hızlı Arama (Doktor adı, klinik veya oda)</label>
+              <div class="live-search-box">
+                <input type="text" id="liveSearchInput" placeholder="Örn: 'Mehmet', 'Göz', 'Şehir Hastanesi'..." autocomplete="off">
+              </div>
             </div>
 
             <!-- Tarih Tercihi -->
             <div class="date-chips-wrapper">
-              <label>Tarih Seçimi</label>
+              <label>Tarih Tercihi</label>
               <div class="date-chips" id="dateChips">
-                <button class="date-chip active" data-date="Bugün">Bugün (Acil)</button>
+                <button class="date-chip active" data-date="Bugün">Bugün</button>
                 <button class="date-chip" data-date="Yarın">Yarın</button>
                 <button class="date-chip" data-date="Bu Hafta">Bu Hafta İçi</button>
-                <button class="date-chip" data-date="En Erken">En Erken Tarih</button>
+                <button class="date-chip" data-date="En Erken">En Erken Randevu</button>
               </div>
             </div>
 
@@ -150,7 +183,7 @@
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
               </svg>
-              <span>Uygun Randevuları Listele</span>
+              <span>Mersin Genelinde Randevu Ara</span>
             </button>
 
           </div>
@@ -187,12 +220,12 @@
                 </div>
                 <div class="ticket-body">
                   <h4>Göz Hastalıkları</h4>
-                  <p class="hospital-name">İstanbul Haydarpaşa Numune E.A. Hastanesi</p>
-                  <p class="doc-name">👨‍⚕️ Uzm. Dr. Mehmet Yılmaz (Poliklinik 3)</p>
+                  <p class="hospital-name">Mersin Şehir Eğitim ve Araştırma Hastanesi</p>
+                  <p class="doc-name">👨‍⚕️ Uzm. Dr. Caner Yıldız (Göz Polikliniği 2 - Toroslar)</p>
                 </div>
                 <div class="ticket-footer">
                   <button class="ticket-btn-cancel" onclick="cancelDemoAppointment()">Randevuyu İptal Et</button>
-                  <button class="ticket-btn-directions" onclick="alert('📍 Yol tarifi haritası açılıyor...')">Yol Tarifi</button>
+                  <button class="ticket-btn-directions" onclick="alert('📍 Mersin Şehir Hastanesi navigasyon rotası açılıyor...')">Yol Tarifi</button>
                 </div>
               </div>
             </div>
