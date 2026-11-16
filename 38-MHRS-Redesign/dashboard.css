@@ -1,0 +1,729 @@
+/* ==========================================================
+   MHRS YÖNETİM & RANDEVU ARAMA PANELİ STILLERİ (DASHBOARD)
+   ========================================================== */
+
+.dashboard-body {
+  background: #f4f8f6;
+  min-height: 100vh;
+}
+
+/* Üst Bar */
+.dash-navbar {
+  background: #ffffff;
+  border-bottom: 1px solid var(--card-border);
+  padding: 14px 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.dash-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.brand-mini-logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.brand-mini-logo svg {
+  width: 26px;
+  height: 26px;
+}
+.brand-mini-logo span {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--primary-green);
+  line-height: 1;
+}
+
+.dash-brand-title small {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  display: block;
+  font-weight: 600;
+}
+
+.dash-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--primary-light);
+  border: 1px solid var(--primary-border);
+  padding: 6px 14px;
+  border-radius: 30px;
+}
+
+.avatar-circle {
+  width: 32px;
+  height: 32px;
+  background: var(--primary-green);
+  color: #ffffff;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.user-meta {
+  display: flex;
+  flex-direction: column;
+}
+.user-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+.user-tc {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid var(--card-border);
+  padding: 8px 14px;
+  border-radius: 12px;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.logout-btn:hover {
+  background: #fee2e2;
+  color: #dc2626;
+  border-color: #fca5a5;
+}
+.logout-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Ana Düzen */
+.dash-main {
+  padding: 30px 20px;
+}
+.dash-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Hızlı İşlem Kartları */
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.quick-card {
+  background: #ffffff;
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.quick-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary-green);
+  box-shadow: 0 6px 18px rgba(27, 107, 80, 0.08);
+}
+.quick-card.active {
+  border-color: var(--primary-green);
+  background: #fbfdfc;
+  box-shadow: 0 0 0 2px rgba(27, 107, 80, 0.15);
+}
+
+.q-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+.q-hospital { background: #e8f5e9; }
+.q-family   { background: #e0f2fe; }
+.q-ai       { background: #fef3c7; }
+
+.q-text h3 {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+.q-text p {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.q-badge {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: var(--primary-light);
+  color: var(--primary-green);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+.ai-badge-pill {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+/* İki Sütunlu Ana Grid */
+.portal-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Sol: Arama Paneli */
+.search-panel {
+  background: #ffffff;
+  border: 1px solid var(--card-border);
+  border-radius: 22px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.panel-header {
+  margin-bottom: 20px;
+}
+.panel-header h2 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+.panel-header p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.filter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #fafdfc;
+  border: 1px solid var(--card-border);
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.form-group select {
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background: #ffffff;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--text-main);
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.form-group select:focus {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(27, 107, 80, 0.1);
+}
+
+/* Tarih Hapları */
+.date-chips-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.date-chips-wrapper label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+.date-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.date-chip {
+  background: #ffffff;
+  border: 1px solid var(--card-border);
+  color: var(--text-muted);
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.date-chip:hover {
+  border-color: var(--primary-border);
+  color: var(--primary-green);
+}
+.date-chip.active {
+  background: var(--primary-green);
+  color: #ffffff;
+  border-color: var(--primary-green);
+}
+
+.btn-search-appointments {
+  background: var(--primary-green);
+  color: #ffffff;
+  border: 0;
+  padding: 13px 20px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+  margin-top: 6px;
+}
+.btn-search-appointments:hover {
+  background: var(--primary-hover);
+  box-shadow: 0 4px 14px rgba(27, 107, 80, 0.25);
+}
+.btn-search-appointments svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Sonuç Listesi */
+.results-container {
+  margin-top: 24px;
+}
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.results-header h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+.refresh-indicator {
+  font-size: 0.75rem;
+  color: #10b981;
+  font-weight: 700;
+}
+
+.doctor-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.doc-card {
+  background: #ffffff;
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.2s;
+}
+.doc-card:hover {
+  border-color: var(--primary-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.doc-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.doc-info h4 {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+.doc-info p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.hospital-badge {
+  background: var(--primary-light);
+  color: var(--primary-green);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+/* Saat Kutuları */
+.slots-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.slots-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.slots-grid {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.slot-btn {
+  background: #f8faf9;
+  border: 1px solid var(--card-border);
+  color: var(--primary-green);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.slot-btn:hover {
+  background: var(--primary-green);
+  color: #ffffff;
+  border-color: var(--primary-green);
+  transform: scale(1.05);
+}
+
+/* Sağ: Sidebar / Aktif Randevular */
+.sidebar-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.my-appointments-card {
+  background: #ffffff;
+  border: 1px solid var(--card-border);
+  border-radius: 22px;
+  padding: 22px;
+}
+
+.aside-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.aside-header h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+.badge-count {
+  background: var(--primary-green);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+/* Randevu Bileti */
+.appointment-ticket {
+  background: #fbfdfc;
+  border: 1px dashed var(--primary-border);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ticket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: 8px;
+}
+.ticket-status {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #10b981;
+  background: #ecfdf5;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+.ticket-date {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.ticket-body h4 {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+.ticket-body .hospital-name {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.ticket-body .doc-name {
+  font-size: 0.82rem;
+  color: var(--primary-green);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.ticket-footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+.ticket-btn-cancel {
+  flex: 1;
+  background: #fee2e2;
+  color: #dc2626;
+  border: 0;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.ticket-btn-cancel:hover {
+  background: #fecaca;
+}
+.ticket-btn-directions {
+  background: #f8faf9;
+  border: 1px solid var(--card-border);
+  color: var(--text-muted);
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Boş Durum */
+.empty-appointment-state {
+  text-align: center;
+  padding: 24px 10px;
+}
+.empty-icon {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+}
+.empty-appointment-state h4 {
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+.empty-appointment-state p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* Bilgi Kutusu */
+.info-guide-box {
+  background: #f8faf9;
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 16px;
+}
+.info-guide-box h4 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+.info-guide-box p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* Modal */
+.booking-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(6px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s;
+}
+.booking-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.booking-modal-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 460px;
+  border-radius: 20px;
+  border: 1px solid var(--card-border);
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.modal-top h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+.modal-close {
+  background: transparent;
+  border: 0;
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.modal-summary-box {
+  background: var(--primary-light);
+  border: 1px solid var(--primary-border);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sum-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+.sum-row b {
+  color: var(--text-main);
+  text-align: right;
+}
+.sum-row.highlight {
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  padding-top: 6px;
+  color: var(--primary-green);
+}
+.sum-row.highlight b {
+  color: var(--primary-green);
+}
+
+.sms-check-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+.btn-modal-cancel {
+  flex: 1;
+  background: #f8faf9;
+  border: 1px solid var(--card-border);
+  color: var(--text-muted);
+  padding: 11px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-modal-confirm {
+  flex: 1.6;
+  background: var(--primary-green);
+  color: #ffffff;
+  border: 0;
+  padding: 11px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-modal-confirm:hover {
+  background: var(--primary-hover);
+}
+
+/* Mobil */
+@media (max-width: 860px) {
+  .dash-navbar {
+    padding: 12px 16px;
+  }
+  .action-grid {
+    grid-template-columns: 1fr;
+  }
+  .portal-grid {
+    grid-template-columns: 1fr;
+  }
+  .input-row {
+    grid-template-columns: 1fr;
+  }
+}

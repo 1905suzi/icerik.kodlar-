@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>MHRS • Randevu Portalı (T.C. Sağlık Bakanlığı)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body class="dashboard-body">
+
+  <!-- Üst Yönetim Barı -->
+  <header class="dash-navbar">
+    <div class="dash-nav-left">
+      <a href="index.html" class="dash-brand">
+        <img src="saglik-bakanligi-logo.png" alt="Logo" class="sb-logo-img">
+        <div class="dash-brand-title">
+          <div class="brand-mini-logo">
+            <svg class="mhrs-pulse" viewBox="0 0 64 64" fill="none">
+              <path class="pulse-line" d="M8 32 H20 L25 18 L32 46 L39 24 L44 32 H56" stroke="#1b6b50" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>mhrs</span>
+          </div>
+          <small>T.C. Sağlık Bakanlığı</small>
+        </div>
+      </a>
+    </div>
+
+    <!-- Kullanıcı Profili & Çıkış -->
+    <div class="dash-nav-right">
+      <div class="user-chip">
+        <div class="avatar-circle">SÖ</div>
+        <div class="user-meta">
+          <span class="user-name">Suzan Özer</span>
+          <small class="user-tc">TC: 284*****102</small>
+        </div>
+      </div>
+      <a href="index.html" class="logout-btn" title="Güvenli Çıkış">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        <span>Çıkış</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Ana İçerik -->
+  <main class="dash-main">
+    <div class="dash-container">
+
+      <!-- Hızlı İşlem Kartları (Eski 3 Devasa Renk Bloğu Yerine Zarif Kartlar) -->
+      <section class="action-grid">
+        <div class="quick-card active" id="tabHastane">
+          <div class="q-icon q-hospital">🏥</div>
+          <div class="q-text">
+            <h3>Hastane Randevusu Al</h3>
+            <p>Devlet & Şehir Hastaneleri uzman hekimleri</p>
+          </div>
+          <span class="q-badge">Önerilen</span>
+        </div>
+
+        <div class="quick-card" id="tabAile">
+          <div class="q-icon q-family">👨‍⚕️</div>
+          <div class="q-text">
+            <h3>Aile Hekimi Randevusu Al</h3>
+            <p>Kayıtlı olduğunuz aile sağlığı merkeziniz</p>
+          </div>
+        </div>
+
+        <div class="quick-card" id="tabNeyimVar">
+          <div class="q-icon q-ai">✨</div>
+          <div class="q-text">
+            <h3>NeyimVar? İle Branş Bul</h3>
+            <p>Şikayetinizi yazın, polikliniği yapay zeka bulsun</p>
+          </div>
+          <span class="q-badge ai-badge-pill">Yapay Zeka</span>
+        </div>
+      </section>
+
+      <!-- 2 Sütunlu Çalışma Alanı: Sol Arama/Seçim - Sağ Aktif Randevular -->
+      <div class="portal-grid">
+        
+        <!-- SOL: Akıllı Randevu Arama Motoru -->
+        <div class="search-panel">
+          <div class="panel-header">
+            <h2>Hızlı Randevu Bulucu</h2>
+            <p>Sonsuz dropdownlar yok! İl ve gitmek istediğiniz branşı seçin, uygun hekimler anında listelensin.</p>
+          </div>
+
+          <!-- Arama Filtreleri (Modern & Yumuşak) -->
+          <div class="filter-form">
+            
+            <div class="input-row">
+              <!-- İl Seçimi -->
+              <div class="form-group">
+                <label>İl</label>
+                <select id="selectCity">
+                  <option value="İstanbul">İstanbul</option>
+                  <option value="Ankara">Ankara</option>
+                  <option value="İzmir">İzmir</option>
+                  <option value="Bursa">Bursa</option>
+                  <option value="Antalya">Antalya</option>
+                </select>
+              </div>
+
+              <!-- İlçe / Konum -->
+              <div class="form-group">
+                <label>İlçe</label>
+                <select id="selectDistrict">
+                  <option value="Tümü">Fark Etmez (Tüm İlçeler)</option>
+                  <option value="Kadıköy">Kadıköy</option>
+                  <option value="Şişli">Şişli</option>
+                  <option value="Üsküdar">Üsküdar</option>
+                  <option value="Bakırköy">Bakırköy</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Klinik / Poliklinik Hızlı Seçim -->
+            <div class="form-group">
+              <label>Klinik / Branş</label>
+              <select id="selectClinic">
+                <option value="Göz Hastalıkları">Göz Hastalıkları</option>
+                <option value="Dahiliye (İç Hastalıkları)">Dahiliye (İç Hastalıkları)</option>
+                <option value="Kulak Burun Boğaz (KBB)">Kulak Burun Boğaz (KBB)</option>
+                <option value="Ortopedi ve Travmatoloji">Ortopedi ve Travmatoloji</option>
+                <option value="Kardiyoloji">Kardiyoloji</option>
+                <option value="Cildiye (Dermatoloji)">Cildiye (Dermatoloji)</option>
+              </select>
+            </div>
+
+            <!-- Tarih Tercihi -->
+            <div class="date-chips-wrapper">
+              <label>Tarih Seçimi</label>
+              <div class="date-chips" id="dateChips">
+                <button class="date-chip active" data-date="Bugün">Bugün (Acil)</button>
+                <button class="date-chip" data-date="Yarın">Yarın</button>
+                <button class="date-chip" data-date="Bu Hafta">Bu Hafta İçi</button>
+                <button class="date-chip" data-date="En Erken">En Erken Tarih</button>
+              </div>
+            </div>
+
+            <button class="btn-search-appointments" id="btnSearch">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <span>Uygun Randevuları Listele</span>
+            </button>
+
+          </div>
+
+          <!-- Çıkan Randevu Sonuçları (Canlı Kartlar) -->
+          <div class="results-container">
+            <div class="results-header">
+              <h3 id="resultsTitle">Uygun Hekim ve Saatler (3 Randevu Bulundu)</h3>
+              <span class="refresh-indicator">● Canlı Güncel</span>
+            </div>
+
+            <div class="doctor-cards-list" id="doctorList">
+              <!-- JS Dinamik Dolduracak -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- SAĞ: Randevularım & Geçmiş -->
+        <aside class="sidebar-panel">
+          
+          <!-- Aktif Randevum Kartı -->
+          <div class="my-appointments-card">
+            <div class="aside-header">
+              <h3>Yaklaşan Randevularım</h3>
+              <span class="badge-count" id="appCount">1</span>
+            </div>
+
+            <div id="activeAppointmentContainer">
+              <div class="appointment-ticket" id="ticketCard">
+                <div class="ticket-header">
+                  <span class="ticket-status">ONAYLANDI</span>
+                  <span class="ticket-date">19 Kasım 2026 • 10:30</span>
+                </div>
+                <div class="ticket-body">
+                  <h4>Göz Hastalıkları</h4>
+                  <p class="hospital-name">İstanbul Haydarpaşa Numune E.A. Hastanesi</p>
+                  <p class="doc-name">👨‍⚕️ Uzm. Dr. Mehmet Yılmaz (Poliklinik 3)</p>
+                </div>
+                <div class="ticket-footer">
+                  <button class="ticket-btn-cancel" onclick="cancelDemoAppointment()">Randevuyu İptal Et</button>
+                  <button class="ticket-btn-directions" onclick="alert('📍 Yol tarifi haritası açılıyor...')">Yol Tarifi</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Boş Durum (Eğer randevu yoksa) -->
+            <div class="empty-appointment-state" id="emptyAppState" style="display: none;">
+              <div class="empty-icon">📅</div>
+              <h4>Aktif Randevunuz Yok</h4>
+              <p>Sol taraftaki arama panelini kullanarak dilediğiniz hekime kolayca randevu alabilirsiniz.</p>
+            </div>
+          </div>
+
+          <!-- Bilgilendirme Kutusu -->
+          <div class="info-guide-box">
+            <h4>💡 Randevu Hatırlatıcı</h4>
+            <p>Randevunuza gidemeyecekseniz, en geç <b>60 dakika öncesine kadar</b> iptal ederek başkalarının randevu bulmasına yardımcı olabilirsiniz.</p>
+          </div>
+
+        </aside>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Randevu Onay Modalı -->
+  <div class="booking-modal-overlay" id="bookingModal">
+    <div class="booking-modal-card">
+      <div class="modal-top">
+        <h3>Randevu Onayı</h3>
+        <button class="modal-close" id="modalCloseBtn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-summary-box">
+          <div class="sum-row">
+            <span>Hasta:</span>
+            <b>Suzan Özer (TC: 284*****102)</b>
+          </div>
+          <div class="sum-row">
+            <span>Hastane:</span>
+            <b id="modalHospital">—</b>
+          </div>
+          <div class="sum-row">
+            <span>Klinik:</span>
+            <b id="modalClinic">—</b>
+          </div>
+          <div class="sum-row">
+            <span>Hekim:</span>
+            <b id="modalDoctor">—</b>
+          </div>
+          <div class="sum-row highlight">
+            <span>Seçilen Tarih & Saat:</span>
+            <b id="modalDateTime">—</b>
+          </div>
+        </div>
+
+        <div class="sms-check-row">
+          <input type="checkbox" id="smsCheck" checked>
+          <label for="smsCheck">Randevu bilgilerim telefonuma <b>ücretsiz SMS</b> olarak gönderilsin.</label>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-modal-cancel" id="modalCancelBtn">Vazgeç</button>
+        <button class="btn-modal-confirm" id="modalConfirmBtn">Randevuyu Onayla ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
