@@ -747,3 +747,38 @@
   border-color: var(--primary-green);
   box-shadow: 0 0 0 3px rgba(27, 107, 80, 0.1);
 }
+
+
+/* Yazarak veya Seçerek Arama Inputları (Combo Box) */
+.combo-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.combo-input-wrapper input {
+  width: 100%;
+  padding: 11px 36px 11px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background: #ffffff;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--text-main);
+  outline: none;
+  transition: all 0.2s;
+}
+
+.combo-input-wrapper input:focus {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(27, 107, 80, 0.1);
+}
+
+.combo-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  font-size: 0.85rem;
+}

@@ -96,57 +96,73 @@
           <div class="filter-form">
             
             <div class="input-row">
-              <!-- İl Seçimi (81 İl Dinamik) -->
-              <div class="form-group">
-                <label>İl</label>
-                <select id="selectCity">
-                  <!-- JS 81 İli dolduracak -->
-                </select>
+              <!-- İl Seçimi (Yazarak veya Seçerek - Datalist) -->
+              <div class="form-group searchable-group">
+                <label>İl (Yazarak arayabilir veya seçebilirsiniz)</label>
+                <div class="combo-input-wrapper">
+                  <input type="text" id="inputCity" list="cityList" placeholder="Şehir yazın veya seçin (örn: Bolu, Mersin...)" value="Mersin" autocomplete="off">
+                  <datalist id="cityList">
+                    <!-- 81 İl JS Tarafından Doldurulacak -->
+                  </datalist>
+                  <span class="combo-arrow">▾</span>
+                </div>
               </div>
 
               <!-- İlçe / Konum -->
-              <div class="form-group">
+              <div class="form-group searchable-group">
                 <label>İlçe</label>
-                <select id="selectDistrict">
-                  <!-- Seçilen ile göre dinamik dolacak -->
-                </select>
+                <div class="combo-input-wrapper">
+                  <input type="text" id="inputDistrict" list="districtList" placeholder="İlçe yazın veya seçin..." autocomplete="off">
+                  <datalist id="districtList">
+                    <!-- Dinamik dolacak -->
+                  </datalist>
+                  <span class="combo-arrow">▾</span>
+                </div>
               </div>
             </div>
 
             <div class="input-row">
               <!-- Hastane Seçimi -->
-              <div class="form-group">
+              <div class="form-group searchable-group">
                 <label>Hastane</label>
-                <select id="selectHospital">
-                  <!-- Seçilen ile göre hastaneler dolacak -->
-                </select>
+                <div class="combo-input-wrapper">
+                  <input type="text" id="inputHospital" list="hospitalList" placeholder="Hastane adı yazın veya seçin..." autocomplete="off">
+                  <datalist id="hospitalList">
+                    <!-- Dinamik dolacak -->
+                  </datalist>
+                  <span class="combo-arrow">▾</span>
+                </div>
               </div>
 
               <!-- Klinik / Poliklinik -->
-              <div class="form-group">
+              <div class="form-group searchable-group">
                 <label>Klinik / Branş</label>
-                <select id="selectClinic">
-                  <option value="Tümü">Tüm Branşlar</option>
-                  <option value="Göz Hastalıkları">Göz Hastalıkları</option>
-                  <option value="Dahiliye (İç Hastalıkları)">Dahiliye (İç Hastalıkları)</option>
-                  <option value="Kardiyoloji">Kardiyoloji</option>
-                  <option value="Kulak Burun Boğaz (KBB)">Kulak Burun Boğaz (KBB)</option>
-                  <option value="Ortopedi ve Travmatoloji">Ortopedi ve Travmatoloji</option>
-                  <option value="Cildiye (Dermatoloji)">Cildiye (Dermatoloji)</option>
-                  <option value="Nöroloji">Nöroloji</option>
-                  <option value="Çocuk Sağlığı ve Hastalıkları">Çocuk Sağlığı</option>
-                  <option value="Genel Cerrahi">Genel Cerrahi</option>
-                  <option value="Kadın Hastalıkları ve Doğum">Kadın Hastalıkları ve Doğum</option>
-                  <option value="Üroloji">Üroloji</option>
-                </select>
+                <div class="combo-input-wrapper">
+                  <input type="text" id="inputClinic" list="clinicList" placeholder="Branş yazın (Göz, Dahiliye, KBB...)" autocomplete="off">
+                  <datalist id="clinicList">
+                    <option value="Tümü">Tüm Branşlar</option>
+                    <option value="Göz Hastalıkları">Göz Hastalıkları</option>
+                    <option value="Dahiliye (İç Hastalıkları)">Dahiliye (İç Hastalıkları)</option>
+                    <option value="Kardiyoloji">Kardiyoloji</option>
+                    <option value="Kulak Burun Boğaz (KBB)">Kulak Burun Boğaz (KBB)</option>
+                    <option value="Ortopedi ve Travmatoloji">Ortopedi ve Travmatoloji</option>
+                    <option value="Cildiye (Dermatoloji)">Cildiye (Dermatoloji)</option>
+                    <option value="Nöroloji">Nöroloji</option>
+                    <option value="Çocuk Sağlığı ve Hastalıkları">Çocuk Sağlığı</option>
+                    <option value="Genel Cerrahi">Genel Cerrahi</option>
+                    <option value="Kadın Hastalıkları ve Doğum">Kadın Hastalıkları ve Doğum</option>
+                    <option value="Üroloji">Üroloji</option>
+                  </datalist>
+                  <span class="combo-arrow">▾</span>
+                </div>
               </div>
             </div>
 
             <!-- Canlı Arama Çubuğu -->
             <div class="form-group">
-              <label>Hızlı Arama (Doktor adı, klinik veya oda)</label>
+              <label>Doktor Adı veya Serbest Kelime Arama</label>
               <div class="live-search-box">
-                <input type="text" id="liveSearchInput" placeholder="Örn: 'Mehmet', 'Göz', 'Devlet Hastanesi'..." autocomplete="off">
+                <input type="text" id="liveSearchInput" placeholder="Örn: 'Mehmet', 'Şehir Hastanesi', 'Poliklinik 2'..." autocomplete="off">
               </div>
             </div>
 

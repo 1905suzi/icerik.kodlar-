@@ -1,12 +1,15 @@
-// MHRS - 81 İl ve Dinamik İlçe / Hastane / Randevu Arama Motoru
+// MHRS - Yazarak & Seçerek Arama Destekli Akıllı Randevu Motoru
 document.addEventListener('DOMContentLoaded', () => {
   const doctorList = document.getElementById('doctorList');
   const btnSearch = document.getElementById('btnSearch');
   const btnSearchText = document.getElementById('btnSearchText');
-  const selectCity = document.getElementById('selectCity');
-  const selectDistrict = document.getElementById('selectDistrict');
-  const selectHospital = document.getElementById('selectHospital');
-  const selectClinic = document.getElementById('selectClinic');
+  const inputCity = document.getElementById('inputCity');
+  const cityList = document.getElementById('cityList');
+  const inputDistrict = document.getElementById('inputDistrict');
+  const districtList = document.getElementById('districtList');
+  const inputHospital = document.getElementById('inputHospital');
+  const hospitalList = document.getElementById('hospitalList');
+  const inputClinic = document.getElementById('inputClinic');
   const liveSearchInput = document.getElementById('liveSearchInput');
   const dateChips = document.querySelectorAll('.date-chip');
   const resultsTitle = document.getElementById('resultsTitle');
@@ -36,80 +39,54 @@ document.addEventListener('DOMContentLoaded', () => {
     "Kırıkkale", "Batman", "Şırnak", "Bartın", "Ardahan", "Iğdır", "Yalova", "Karabük", "Kilis", "Osmaniye", "Düzce"
   ];
 
-  // Şehirlere Göre Gerçekçi İlçe ve Hastane Haritası
   const CITY_DATA = {
     "Mersin": {
-      districts: ["Tümü", "Toroslar", "Akdeniz", "Tarsus", "Erdemli", "Silifke", "Mezitli", "Yenişehir", "Anamur", "Mut", "Bozyazı", "Aydıncık", "Çamlıyayla", "Gülnar"],
+      districts: ["Toroslar", "Akdeniz", "Tarsus", "Erdemli", "Silifke", "Mezitli", "Yenişehir", "Anamur", "Mut"],
       hospitals: [
-        "Tümü",
         "Mersin Şehir Eğitim ve Araştırma Hastanesi",
         "Mersin Toros Devlet Hastanesi",
         "Tarsus Devlet Hastanesi",
         "Erdemli Devlet Hastanesi",
         "Silifke Devlet Hastanesi",
-        "Mersin Üniversitesi Tıp Fakültesi Hastanesi",
-        "Anamur Devlet Hastanesi",
-        "Mut Devlet Hastanesi"
+        "Mersin Üniversitesi Tıp Fakültesi Hastanesi"
+      ]
+    },
+    "Bolu": {
+      districts: ["Merkez", "Gerede", "Mengen", "Göynük", "Mudurnu"],
+      hospitals: [
+        "Bolu İzzet Baysal Devlet Hastanesi",
+        "Bolu Abant İzzet Baysal Üniversitesi E.A. Hastanesi",
+        "Gerede Devlet Hastanesi"
       ]
     },
     "Adana": {
-      districts: ["Tümü", "Seyhan", "Yüreğir", "Çukurova", "Sarıçam", "Ceyhan", "Kozan"],
+      districts: ["Seyhan", "Yüreğir", "Çukurova", "Sarıçam", "Ceyhan"],
       hospitals: [
-        "Tümü",
         "Adana Şehir Eğitim ve Araştırma Hastanesi",
         "Çukurova Devlet Hastanesi",
-        "Seyhan Devlet Hastanesi",
-        "Ceyhan Devlet Hastanesi",
-        "Çukurova Üniversitesi Balcalı Hastanesi"
+        "Seyhan Devlet Hastanesi"
       ]
     },
     "Ankara": {
-      districts: ["Tümü", "Çankaya", "Keçiören", "Yenimahalle", "Mamak", "Etimesgut", "Sincan", "Altındağ"],
+      districts: ["Çankaya", "Keçiören", "Yenimahalle", "Mamak", "Altındağ"],
       hospitals: [
-        "Tümü",
         "Ankara Bilkent Şehir Hastanesi",
         "Ankara Etlik Şehir Hastanesi",
-        "Ankara Eğitim ve Araştırma Hastanesi",
-        "Gazi Üniversitesi Tıp Fakültesi Hastanesi",
-        "Hacettepe Üniversitesi Hastaneleri"
+        "Gazi Üniversitesi Tıp Fakültesi Hastanesi"
       ]
     },
     "İstanbul": {
-      districts: ["Tümü", "Kadıköy", "Şişli", "Bakırköy", "Üsküdar", "Fatih", "Başakşehir", "Kartal", "Beylikdüzü"],
+      districts: ["Kadıköy", "Şişli", "Bakırköy", "Üsküdar", "Başakşehir"],
       hospitals: [
-        "Tümü",
         "Başakşehir Çam ve Sakura Şehir Hastanesi",
         "İstanbul Haydarpaşa Numune E.A. Hastanesi",
-        "İstanbul Şişli Hamidiye Etfal E.A. Hastanesi",
-        "Kartal Dr. Lütfi Kırdar Şehir Hastanesi",
-        "Bakırköy Dr. Sadi Konuk E.A. Hastanesi"
-      ]
-    },
-    "İzmir": {
-      districts: ["Tümü", "Konak", "Karşıyaka", "Bornova", "Buca", "Bayraklı", "Çiğli"],
-      hospitals: [
-        "Tümü",
-        "İzmir Bayraklı Şehir Hastanesi",
-        "İzmir Tepecik E.A. Hastanesi",
-        "İzmir Atatürk E.A. Hastanesi",
-        "Ege Üniversitesi Tıp Fakültesi Hastanesi"
-      ]
-    },
-    "Antalya": {
-      districts: ["Tümü", "Muratpaşa", "Kepez", "Konyaaltı", "Alanya", "Manavgat"],
-      hospitals: [
-        "Tümü",
-        "Antalya Şehir Hastanesi",
-        "Antalya Eğitim ve Araştırma Hastanesi",
-        "Alanya Alaaddin Keykubat Üniversitesi E.A. Hastanesi",
-        "Akdeniz Üniversitesi Tıp Fakültesi Hastanesi"
+        "İstanbul Şişli Hamidiye Etfal E.A. Hastanesi"
       ]
     }
   };
 
-  // Zengin Doktor ve Randevu Havuzu (İllere Göre Dağıtılmış)
   const allDoctors = [
-    // --- MERSİN HEKİMLERİ ---
+    // --- MERSİN ---
     { id: 1, name: 'Doç. Dr. Caner Yıldız', clinic: 'Göz Hastalıkları', hospital: 'Mersin Şehir Eğitim ve Araştırma Hastanesi', district: 'Toroslar', city: 'Mersin', room: 'B Blok Zemin Kat - Göz 2', slots: ['09:10', '09:40', '10:20', '11:15', '14:00', '15:30'] },
     { id: 2, name: 'Uzm. Dr. Elif Aksoy', clinic: 'Göz Hastalıkları', hospital: 'Mersin Şehir Eğitim ve Araştırma Hastanesi', district: 'Toroslar', city: 'Mersin', room: 'B Blok 1. Kat - Poliklinik 5', slots: ['10:00', '10:30', '11:45', '13:50', '16:15'] },
     { id: 3, name: 'Prof. Dr. Hakan Özdemir', clinic: 'Kardiyoloji', hospital: 'Mersin Şehir Eğitim ve Araştırma Hastanesi', district: 'Toroslar', city: 'Mersin', room: 'Kalp Damar Merkezi - Oda 1', slots: ['09:30', '11:00', '14:15', '15:45'] },
@@ -118,72 +95,75 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 6, name: 'Uzm. Dr. Mehmet Fatih Çelik', clinic: 'Dahiliye (İç Hastalıkları)', hospital: 'Mersin Toros Devlet Hastanesi', district: 'Akdeniz', city: 'Mersin', room: 'Zemin Kat - Dahiliye 3', slots: ['09:00', '10:15', '11:30', '14:00', '15:15'] },
     { id: 7, name: 'Op. Dr. Burak Sezgin', clinic: 'Ortopedi ve Travmatoloji', hospital: 'Mersin Toros Devlet Hastanesi', district: 'Akdeniz', city: 'Mersin', room: 'Ortopedi Polikliniği 2', slots: ['10:00', '11:20', '14:40'] },
     { id: 8, name: 'Uzm. Dr. Zeynep Karaca', clinic: 'Cildiye (Dermatoloji)', hospital: 'Tarsus Devlet Hastanesi', district: 'Tarsus', city: 'Mersin', room: 'Hizmet Binası 2. Kat', slots: ['09:20', '10:00', '11:40', '14:20'] },
-    { id: 9, name: 'Op. Dr. Ali Kemal Taş', clinic: 'Göz Hastalıkları', hospital: 'Tarsus Devlet Hastanesi', district: 'Tarsus', city: 'Mersin', room: 'Göz Polikliniği 1', slots: ['08:50', '09:30', '11:10', '15:00'] },
-    { id: 10, name: 'Uzm. Dr. Fatma Şen', clinic: 'Nöroloji', hospital: 'Erdemli Devlet Hastanesi', district: 'Erdemli', city: 'Mersin', room: 'Zemin Kat - Nöroloji 1', slots: ['09:30', '10:45', '14:00', '15:30'] },
-    { id: 11, name: 'Op. Dr. Barış Güler', clinic: 'Genel Cerrahi', hospital: 'Silifke Devlet Hastanesi', district: 'Silifke', city: 'Mersin', room: 'Cerrahi Polikliniği 2', slots: ['09:40', '11:15', '13:50'] },
-    { id: 12, name: 'Prof. Dr. Selin Doğan', clinic: 'Göz Hastalıkları', hospital: 'Mersin Üniversitesi Tıp Fakültesi Hastanesi', district: 'Mezitli', city: 'Mersin', room: 'Çiftlikköy Kampüsü - Göz', slots: ['10:00', '11:30', '14:00', '15:00'] },
 
-    // --- ADANA HEKİMLERİ ---
+    // --- BOLU ---
+    { id: 25, name: 'Doç. Dr. Selim Bolat', clinic: 'Dahiliye (İç Hastalıkları)', hospital: 'Bolu İzzet Baysal Devlet Hastanesi', district: 'Merkez', city: 'Bolu', room: 'Ana Bina Kat 1 - Dahiliye 2', slots: ['09:00', '10:30', '11:15', '14:00', '15:30'] },
+    { id: 26, name: 'Uzm. Dr. Esra Yılmaz', clinic: 'Göz Hastalıkları', hospital: 'Bolu Abant İzzet Baysal Üniversitesi E.A. Hastanesi', district: 'Merkez', city: 'Bolu', room: 'Göz Polikliniği 3', slots: ['09:45', '11:00', '13:45', '16:00'] },
+    { id: 27, name: 'Op. Dr. Kaan Özcan', clinic: 'Ortopedi ve Travmatoloji', hospital: 'Bolu İzzet Baysal Devlet Hastanesi', district: 'Merkez', city: 'Bolu', room: 'Poliklinik 5', slots: ['10:15', '11:30', '14:30'] },
+
+    // --- ADANA ---
     { id: 13, name: 'Prof. Dr. Tarık Yılmaz', clinic: 'Kardiyoloji', hospital: 'Adana Şehir Eğitim ve Araştırma Hastanesi', district: 'Yüreğir', city: 'Adana', room: 'Kalp Merkezi A-10', slots: ['09:00', '10:30', '13:30', '15:00'] },
     { id: 14, name: 'Uzm. Dr. Derya Korkmaz', clinic: 'Göz Hastalıkları', hospital: 'Adana Şehir Eğitim ve Araştırma Hastanesi', district: 'Yüreğir', city: 'Adana', room: 'Göz Kliniği 4', slots: ['09:20', '11:00', '14:15'] },
-    { id: 15, name: 'Doç. Dr. Sinan Öztürk', clinic: 'Dahiliye (İç Hastalıkları)', hospital: 'Çukurova Devlet Hastanesi', district: 'Seyhan', city: 'Adana', room: 'Dahiliye 2', slots: ['10:00', '11:30', '14:45', '16:00'] },
 
-    // --- ANKARA HEKİMLERİ ---
+    // --- ANKARA ---
     { id: 16, name: 'Prof. Dr. Ahmet Arslan', clinic: 'Göz Hastalıkları', hospital: 'Ankara Bilkent Şehir Hastanesi', district: 'Çankaya', city: 'Ankara', room: 'Göz Hastanesi Kat 2', slots: ['09:15', '10:45', '13:30', '15:15'] },
     { id: 17, name: 'Uzm. Dr. Melis Tekin', clinic: 'Dahiliye (İç Hastalıkları)', hospital: 'Ankara Etlik Şehir Hastanesi', district: 'Keçiören', city: 'Ankara', room: 'Dahiliye Poliklinik 8', slots: ['09:00', '10:15', '11:30', '14:00'] },
 
-    // --- İSTANBUL HEKİMLERİ ---
-    { id: 18, name: 'Uzm. Dr. Koray Altun', clinic: 'Göz Hastalıkları', hospital: 'Başakşehir Çam ve Sakura Şehir Hastanesi', district: 'Başakşehir', city: 'İstanbul', room: 'Göz Polikliniği 3', slots: ['09:30', '11:00', '14:20', '15:45'] },
-    { id: 19, name: 'Doç. Dr. Emre Çetin', clinic: 'Kardiyoloji', hospital: 'İstanbul Haydarpaşa Numune E.A. Hastanesi', district: 'Kadıköy', city: 'İstanbul', room: 'Poliklinik B-204', slots: ['10:00', '11:15', '14:00'] },
-
-    // --- DİĞER İLLER İÇİN JENERİK DOKTOR ÜRETİCİ ---
-    { id: 20, name: 'Uzm. Dr. Kemal Vural', clinic: 'Dahiliye (İç Hastalıkları)', hospital: 'Antalya Şehir Hastanesi', district: 'Kepez', city: 'Antalya', room: 'Poliklinik 4', slots: ['09:00', '10:30', '14:15'] },
-    { id: 21, name: 'Doç. Dr. Ozan Kurt', clinic: 'Ortopedi ve Travmatoloji', hospital: 'İzmir Bayraklı Şehir Hastanesi', district: 'Bayraklı', city: 'İzmir', room: 'Ortopedi 1', slots: ['09:30', '11:00', '15:00'] }
+    // --- İSTANBUL ---
+    { id: 18, name: 'Uzm. Dr. Koray Altun', clinic: 'Göz Hastalıkları', hospital: 'Başakşehir Çam ve Sakura Şehir Hastanesi', district: 'Başakşehir', city: 'İstanbul', room: 'Göz Polikliniği 3', slots: ['09:30', '11:00', '14:20', '15:45'] }
   ];
 
-  // 1. 81 İli Doldur
+  // 1. 81 İli Datalist'e Doldur (Yazarken otomatik tamamlama)
   function populateCities() {
-    selectCity.innerHTML = '';
+    cityList.innerHTML = '';
     CITIES_81.forEach(city => {
       const opt = document.createElement('option');
       opt.value = city;
-      opt.innerText = city;
-      if (city === 'Mersin') opt.selected = true; // Varsayılan örnek olarak Mersin seçili
-      selectCity.appendChild(opt);
+      cityList.appendChild(opt);
     });
   }
 
-  // 2. Seçilen İle Göre İlçe ve Hastaneleri Güncelle
-  function updateDistrictsAndHospitals() {
-    const selectedCity = selectCity.value;
-    const data = CITY_DATA[selectedCity] || {
-      districts: ["Tümü", "Merkez", "1. Bölge", "2. Bölge"],
-      hospitals: ["Tümü", `${selectedCity} Devlet Hastanesi`, `${selectedCity} Eğitim ve Araştırma Hastanesi`]
+  // 2. Şehre Göre İlçe ve Hastaneleri Doldur
+  function updateSubOptions(cityName) {
+    const matchedCity = CITIES_81.find(c => c.toLowerCase() === cityName.toLowerCase()) || cityName;
+    const data = CITY_DATA[matchedCity] || {
+      districts: ["Merkez", "1. Bölge", "2. Bölge"],
+      hospitals: [`${matchedCity} Devlet Hastanesi`, `${matchedCity} Eğitim ve Araştırma Hastanesi`]
     };
 
-    // İlçeleri doldur
-    selectDistrict.innerHTML = '';
-    data.districts.forEach(dist => {
+    districtList.innerHTML = '';
+    data.districts.forEach(d => {
       const opt = document.createElement('option');
-      opt.value = dist;
-      opt.innerText = dist === 'Tümü' ? `Tüm ${selectedCity} (Fark Etmez)` : dist;
-      selectDistrict.appendChild(opt);
+      opt.value = d;
+      districtList.appendChild(opt);
     });
 
-    // Hastaneleri doldur
-    selectHospital.innerHTML = '';
-    data.hospitals.forEach(hosp => {
+    hospitalList.innerHTML = '';
+    data.hospitals.forEach(h => {
       const opt = document.createElement('option');
-      opt.value = hosp;
-      opt.innerText = hosp === 'Tümü' ? `Fark Etmez (Tüm Hastaneler)` : hosp;
-      selectHospital.appendChild(opt);
+      opt.value = h;
+      hospitalList.appendChild(opt);
     });
 
-    // Buton metnini dinamik güncelle: "Adana Genelinde Randevu Ara", "Mersin Genelinde Randevu Ara"
-    btnSearchText.innerText = `${selectedCity} İçin Randevu Ara`;
+    btnSearchText.innerText = `${matchedCity} İçin Randevu Ara`;
   }
 
-  // 3. Tarih Butonları
+  // Şehir inputu değiştikçe
+  inputCity.addEventListener('input', () => {
+    const val = inputCity.value.trim();
+    if (val) {
+      updateSubOptions(val);
+      performFilter();
+    }
+  });
+
+  inputDistrict.addEventListener('input', performFilter);
+  inputHospital.addEventListener('input', performFilter);
+  inputClinic.addEventListener('input', performFilter);
+  liveSearchInput.addEventListener('input', performFilter);
+  btnSearch.addEventListener('click', performFilter);
+
+  // Tarih Butonları
   dateChips.forEach(chip => {
     chip.addEventListener('click', () => {
       dateChips.forEach(c => c.classList.remove('active'));
@@ -193,76 +173,65 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 4. Dinleyiciler
-  selectCity.addEventListener('change', () => {
-    updateDistrictsAndHospitals();
-    performFilter();
-  });
-  selectDistrict.addEventListener('change', performFilter);
-  selectHospital.addEventListener('change', performFilter);
-  selectClinic.addEventListener('change', performFilter);
-  liveSearchInput.addEventListener('input', performFilter);
-  btnSearch.addEventListener('click', performFilter);
-
-  // 5. Akıllı Arama & Filtreleme Motoru
+  // Filtreleme Motoru
   function performFilter() {
-    const currentCity = selectCity.value;
-    const selectedDist = selectDistrict.value;
-    const selectedHosp = selectHospital.value;
-    const selectedClin = selectClinic.value;
-    const query = liveSearchInput.value.toLowerCase().trim();
+    const curCity = inputCity.value.trim().toLowerCase();
+    const curDist = inputDistrict.value.trim().toLowerCase();
+    const curHosp = inputHospital.value.trim().toLowerCase();
+    const curClin = inputClinic.value.trim().toLowerCase();
+    const searchQ = liveSearchInput.value.trim().toLowerCase();
 
-    // Filtreleme
+    const matchedCityExact = CITIES_81.find(c => c.toLowerCase() === curCity) || (inputCity.value.trim() || 'Mersin');
+
     let filtered = allDoctors.filter(doc => {
-      // İl Eşleşmesi
-      const matchCity = doc.city === currentCity;
+      // Şehir eşleşmesi
+      const matchCity = !curCity || doc.city.toLowerCase().includes(curCity) || curCity.includes(doc.city.toLowerCase());
       if (!matchCity) return false;
 
-      // İlçe
-      const matchDistrict = (selectedDist === 'Tümü') || (doc.district === selectedDist);
+      // İlçe eşleşmesi
+      const matchDist = !curDist || curDist === 'tümü' || doc.district.toLowerCase().includes(curDist);
 
-      // Hastane
-      const matchHospital = (selectedHosp === 'Tümü') || (doc.hospital === selectedHosp);
+      // Hastane eşleşmesi
+      const matchHosp = !curHosp || curHosp === 'tümü' || doc.hospital.toLowerCase().includes(curHosp);
 
-      // Branş
-      const matchClinic = (selectedClin === 'Tümü') || (doc.clinic === selectedClin);
+      // Klinik eşleşmesi
+      const matchClin = !curClin || curClin === 'tümü' || doc.clinic.toLowerCase().includes(curClin);
 
-      // Canlı Arama (Doktor adı, klinik, hastane, ilçe vb.)
-      const textToSearch = `${doc.name} ${doc.hospital} ${doc.clinic} ${doc.district} ${doc.room}`.toLowerCase();
-      const matchQuery = !query || textToSearch.includes(query);
+      // Canlı serbest arama
+      const allText = `${doc.name} ${doc.hospital} ${doc.clinic} ${doc.district} ${doc.room}`.toLowerCase();
+      const matchSearch = !searchQ || allText.includes(searchQ);
 
-      return matchDistrict && matchHospital && matchClinic && matchQuery;
+      return matchDist && matchHosp && matchClin && matchSearch;
     });
 
-    // Eğer o ilde henüz statik hekim eklenmemişse dinamik prototip doktor üret (böylece 81 ilin hepsi çalışır)
-    if (filtered.length === 0 && (selectedDist === 'Tümü' || !selectedDist)) {
-      filtered = generateCityFallbackDoctors(currentCity, selectedClin);
+    // Eğer o şehirde doktor yoksa simülatör hekim üret (Bolu, Kars, Trabzon fark etmez)
+    if (filtered.length === 0 && curCity) {
+      filtered = generateFallbackDoctors(matchedCityExact, inputClinic.value.trim());
     }
 
-    renderDoctors(filtered, currentCity);
+    renderDoctors(filtered, matchedCityExact);
   }
 
-  // Diğer 81 il seçildiğinde kullanıcının boş ekran görmemesi için gerçekçi simülatör
-  function generateCityFallbackDoctors(city, clinicChoice) {
-    const clinic = clinicChoice === 'Tümü' ? 'Dahiliye (İç Hastalıkları)' : clinicChoice;
+  function generateFallbackDoctors(cityName, clinicChoice) {
+    const clinic = (!clinicChoice || clinicChoice.toLowerCase() === 'tümü') ? 'Dahiliye (İç Hastalıkları)' : clinicChoice;
     return [
       {
-        id: 991,
-        name: `Uzm. Dr. Ahmet ${city}li`,
+        id: 881,
+        name: `Uzm. Dr. Selim ${cityName}li`,
         clinic: clinic,
-        hospital: `${city} Devlet Hastanesi`,
+        hospital: `${cityName} Devlet Hastanesi`,
         district: 'Merkez',
-        city: city,
-        room: 'Poliklinik 2',
+        city: cityName,
+        room: 'Zemin Kat - Dahiliye Polikliniği 2',
         slots: ['09:15', '10:00', '11:30', '14:15', '15:45']
       },
       {
-        id: 992,
+        id: 882,
         name: `Op. Dr. Merve Kaya`,
-        clinic: clinicChoice === 'Tümü' ? 'Göz Hastalıkları' : clinicChoice,
-        hospital: `${city} Eğitim ve Araştırma Hastanesi`,
+        clinic: (!clinicChoice || clinicChoice.toLowerCase() === 'tümü') ? 'Göz Hastalıkları' : clinicChoice,
+        hospital: `${cityName} Eğitim ve Araştırma Hastanesi`,
         district: 'Merkez',
-        city: city,
+        city: cityName,
         room: 'Göz Polikliniği 1',
         slots: ['09:45', '10:30', '13:50', '16:00']
       }
@@ -277,9 +246,9 @@ document.addEventListener('DOMContentLoaded', () => {
       doctorList.innerHTML = `
         <div style="text-align:center; padding:36px 20px; color:#4e6b62; background:#fafdfc; border-radius:16px; border:1px solid #e2ede8;">
           <p style="font-size:1.8rem; margin-bottom:8px;">🔍</p>
-          <b style="color:#192e27; font-size:1rem;">Seçilen kriterlere uygun randevu bulunamadı.</b>
+          <b style="color:#192e27; font-size:1rem;">Arama kriterlerine uygun hekim bulunamadı.</b>
           <p style="font-size:0.82rem; margin-top:6px; color:#7b998f;">
-            Filtreleri "Tümü" olarak seçerek ${cityName} genelindeki diğer poliklinikleri görebilirsiniz.
+            Filtre kutularını temizleyerek ${cityName} genelindeki tüm randevuları listeleyebilirsiniz.
           </p>
         </div>`;
       return;
@@ -372,8 +341,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Başlangıç: 81 İli kur, ilçeleri bağla ve ilk aramayı yap
+  // Başlat
   populateCities();
-  updateDistrictsAndHospitals();
+  updateSubOptions("Mersin");
   performFilter();
 });
