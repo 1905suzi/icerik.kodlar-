@@ -96,14 +96,11 @@
           <div class="filter-form">
             
             <div class="input-row">
-              <!-- İl Seçimi -->
+              <!-- İl Seçimi (81 İl Dinamik) -->
               <div class="form-group">
                 <label>İl</label>
                 <select id="selectCity">
-                  <option value="Mersin" selected>Mersin (Seçili)</option>
-                  <option value="Adana">Adana</option>
-                  <option value="Ankara">Ankara</option>
-                  <option value="İstanbul">İstanbul</option>
+                  <!-- JS 81 İli dolduracak -->
                 </select>
               </div>
 
@@ -111,33 +108,17 @@
               <div class="form-group">
                 <label>İlçe</label>
                 <select id="selectDistrict">
-                  <option value="Tümü">Tüm Mersin (Fark Etmez)</option>
-                  <option value="Toroslar">Toroslar (Şehir Hastanesi)</option>
-                  <option value="Akdeniz">Akdeniz (Toros Devlet)</option>
-                  <option value="Tarsus">Tarsus</option>
-                  <option value="Erdemli">Erdemli</option>
-                  <option value="Silifke">Silifke</option>
-                  <option value="Mezitli">Mezitli</option>
-                  <option value="Yenişehir">Yenişehir</option>
-                  <option value="Anamur">Anamur</option>
-                  <option value="Mut">Mut</option>
+                  <!-- Seçilen ile göre dinamik dolacak -->
                 </select>
               </div>
             </div>
 
             <div class="input-row">
-              <!-- Hastane Seçimi (Dinamik / Filtrelenebilir) -->
+              <!-- Hastane Seçimi -->
               <div class="form-group">
                 <label>Hastane</label>
                 <select id="selectHospital">
-                  <option value="Tümü">Fark Etmez (Tüm Hastaneler)</option>
-                  <option value="Mersin Şehir Eğitim ve Araştırma Hastanesi">Mersin Şehir Eğitim ve Araştırma Hastanesi</option>
-                  <option value="Mersin Toros Devlet Hastanesi">Mersin Toros Devlet Hastanesi</option>
-                  <option value="Tarsus Devlet Hastanesi">Tarsus Devlet Hastanesi</option>
-                  <option value="Erdemli Devlet Hastanesi">Erdemli Devlet Hastanesi</option>
-                  <option value="Silifke Devlet Hastanesi">Silifke Devlet Hastanesi</option>
-                  <option value="Anamur Devlet Hastanesi">Anamur Devlet Hastanesi</option>
-                  <option value="Mersin Üniversitesi Tıp Fakültesi Hastanesi">Mersin Üniversitesi Tıp Fakültesi Hastanesi</option>
+                  <!-- Seçilen ile göre hastaneler dolacak -->
                 </select>
               </div>
 
@@ -155,15 +136,17 @@
                   <option value="Nöroloji">Nöroloji</option>
                   <option value="Çocuk Sağlığı ve Hastalıkları">Çocuk Sağlığı</option>
                   <option value="Genel Cerrahi">Genel Cerrahi</option>
+                  <option value="Kadın Hastalıkları ve Doğum">Kadın Hastalıkları ve Doğum</option>
+                  <option value="Üroloji">Üroloji</option>
                 </select>
               </div>
             </div>
 
-            <!-- Canlı Arama Çubuğu (Doktor Adı veya Hastane Arama) -->
+            <!-- Canlı Arama Çubuğu -->
             <div class="form-group">
               <label>Hızlı Arama (Doktor adı, klinik veya oda)</label>
               <div class="live-search-box">
-                <input type="text" id="liveSearchInput" placeholder="Örn: 'Mehmet', 'Göz', 'Şehir Hastanesi'..." autocomplete="off">
+                <input type="text" id="liveSearchInput" placeholder="Örn: 'Mehmet', 'Göz', 'Devlet Hastanesi'..." autocomplete="off">
               </div>
             </div>
 
@@ -183,7 +166,7 @@
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
               </svg>
-              <span>Mersin Genelinde Randevu Ara</span>
+              <span id="btnSearchText">Randevu Ara</span>
             </button>
 
           </div>
