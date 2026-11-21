@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SNC | Akıllı Satın Alma Platformu — Örnek Anasayfa</title>
+  <style>
+    :root {
+      --green-950: #072613;
+      --green-900: #0b3d1e;
+      --green-800: #11552b;
+      --green-700: #166e37;
+      --green-600: #1d8a45;
+      --leaf-500: #66b817;
+      --leaf-400: #7dd126;
+      --mint-100: #e8f6ec;
+      --mint-50: #f3faf5;
+      --bg: #f6faf7;
+      --surface: #ffffff;
+      --border: #d9e8dd;
+      --border-strong: #b9d7c2;
+      --ink: #0d2115;
+      --ink-muted: #4b6355;
+      --ink-soft: #6c8476;
+      --shadow-sm: 0 2px 8px rgba(11, 61, 30, 0.05);
+      --shadow-md: 0 10px 30px rgba(11, 61, 30, 0.08);
+      --shadow-lg: 0 18px 45px rgba(11, 61, 30, 0.14);
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 22px;
+      --radius-pill: 999px;
+      --max-w: 1200px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--ink);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Accessible Focus Ring (WCAG 1.4.11 >= 3:1) */
+    :where(a, button, [tabindex]):focus-visible {
+      outline: 2.5px solid var(--leaf-500);
+      outline-offset: 3px;
+    }
+
+    /* ==================== TOP GREEN NAVBAR ==================== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: linear-gradient(110deg, var(--green-950) 0%, var(--green-900) 48%, var(--green-800) 100%);
+      border-bottom: 1px solid rgba(125, 209, 38, 0.28);
+      box-shadow: 0 8px 28px rgba(7, 38, 19, 0.22);
+      backdrop-filter: blur(12px);
+    }
+
+    .header-inner {
+      max-inline-size: var(--max-w);
+      margin-inline: auto;
+      padding-block: 0.75rem;
+      padding-inline: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      text-decoration: none;
+      color: #ffffff;
+      min-inline-size: 0;
+    }
+
+    .brand-logo-wrap {
+      background: #ffffff;
+      padding: 0.34rem 0.65rem;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18), inset 0 0 0 1px rgba(102, 184, 23, 0.2);
+      flex-shrink: 0;
+      transition: transform 180ms ease-out;
+    }
+
+    .brand:hover .brand-logo-wrap {
+      transform: translateY(-1px);
+    }
+
+    .brand-logo-wrap img {
+      display: block;
+      height: 34px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.12rem;
+    }
+
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .brand-title .divider {
+      color: var(--leaf-400);
+      font-weight: 400;
+    }
+
+    .brand-subtitle {
+      font-size: 0.74rem;
+      font-weight: 500;
+      color: rgba(232, 246, 236, 0.84);
+      letter-spacing: 0.01em;
+    }
+
+    .site-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .nav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .nav-link {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      padding: 0.48rem 0.85rem;
+      border-radius: var(--radius-pill);
+      color: rgba(255, 255, 255, 0.86);
+      text-decoration: none;
+      font-size: 0.86rem;
+      font-weight: 500;
+      transition: background-color 160ms ease-out, color 160ms ease-out;
+    }
+
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.11);
+      color: #ffffff;
+    }
+
+    .nav-link[aria-current="page"] {
+      background: rgba(125, 209, 38, 0.18);
+      color: #ffffff;
+      font-weight: 600;
+      box-shadow: inset 0 -2px 0 var(--leaf-400);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .header-meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.36rem 0.78rem;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #e8f6ec;
+      font-size: 0.76rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--leaf-400);
+      box-shadow: 0 0 0 3px rgba(125, 209, 38, 0.25);
+    }
+
+    /* Compact Header CTA Button */
+    .btn-header-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.52rem 1.05rem;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, var(--leaf-500), var(--leaf-400));
+      color: var(--green-950);
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(102, 184, 23, 0.32);
+      transition: transform 180ms ease-out, box-shadow 180ms ease-out, filter 180ms ease-out;
+    }
+
+    .btn-header-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(125, 209, 38, 0.45);
+      filter: brightness(1.05);
+    }
+
+    .btn-header-cta:active {
+      transform: scale(0.97);
+    }
+
+    .btn-header-cta svg {
+      transition: transform 180ms ease-out;
+    }
+
+    .btn-header-cta:hover svg {
+      transform: translateX(3px);
+    }
+
+    /* ==================== HERO SECTION ==================== */
+    .hero {
+      position: relative;
+      padding-block: 3.5rem 2.75rem;
+      padding-inline: 1.5rem;
+      background:
+        radial-gradient(ellipse 65% 55% at 15% 0%, rgba(102, 184, 23, 0.12), transparent 65%),
+        radial-gradient(ellipse 55% 50% at 90% 10%, rgba(22, 110, 55, 0.11), transparent 65%),
+        linear-gradient(180deg, #eff8f2 0%, var(--bg) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-inner {
+      max-inline-size: var(--max-w);
+      margin-inline: auto;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.34rem 0.85rem;
+      border-radius: var(--radius-pill);
+      background: #ffffff;
+      border: 1px solid var(--border-strong);
+      color: var(--green-800);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      box-shadow: var(--shadow-sm);
+      margin-block-end: 1.15rem;
+    }
+
+    .hero h1 {
+      margin: 0 0 1rem;
+      font-size: clamp(2rem, 3.4vw, 2.85rem);
+      font-weight: 800;
+      line-height: 1.14;
+      letter-spacing: -0.028em;
+      color: var(--green-950);
+    }
+
+    .hero h1 .highlight {
+      background: linear-gradient(120deg, var(--green-700) 0%, var(--leaf-500) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-desc {
+      margin: 0 0 1.85rem;
+      font-size: 1.02rem;
+      color: var(--ink-muted);
+      max-inline-size: 56ch;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.9rem;
+      margin-block-end: 2rem;
+    }
+
+    /* SIGNATURE HOVER-ANIMATED START BUTTON */
+    .btn-start-primary {
+      position: relative;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.95rem 1.85rem;
+      border: 1px solid rgba(125, 209, 38, 0.45);
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--green-900) 0%, var(--green-700) 55%, #1d8a45 100%);
+      color: #ffffff;
+      font-size: 0.98rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      box-shadow: 0 10px 26px rgba(17, 85, 43, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+      transition:
+        transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 220ms ease-out;
+    }
+
+    /* Shimmer sweep overlay */
+    .btn-start-primary::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        115deg,
+        transparent 0%,
+        transparent 35%,
+        rgba(255, 255, 255, 0.28) 50%,
+        transparent 65%,
+        transparent 100%
+      );
+      transform: translateX(-120%);
+      transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .btn-start-primary:hover {
+      transform: translateY(-3px);
+      border-color: var(--leaf-400);
+      box-shadow: 0 16px 34px rgba(22, 110, 55, 0.38), 0 0 0 4px rgba(102, 184, 23, 0.16);
+    }
+
+    .btn-start-primary:hover::after {
+      transform: translateX(120%);
+    }
+
+    .btn-start-primary:active {
+      transform: translateY(-1px) scale(0.975);
+      box-shadow: 0 6px 16px rgba(22, 110, 55, 0.28);
+    }
+
+    .btn-start-primary .btn-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(125, 209, 38, 0.22);
+      transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), background-color 220ms ease-out;
+    }
+
+    .btn-start-primary:hover .btn-arrow {
+      transform: translateX(4px);
+      background: var(--leaf-500);
+      color: var(--green-950);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.92rem 1.35rem;
+      border-radius: 14px;
+      border: 1px solid var(--border-strong);
+      background: #ffffff;
+      color: var(--green-900);
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 160ms ease-out, border-color 160ms ease-out, transform 160ms ease-out;
+    }
+
+    .btn-secondary:hover {
+      background: var(--mint-50);
+      border-color: var(--green-700);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.98);
+    }
+
+    /* Hero inline trust strip */
+    .hero-trust {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      padding-block-start: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .trust-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .trust-val {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--green-900);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .trust-lbl {
+      font-size: 0.76rem;
+      color: var(--ink-soft);
+      font-weight: 500;
+    }
+
+    /* ==================== INTERACTIVE HERO PREVIEW CARD ==================== */
+    .preview-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.35rem;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .preview-card::before {
+      content: "";
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--green-800), var(--leaf-500));
+    }
+
+    .preview-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-block-end: 1rem;
+    }
+
+    .preview-label {
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--green-700);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .product-tabs {
+      display: inline-flex;
+      background: var(--mint-50);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 3px;
+      gap: 2px;
+    }
+
+    .product-tab {
+      border: none;
+      background: transparent;
+      color: var(--ink-muted);
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 0.3rem 0.7rem;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: background-color 150ms ease-out, color 150ms ease-out, transform 120ms ease-out;
+    }
+
+    .product-tab:hover {
+      color: var(--green-900);
+    }
+
+    .product-tab[aria-pressed="true"] {
+      background: var(--green-800);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(17, 85, 43, 0.25);
+    }
+
+    .signal-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-block-end: 1rem;
+    }
+
+    .signal-price-wrap .product-name {
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      font-weight: 600;
+    }
+
+    .signal-price {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--green-950);
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.15;
+    }
+
+    .signal-price span {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+    }
+
+    .decision-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.42rem 0.85rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .decision-buy {
+      background: #e3f7e8;
+      color: #0e602c;
+      border: 1px solid #a9e0b8;
+    }
+
+    .decision-normal {
+      background: #eef6ff;
+      color: #17528c;
+      border: 1px solid #b9d7f5;
+    }
+
+    .decision-wait {
+      background: #fff4e5;
+      color: #9a4a00;
+      border: 1px solid #f7cf99;
+    }
+
+    .chart-box {
+      background: linear-gradient(180deg, var(--mint-50) 0%, #ffffff 100%);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 0.85rem 0.9rem 0.65rem;
+      margin-block-end: 1rem;
+    }
+
+    .chart-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--ink-soft);
+      margin-block-end: 0.4rem;
+      font-weight: 600;
+    }
+
+    .chart-svg {
+      width: 100%;
+      height: 108px;
+      display: block;
+    }
+
+    .hal-band {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+    }
+
+    .band-cell {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.55rem 0.7rem;
+    }
+
+    .band-cell span {
+      display: block;
+      font-size: 0.69rem;
+      color: var(--ink-soft);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .band-cell strong {
+      font-size: 0.92rem;
+      color: var(--green-950);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ==================== SECTIONS COMMON ==================== */
+    .section {
+      max-inline-size: var(--max-w);
+      margin-inline: auto;
+      padding-block: 3.25rem;
+      padding-inline: 1.5rem;
+    }
+
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-block-end: 1.85rem;
+    }
+
+    .section-kicker {
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--green-700);
+      margin-block-end: 0.35rem;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: clamp(1.45rem, 2.2vw, 1.85rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--green-950);
+    }
+
+    .section-sub {
+      margin: 0.35rem 0 0;
+      color: var(--ink-muted);
+      font-size: 0.95rem;
+      max-inline-size: 56ch;
+    }
+
+    /* ==================== CAPABILITIES BENTO GRID ==================== */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+
+    .bento-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.45rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1.15rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform 200ms ease-out, box-shadow 200ms ease-out, border-color 200ms ease-out;
+    }
+
+    .bento-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-strong);
+    }
+
+    .bento-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.95rem;
+    }
+
+    .icon-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--mint-100), #d8f1e0);
+      color: var(--green-800);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid rgba(22, 110, 55, 0.14);
+    }
+
+    .bento-card h3 {
+      margin: 0 0 0.3rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--green-950);
+    }
+
+    .bento-card p {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--ink-muted);
+    }
+
+    /* Visual micro-widgets inside bento cards (replaces dry text!) */
+    .micro-visual {
+      background: var(--mint-50);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.8rem 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .mini-chip {
+      font-size: 0.73rem;
+      font-weight: 700;
+      padding: 0.28rem 0.62rem;
+      border-radius: var(--radius-pill);
+      background: #ffffff;
+      border: 1px solid var(--border);
+      color: var(--green-900);
+    }
+
+    .mini-chip.green {
+      background: var(--green-800);
+      border-color: var(--green-800);
+      color: #ffffff;
+    }
+
+    .mini-chip.leaf {
+      background: #ebf8dc;
+      border-color: #bfe495;
+      color: #2f6106;
+    }
+
+    .scale-bar-wrap {
+      flex: 1;
+      min-inline-size: 170px;
+    }
+
+    .scale-track {
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #2ca54e 0%, #9ad138 50%, #e69d24 100%);
+      position: relative;
+      margin-block: 0.35rem;
+    }
+
+    .scale-marker {
+      position: absolute;
+      top: 50%;
+      left: 34%;
+      transform: translate(-50%, -50%);
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 3px solid var(--green-900);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .scale-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.69rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+    }
+
+    /* ==================== KPI BAND ==================== */
+    .kpi-band {
+      background: linear-gradient(135deg, var(--green-950) 0%, var(--green-900) 60%, var(--green-800) 100%);
+      border-radius: var(--radius-lg);
+      padding: 1.6rem;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      box-shadow: var(--shadow-lg);
+      color: #ffffff;
+    }
+
+    .kpi-item {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 1.1rem 1.15rem;
+      transition: background-color 180ms ease-out, border-color 180ms ease-out;
+    }
+
+    .kpi-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(125, 209, 38, 0.45);
+    }
+
+    .kpi-kicker {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: rgba(232, 246, 236, 0.72);
+      font-weight: 600;
+    }
+
+    .kpi-value {
+      font-size: 1.45rem;
+      font-weight: 800;
+      margin: 0.25rem 0 0.35rem;
+      color: #ffffff;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .kpi-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--leaf-400);
+    }
+
+    /* ==================== 6 PANELS GRID ==================== */
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .filter-pill {
+      border: 1px solid var(--border-strong);
+      background: #ffffff;
+      color: var(--ink-muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.45rem 0.95rem;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: background-color 150ms ease-out, color 150ms ease-out, border-color 150ms ease-out, transform 120ms ease-out;
+    }
+
+    .filter-pill:hover {
+      border-color: var(--green-700);
+      color: var(--green-900);
+    }
+
+    .filter-pill[aria-pressed="true"] {
+      background: var(--green-800);
+      border-color: var(--green-800);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(17, 85, 43, 0.22);
+    }
+
+    .filter-pill:active {
+      transform: scale(0.97);
+    }
+
+    .panels-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+
+    .panel-card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: transform 200ms ease-out, box-shadow 200ms ease-out, border-color 200ms ease-out;
+    }
+
+    .panel-card::before {
+      content: "";
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline: 0;
+      height: 3.5px;
+      background: linear-gradient(90deg, var(--green-800), var(--leaf-500));
+      opacity: 0.45;
+      transition: opacity 200ms ease-out;
+    }
+
+    .panel-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-strong);
+    }
+
+    .panel-card:hover::before {
+      opacity: 1;
+    }
+
+    .panel-card.hidden-card {
+      display: none;
+    }
+
+    .panel-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .panel-num {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: var(--green-800);
+      background: var(--mint-100);
+      padding: 0.26rem 0.62rem;
+      border-radius: var(--radius-pill);
+    }
+
+    .panel-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--mint-50);
+      border: 1px solid var(--border);
+      color: var(--green-800);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .panel-card h3 {
+      margin: 0.75rem 0 0.4rem;
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--green-950);
+    }
+
+    .panel-card p {
+      margin: 0;
+      font-size: 0.86rem;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+
+    .panel-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-block-start: 0.9rem;
+    }
+
+    .panel-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--green-900);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.22rem 0.55rem;
+    }
+
+    .panel-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      align-self: flex-start;
+      border: none;
+      background: transparent;
+      padding: 0.3rem 0;
+      color: var(--green-700);
+      font-size: 0.83rem;
+      font-weight: 700;
+      cursor: pointer;
+      opacity: 0.82;
+      transition: color 160ms ease-out, opacity 160ms ease-out, transform 160ms ease-out;
+    }
+
+    .panel-card:hover .panel-action,
+    .panel-card:focus-within .panel-action {
+      opacity: 1;
+      color: var(--green-900);
+      transform: translateX(3px);
+    }
+
+    @media (hover: none) {
+      .panel-action {
+        opacity: 1;
+      }
+    }
+
+    /* ==================== FOOTER CTA ==================== */
+    .footer-cta-wrap {
+      max-inline-size: var(--max-w);
+      margin-inline: auto;
+      padding: 0 1.5rem 3.5rem;
+    }
+
+    .footer-cta {
+      background: linear-gradient(125deg, var(--green-950) 0%, var(--green-900) 58%, var(--green-800) 100%);
+      border-radius: var(--radius-lg);
+      padding: 2rem 2.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      border: 1px solid rgba(125, 209, 38, 0.28);
+      box-shadow: var(--shadow-lg);
+      color: #ffffff;
+    }
+
+    .footer-cta-left {
+      display: flex;
+      align-items: center;
+      gap: 1.15rem;
+    }
+
+    .footer-cta h2 {
+      margin: 0 0 0.25rem;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .footer-cta p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: rgba(232, 246, 236, 0.82);
+    }
+
+    .btn-footer-start {
+      position: relative;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.9rem 1.7rem;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--leaf-500) 0%, var(--leaf-400) 100%);
+      color: var(--green-950);
+      font-size: 0.96rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(102, 184, 23, 0.34);
+      transition: transform 200ms ease-out, box-shadow 200ms ease-out, filter 200ms ease-out;
+    }
+
+    .btn-footer-start:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 32px rgba(125, 209, 38, 0.45);
+      filter: brightness(1.04);
+    }
+
+    .btn-footer-start:active {
+      transform: scale(0.975);
+    }
+
+    /* ==================== NATIVE DIALOG MODAL ==================== */
+    dialog.panel-dialog {
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 0;
+      max-inline-size: 520px;
+      inline-size: calc(100dvw - 2rem);
+      box-shadow: 0 24px 60px rgba(7, 38, 19, 0.28);
+      background: #ffffff;
+      color: var(--ink);
+    }
+
+    dialog.panel-dialog::backdrop {
+      background: rgba(7, 38, 19, 0.52);
+      backdrop-filter: blur(4px);
+    }
+
+    .dialog-head {
+      background: linear-gradient(120deg, var(--green-950), var(--green-800));
+      color: #ffffff;
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .dialog-head h3 {
+      margin: 0;
+      font-size: 1.12rem;
+    }
+
+    .dialog-close {
+      border: none;
+      background: rgba(255, 255, 255, 0.14);
+      color: #ffffff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 150ms ease-out;
+    }
+
+    .dialog-close:hover {
+      background: rgba(255, 255, 255, 0.26);
+    }
+
+    .dialog-body {
+      padding: 1.4rem;
+    }
+
+    .dialog-body p {
+      margin: 0 0 1rem;
+      font-size: 0.93rem;
+      color: var(--ink-muted);
+    }
+
+    .dialog-foot {
+      padding: 0 1.4rem 1.35rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.65rem;
+    }
+
+    /* Toast feedback */
+    .toast {
+      position: fixed;
+      inset-block-end: 1.5rem;
+      inset-inline-end: 1.5rem;
+      background: var(--green-950);
+      color: #ffffff;
+      border: 1px solid rgba(125, 209, 38, 0.45);
+      padding: 0.85rem 1.2rem;
+      border-radius: 12px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: opacity 220ms ease-out, transform 220ms ease-out;
+      z-index: 100;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 980px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+      }
+      .kpi-band {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .panels-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .site-nav {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .bento-grid,
+      .panels-grid,
+      .kpi-band {
+        grid-template-columns: 1fr;
+      }
+      .header-meta-pill {
+        display: none;
+      }
+      .brand-subtitle {
+        display: none;
+      }
+      .footer-cta {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== YEŞİL ÜST BAR (SOL MENÜ TAMAMEN KALDIRILDI) ==================== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#anasayfa" aria-label="SNC Akıllı Satın Alma Platformu Anasayfa">
+        <span class="brand-logo-wrap">
+          <img src="data:image/webp;base64,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" alt="SNC Logo" />
+        </span>
+        <span class="brand-text">
+          <span class="brand-title">SNC <span class="divider">|</span> Akıllı Satın Alma</span>
+          <span class="brand-subtitle">Çok Şubeli Restoran Zinciri Karar Destek Sistemi</span>
+        </span>
+      </a>
+
+      <nav class="site-nav" aria-label="Ana gezinme">
+        <ul class="nav-list">
+          <li><a class="nav-link" href="#anasayfa" aria-current="page">Anasayfa</a></li>
+          <li><a class="nav-link" href="#yetenekler">Yetenekler</a></li>
+          <li><a class="nav-link" href="#veri-altyapisi">Veri Altyapısı</a></li>
+          <li><a class="nav-link" href="#paneller">Paneller (6)</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <span class="header-meta-pill">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          12 Şube &bull; 25 Ürün
+        </span>
+        <button type="button" class="btn-header-cta" data-start-action>
+          <span>Panellere Geç</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="anasayfa">
+    <!-- ==================== HERO ==================== -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" aria-hidden="true">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+              <path d="m2 17 10 5 10-5"></path>
+              <path d="m2 12 10 5 10-5"></path>
+            </svg>
+            Karar Destek Platformu &bull; 2006–2025 İzmir Hal Verisi
+          </div>
+
+          <h1>
+            Hangi ürünü, <span class="highlight">ne zaman ve hangi fiyattan</span> almalısınız?
+          </h1>
+
+          <p class="hero-desc">
+            20 yıllık İzmir Büyükşehir Belediyesi Hal Fiyatları ve TCMB TÜFE enflasyon verilerini
+            yapay zekâ modelleriyle birleştirerek çok şubeli sebze ve meyve tedarik kararlarınızı optimize eder.
+          </p>
+
+          <div class="hero-cta-row">
+            <button type="button" class="btn-start-primary" data-start-action>
+              <span>BAŞLA — Karar Destek Panellerine Geç</span>
+              <span class="btn-arrow" aria-hidden="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14"></path>
+                  <path d="m12 5 7 7-7 7"></path>
+                </svg>
+              </span>
+            </button>
+
+            <a class="btn-secondary" href="#paneller">
+              <span>6 Paneli İncele</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 5v14"></path>
+                <path d="m19 12-7 7-7-7"></path>
+              </svg>
+            </a>
+          </div>
+
+          <div class="hero-trust">
+            <div class="trust-item">
+              <span class="trust-val">131.888</span>
+              <span class="trust-lbl">İzmir Hal Fiyat Kaydı</span>
+            </div>
+            <div class="trust-item">
+              <span class="trust-val">25 Ürün</span>
+              <span class="trust-lbl">Sebze, Meyve &amp; İthal</span>
+            </div>
+            <div class="trust-item">
+              <span class="trust-val">12 Şube</span>
+              <span class="trust-lbl">Dinamik Bütçe &amp; Reçete</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- İNTERAKTİF CANLI SİNYAL ÖNİZLEME KARTI -->
+        <aside class="preview-card" aria-label="Örnek Yapay Zekâ Alım Sinyali Önizlemesi">
+          <div class="preview-top">
+            <span class="preview-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                <polyline points="16 7 22 7 22 13"></polyline>
+              </svg>
+              Örnek AI Alım Sinyali
+            </span>
+            <div class="product-tabs" role="group" aria-label="Örnek ürün seçimi">
+              <button type="button" class="product-tab" data-product="ananas" aria-pressed="true">Ananas</button>
+              <button type="button" class="product-tab" data-product="domates" aria-pressed="false">Domates</button>
+              <button type="button" class="product-tab" data-product="biber" aria-pressed="false">Biber</button>
+            </div>
+          </div>
+
+          <div class="signal-header">
+            <div class="signal-price-wrap">
+              <div class="product-name" id="previewName">İthal • Ananas (Adet)</div>
+              <div class="signal-price" id="previewPrice">78,40 <span>₺ / ort.</span></div>
+            </div>
+            <span class="decision-badge decision-buy" id="previewBadge">ŞİMDİ AL &bull; %9,2 Dip</span>
+          </div>
+
+          <div class="chart-box">
+            <div class="chart-meta">
+              <span id="previewHorizon">1 Haftalık &amp; 1 Aylık AI Projeksiyonu</span>
+              <span id="previewDelta" style="color: #166e37;">+11,4% yükseliş riski</span>
+            </div>
+            <svg class="chart-svg" viewBox="0 0 360 110" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#66b817" stop-opacity="0.32" />
+                  <stop offset="100%" stop-color="#66b817" stop-opacity="0.02" />
+                </linearGradient>
+              </defs>
+              <!-- Grid lines -->
+              <line x1="0" y1="28" x2="360" y2="28" stroke="#dcece1" stroke-dasharray="3 4" />
+              <line x1="0" y1="62" x2="360" y2="62" stroke="#dcece1" stroke-dasharray="3 4" />
+              <line x1="0" y1="94" x2="360" y2="94" stroke="#dcece1" stroke-dasharray="3 4" />
+              <!-- Forecast divider -->
+              <line x1="238" y1="8" x2="238" y2="104" stroke="#166e37" stroke-opacity="0.35" stroke-dasharray="4 3" />
+              <path id="chartArea" d="M 0 74 C 45 70, 80 62, 125 68 C 165 74, 200 84, 238 82 C 278 70, 315 44, 360 28 L 360 108 L 0 108 Z" fill="url(#areaGrad)" />
+              <path id="chartHist" d="M 0 74 C 45 70, 80 62, 125 68 C 165 74, 200 84, 238 82" fill="none" stroke="#0b3d1e" stroke-width="2.8" stroke-linecap="round" />
+              <path id="chartPred" d="M 238 82 C 278 70, 315 44, 360 28" fill="none" stroke="#66b817" stroke-width="3" stroke-dasharray="6 4" stroke-linecap="round" />
+              <circle id="chartDot" cx="238" cy="82" r="5" fill="#ffffff" stroke="#0b3d1e" stroke-width="3" />
+            </svg>
+          </div>
+
+          <div class="hal-band">
+            <div class="band-cell">
+              <span>Hal Taban</span>
+              <strong id="bandMin">69,00 ₺</strong>
+            </div>
+            <div class="band-cell">
+              <span>Hal Ortalama</span>
+              <strong id="bandAvg">78,40 ₺</strong>
+            </div>
+            <div class="band-cell">
+              <span>Hal Tavan</span>
+              <strong id="bandMax">92,50 ₺</strong>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ==================== BU SİTEDE NELER YAPILABİLİR? (BENTO KARTLAR) ==================== -->
+    <section class="section" id="yetenekler">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Platform Yetenekleri</div>
+          <h2 class="section-title">Bu Sitede Neler Yapılabilir?</h2>
+          <p class="section-sub">
+            Satın alma yöneticileri ve mutfak şefleri için karmaşık hal verilerini anında aksiyon alınabilir kararlara dönüştüren 4 temel modül.
+          </p>
+        </div>
+      </div>
+
+      <div class="bento-grid">
+        <!-- 1 -->
+        <article class="bento-card">
+          <div class="bento-head">
+            <span class="icon-badge" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 3v18h18"></path>
+                <path d="m19 9-5 5-4-4-3 3"></path>
+              </svg>
+            </span>
+            <div>
+              <h3>Enflasyondan Arındırılmış Reel Fiyat Analizi</h3>
+              <p>20 yıllık hal fiyatlarını TCMB TÜFE ile bugünün alım gücüne indirgeyerek yanıltıcı enflasyon etkisini temizler; gerçek mevsimsel dip ve zirveleri ortaya çıkarır.</p>
+            </div>
+          </div>
+          <div class="micro-visual">
+            <div class="pill-row">
+              <span class="mini-chip green">TÜFE Reel Baz</span>
+              <span class="mini-chip">20 Yıllık Seri</span>
+              <span class="mini-chip leaf">Mevsimsel Dip &amp; Zirve</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2 -->
+        <article class="bento-card">
+          <div class="bento-head">
+            <span class="icon-badge" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"></path>
+                <path d="M16 14a4 4 0 0 1 4 4v2H4v-2a4 4 0 0 1 4-4"></path>
+                <circle cx="12" cy="14" r="1"></circle>
+              </svg>
+            </span>
+            <div>
+              <h3>1 Haftalık &amp; 1 Aylık Yapay Zekâ Fiyat Tahmini</h3>
+              <p>Eğitilmiş makine öğrenmesi modelleriyle hedef alım tarihi için fiyat projeksiyonu, güven bandı ve net tedarik kararı üretir.</p>
+            </div>
+          </div>
+          <div class="micro-visual">
+            <div class="pill-row">
+              <span class="mini-chip green">Şimdi Al</span>
+              <span class="mini-chip">Normal Tedarik</span>
+              <span class="mini-chip leaf">Alımı Ertele</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 3 -->
+        <article class="bento-card">
+          <div class="bento-head">
+            <span class="icon-badge" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3v18"></path>
+                <path d="m16 7 3 5-3 5"></path>
+                <path d="m8 7-3 5 3 5"></path>
+              </svg>
+            </span>
+            <div>
+              <h3>Tedarikçi Teklif Denetimi &amp; Pazarlık Rehberi</h3>
+              <p>Tedarikçiden gelen fiyat teklifini o günkü Hal Taban, Ortalama ve Tavan fiyatlarıyla kıyaslayarak kabul, pazarlık veya ret önerisi sunar.</p>
+            </div>
+          </div>
+          <div class="micro-visual">
+            <div class="scale-bar-wrap">
+              <div class="scale-labels">
+                <span>Taban (Kabul)</span>
+                <span>Ortalama (Pazarlık)</span>
+                <span>Tavan (Ret)</span>
+              </div>
+              <div class="scale-track" aria-hidden="true">
+                <span class="scale-marker"></span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4 -->
+        <article class="bento-card">
+          <div class="bento-head">
+            <span class="icon-badge" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                <path d="M3 10h18"></path>
+                <path d="M9 20V10"></path>
+              </svg>
+            </span>
+            <div>
+              <h3>Çok Şubeli Bütçe, Sözleşme &amp; Reçete Simülasyonu</h3>
+              <p>Şube sayısı, zayi/bozulma ve soğuk depo maliyetlerine göre yıllık sözleşme senaryolarını kıyaslar; reçetelerin 12 aylık porsiyon maliyetini hesaplar.</p>
+            </div>
+          </div>
+          <div class="micro-visual">
+            <div class="pill-row">
+              <span class="mini-chip">Spot vs Akıllı Alım</span>
+              <span class="mini-chip leaf">Soğuk Depo &amp; Zayi</span>
+              <span class="mini-chip green">12 Aylık Reçete</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==================== VERİ ALTYAPISI (KOYU YEŞİL METRİK BANDI) ==================== -->
+    <section class="section" id="veri-altyapisi" style="padding-block: 0.5rem 2rem;">
+      <div class="kpi-band" aria-label="Platform Veri ve Model Özeti">
+        <div class="kpi-item">
+          <div class="kpi-kicker">Veri Kapsamı</div>
+          <div class="kpi-value">131.888 Kayıt</div>
+          <div class="kpi-tag">2006–2025 İzmir Hal Verisi</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-kicker">İncelenen Ürün</div>
+          <div class="kpi-value">25 Temel Ürün</div>
+          <div class="kpi-tag">Sebze &bull; Meyve &bull; İthal</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-kicker">Tahmin Motoru</div>
+          <div class="kpi-value">1 Hafta &amp; 1 Ay</div>
+          <div class="kpi-tag">Gradient Boosting + K-Means</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-kicker">Simülasyon Kapsamı</div>
+          <div class="kpi-value">12 Aktif Şube</div>
+          <div class="kpi-tag">Dinamik Bütçe &amp; Reçete</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== KARAR DESTEK PANELLERİ (6 KART) ==================== -->
+    <section class="section" id="paneller">
+      <div class="section-head">
+        <div>
+          <div class="section-kicker">Uzman Modüller</div>
+          <h2 class="section-title">Karar Destek Panelleri</h2>
+          <p class="section-sub">
+            BAŞLA butonuna tıkladığınızda doğrudan erişebileceğiniz 6 uzman karar destek paneli.
+          </p>
+        </div>
+
+        <div class="filter-pills" role="group" aria-label="Panel kategorisi filtresi">
+          <button type="button" class="filter-pill" data-filter="all" aria-pressed="true">Tümü (6)</button>
+          <button type="button" class="filter-pill" data-filter="analiz" aria-pressed="false">İzleme &amp; Analiz</button>
+          <button type="button" class="filter-pill" data-filter="karar" aria-pressed="false">Strateji &amp; Karar</button>
+          <button type="button" class="filter-pill" data-filter="simulasyon" aria-pressed="false">Simülasyon &amp; Menü</button>
+        </div>
+      </div>
+
+      <div class="panels-grid">
+        <!-- Panel 1 -->
+        <article class="panel-card" data-category="analiz">
+          <div>
+            <div class="panel-top">
+              <span class="panel-num">01 &bull; PANEL</span>
+              <span class="panel-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
+                  <rect x="3" y="3" width="7" height="9" rx="1.5"></rect>
+                  <rect x="14" y="3" width="7" height="5" rx="1.5"></rect>
+                  <rect x="14" y="12" width="7" height="9" rx="1.5"></rect>
+                  <rect x="3" y="16" width="7" height="5" rx="1.5"></rect>
+                </svg>
+              </span>
+            </div>
+            <h3>Panel &amp; Özet</h3>
+            <p>Kısa dönem fiyat şoku uyarıları, temel piyasa göstergeleri ve tek tıkla indirilebilen Pazartesi Sabahı Yönetici Brifingi.</p>
+            <div class="panel-tags">
+              <span class="panel-tag">Fiyat Şoku Uyarısı</span>
+              <span class="panel-tag">.pdf / .txt Brifing</span>
+              <span class="panel-tag">AI Performans</span>
+            </div>
+          </div>
+          <button type="button" class="panel-action" data-dialog-title="1. Panel — Panel & Özet" data-dialog-desc="Son 7 günlük fiyat oynaklığı 30 günlük ortalamayı aşan ürünler için kısa dönem fiyat şoku uyarısı, temel piyasa göstergeleri, tek tıkla indirilebilir Pazartesi Sabahı Yönetici Brifingi (.txt ve .pdf) ile yapay zekâ model performans özeti yer alır.">
+            <span>Detayları Gör</span>
+            <span aria-hidden="true">&rarr;</span>
+          </button>
+        </article>
+
+        <!-- Panel 2 -->
+        <article class="panel-card" data-category="analiz">
+          <div>
+            <div class="panel-top">
+              <span class="panel-num">02 &bull; PANEL</span>
+              <span class="panel-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
+                  <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </span>
+            </div>
+            <h3>Analiz &amp; Zamanlama</h3>
+            <p>20 yıllık nominal ve reel fiyat serileri, 25×12 en ucuz aylar ısı haritası, haftanın en ucuz hal günü ve 12 aylık sözleşme takvimi.</p>
+            <div class="panel-tags">
+              <span class="panel-tag">25×12 Isı Haritası</span>
+              <span class="panel-tag">Kruskal-Wallis</span>
+              <span class="panel-tag">Sözleşme Takvimi</span>
+            </div>
+          </div>
+          <button type="button" class="panel-action" data-dialog-title="2. Panel — Analiz & Zamanlama" data-dialog-desc="20 yıllık nominal ve reel fiyat serileri, 25×12 en ucuz aylar ısı haritası, haftanın en ucuz hal günü (Pazartesi–Cumartesi), enflasyon karşılaştırması, Kruskal-Wallis istatistiksel hipotez testleri ve 12 aylık sözleşme takvimi sunulur.">
+            <span>Detayları Gör</span>
+            <span aria-hidden="true">&rarr;</span>
+          </button>
+        </article>
+
+        <!-- Panel 3 -->
+        <article class="panel-card" data-category="karar">
+          <div>
+            <div class="panel-top">
+              <span class="panel-num">03 &bull; PANEL</span>
+              <span class="panel-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
+                  <circle cx="12" cy="12" r="9"></circle>
+                  <circle cx="12" cy="12" r="5"></circle>
+                  <circle cx="12" cy="12" r="1.5" fill="currentColor"></circle>
+                </svg>
+              </span>
+            </div>
+            <h3>Strateji &amp; Risk</h3>
+            <p>Kraljic Satın Alma Matrisi ile 4 stratejik bölge ayrımı, günlük hal taban–tavan pazarlık makası ve 1 yıllık strateji backtest doğrulaması.</p>
+            <div class="panel-tags">
+              <span class="panel-tag">Kraljic Matrisi</span>
+              <span class="panel-tag">Pazarlık Makası</span>
+              <span class="panel-tag">1 Yıl Backtest</span>
+            </div>
+          </div>
+          <button type="button" class="panel-action" data-dialog-title="3. Panel — Strateji & Risk" data-dialog-desc="Ürünleri tedarik riski (oynaklık) ve maliyet etkisine göre 4 stratejik bölgeye ayıran Kraljic Satın Alma Matrisi, günlük hal taban–tavan pazarlık makası analizi ve geçmiş 1 yıllık alım stratejisi doğrulaması (Backtest) bulunur.">
+            <span>Detayları Gör</span>
+            <span aria-hidden="true">&rarr;</span>
+          </button>
+        </article>
+
+        <!-- Panel 4 -->
+        <article class="panel-card" data-category="karar">
+          <div>
+            <div class="panel-top">
+              <span class="panel-num">04 &bull; PANEL</span>
+              <span class="panel-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
+                  <path d="M12 2v4"></path>
+                  <path d="m16.2 7.8 2.9-2.9"></path>
+                  <path d="M18 12h4"></path>
+                  <path d="m16.2 16.2 2.9 2.9"></path>
+                  <path d="M12 18v4"></path>
+                  <path d="m4.9 19.1 2.9-2.9"></path>
+                  <path d="M2 12h4"></path>
+                  <path d="m4.9 4.9 2.9 2.9"></path>
+                </svg>
+              </span>
+            </div>
+            <h3>Karar Ekranı</h3>
+            <p>4 zaman dilimli alım sinyalleri, 1 haftalık &amp; 1 aylık AI fiyat tahminleri, tedarikçi teklif denetimi ve SHAP açıklanabilirlik analizleri.</p>
+            <div class="panel-tags">
+              <span class="panel-tag">AI Fiyat Tahmini</span>
+              <span class="panel-tag">Teklif Denetimi</span>
+              <span class="panel-tag">SHAP Analizi</span>
+            </div>
+          </div>
+          <button type="button" class="panel-action" data-dialog-title="4. Panel — Karar Ekranı" data-dialog-desc="4 zaman dilimli (Günlük, Haftalık, Aylık, Mevsimsel) alım sinyalleri, seçilen hedef alım tarihine göre 1 haftalık ve 1 aylık yapay zekâ fiyat tahminleri, tedarikçi teklif denetimi, mevsimsel küme ikameleri ve SHAP açıklanabilirlik analizleri yer alır.">
+            <span>Detayları Gör</span>
+            <span aria-hidden="true">&rarr;</span>
+          </button>
+        </article>
+
+        <!-- Panel 5 -->
+        <article class="panel-card" data-category="simulasyon">
+          <div>
+            <div class="panel-top">
+              <span class="panel-num">05 &bull; PANEL</span>
+              <span class="panel-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
+                  <path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2V5z"></path>
+                </svg>
+              </span>
+            </div>
+            <h3>Tasarruf Simülatörü</h3>
+            <p>Şube sayısı, zayi ve soğuk depolama oranlarına göre Spot vs Akıllı Alım kıyaslaması, senaryo karar kartları ve kurumsal Excel raporu.</p>
+            <div class="panel-tags">
+              <span class="panel-tag">Senaryo A &amp; B</span>
+              <span class="panel-tag">3 Stratejik Öneri</span>
+              <span class="panel-tag">Excel (.xlsx)</span>
+            </div>
+          </div>
+          <button type="button" class="panel-action" data-dialog-title="5. Panel — Tasarruf Simülatörü" data-dialog-desc="Şube sayısı, zayi/bozulma ve soğuk depolama oranlarına göre yıllık Spot Alım ile Akıllı Alım karşılaştırması, Senaryo A ve Senaryo B karar kartları, yönetime 3 stratejik öneri ve renk kodlu kurumsal Excel (.xlsx) raporu üretilir.">
+            <span>Detayları Gör</span>
+            <span aria-hidden="true">&rarr;</span>
+          </button>
+        </article>
+
+        <!-- Panel 6 -->
+        <article class="panel-card" data-category="simulasyon">
+          <div>
+            <div class="panel-top">
+              <span class="panel-num">06 &bull; PANEL</span>
+              <span class="panel-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
+                  <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+                  <path d="M7 2v20"></path>
+                  <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path>
+                </svg>
+              </span>
+            </div>
+            <h3>Menü &amp; Reçete</h3>
+            <p>Restoran reçeteleri için 12 aylık porsiyon maliyet eğrisi, maliyeti en çok artıran bileşen tespiti ve uygun fiyatlı mevsimsel ikame önerileri.</p>
+            <div class="panel-tags">
+              <span class="panel-tag">Porsiyon Maliyeti</span>
+              <span class="panel-tag">Bileşen Analizi</span>
+              <span class="panel-tag">Mevsimsel İkame</span>
+            </div>
+          </div>
+          <button type="button" class="panel-action" data-dialog-title="6. Panel — Menü & Reçete" data-dialog-desc="Restoran yemek reçeteleri veya özel oluşturulan tarifler için 12 aylık porsiyon maliyet eğrisi, reçete maliyetini en çok artıran bileşenin tespiti ve aynı kategorideki daha uygun fiyatlı mevsimsel ikame önerileri sunulur.">
+            <span>Detayları Gör</span>
+            <span aria-hidden="true">&rarr;</span>
+          </button>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==================== ALT KAPANIŞ CTA ==================== -->
+    <section class="footer-cta-wrap">
+      <div class="footer-cta">
+        <div class="footer-cta-left">
+          <span class="brand-logo-wrap">
+            <img src="data:image/webp;base64,UklGRiItAABXRUJQVlA4WAoAAAAQAAAA7wAAYwAAQUxQSIgRAAAB8Mf/nyKp2bZ9q7q6Z2fRGBIDDjYvd3m5y8QDOYS4wWGQOU7OuLu7bA53XnH3ZCHu7srGgbjAATs7Xfb9Y7pregbZfyNiArDElNkCA+C4MUKuHOgoFSOzq3H8GiMgBjBKofGw6tF/qJ7L7K+3ltEARSQK6CxfO/MhZrpGqz/daqAiAVQqX9ZI2jRNU81Gb77eS6qBiJJYpfsfJOmMZajlU1AYgCqI/35Jau3ZrOVzciASYdJNpDYs0PIpDEA6MJV0noVavrmMJ/ODFP5AbViwc9chWqYLVFGexDRaz+IlxDKc6rhg9vu9H/bu2bUmEGep8nTWPYv2nLOcWIaLsBvzT90QUgCQcgQt851vRnMvKCy7CzX8Zqtdo+G3dyUQgMSNPiBl07q+7zIdEpxLzUxNPj5YRkKuPd/7LO/50vwmNO+KEizTiWvy6FM+W0YJ/2DKTMfa5OO/dT7E60U7IVqmi3FSzeSQls+M6Bj0H28yNL/fs2LpGer4AiSW7SN86lwea7wSP6dmo+WXR7xNeoZa+8zysViqCBUtcaSYSB/g9WejtvUN3vPkfWbTMLyPRyLGUjROJJa8QpTfdi6Plr/Zjg2m72R8Qctww2tKCktJIaUEgMpOckmDBJPYF+Dd/P1pSMfv8FtrGK55HQSWkgoARHf3zWTHEkeo4f9h3efxswk09Fy46W9ofZDr55UoLSVEDHRVej8mqX8qLXEaryeNz5kzgcabr7YAHUO9Ja9ChKWiiIBfzCBJrTUXLomkROVtMrUB1jyA212QJp+uQIqlggA27iGdd470/GlJI6SUQkYYOaufJJ11n0+g9kxOpWa2c87w+3vKkFgqRhi8+w+0hpme7FiyxAjcavJtbPxuAvt51fKvadegtSPJMzeBUFgqSpSfIY1ntuXlkVyCRBKjui7sfb+3t7f3s5efvXyPY5/94KOn93X988dNpCG9diR7X19jDSBGO4q4hSqOcmSs4nzRnET5aaYMNNwYUQECMlZxsSqWLZAAqrMZ/tpkAPuQ10oaw8Y//fkUAFARWh0pLKaiCSmGPMWUYbs2J5XA4ilRnv4s6bzL9yRvGYSRd/rLxXwyNY9vvhEAlEoKrRYJIDvLq/S08KGes6IIQCQO6HmgJ/fhEYAIi4a8QMMmdmwqBjCkfHDPAz3FPjBzR6hiRITN55OpY7hLWTsBf1sQJ/zqemCXzbfYe8+9RgGQojUS2KbyeG1hna09SMSQYk0G9/9jWCxCEtzCOkO9b0pIhdGV02v/Ywv/VFaiCAlsu4DOsnlHHnQlEU9fHddew8x3r/7TJoBogRIY123ZaFpoa/4wxJBYi6k1udZzI8QBkdjii9SFeLKZCMCFb7HRWFOs1RwPWYDE0GcX0jHfa6O11kY7+jrPG5UA58wjnTbaaJILZq0BFRWlEN3yDb329Gyp5qE5joHevjUcIi/uuIgpAz3TuTZMYvRvZpPa0rN4b8cUocQKL5Oe2dYz2HrH/8MefyG1ZqbTmuQVgCxG4pA7Se3Z8oLo+HZXLLMkRtAw0FtOe9AExdjgO9JYttZzbAECQ96hYbZPyb43KntUKpXKXpV7U7Luv9jHMa2nmY4kvXN8ZH+UiijhWNJ5tmFRrPP36MiJbvEuwBge+TjTEIUNv6NxbHUhUo17jYaZ3pEvntzZgfw1ezxtzfk68513JGnIiYiaUziRqWFbFkZb3w0yC3MY4MhJ69HYgAjrLKBj6wvpxBmsMdORn1cVABUppVQUAdj7z2y8tzq9Wq1Or75F0pKksfy5VM0oHE/LNi3OO71HpABEYtIP1mfZOm/Zd2udOpOXYNPvveFiIbHjt8ZnWM4+aAREhFARA12P9E7qKiF7xa7TPqUjSa/dBkqFCcQfmsWOKWegQwAl/JeamY78NzY33jNPYqP/0XGxkNg1pSdJZ3gNgFigSSWQGSflcrmjDEDOoiZJw+sQJqLh91nDUGta2W8OKYqGFyECElzjszTfvBg7kI55ETadT8smnbGmQKubS0oPMiVJS16NWAoUKBshkB8n97FOkpaXQoVIbEHDQJ+yxZMLo+HpiJHgOmYYvjEKe/Rbxzwpu370lsFWpyx8jAhT2LmekqTjm5cgFiheYnBll0qlUtl1NwAP0pF0undsJAKE6LU+wJMv9czsKf7Bnl2girL6zcFS5lm+tzz2JD1DohNpGOodyU97ZvUU+EDPRBEhVMj4YTqS1jwzFBItFNFyzzD3Rimje2lI1nmCTEIwlwGOXxydoPUF0fKZQXGO5asrYq/UOobR+xBHPjF1+hi0pZAb05NkP49BGS3BGKZGZzqpcEAtJentNysImRPjEmOY6/2cn0HEKi5exbIFNJyFzgxvXhmKvVPnGBLjr8Yw0PGnLQcBiFVcoIplExFetZak56WIUGiklFKiYVXr2ej5rUSMx2lJOp6MvAQ3Uudp7oGyQOsL8+mPmyLDck2oGh1D4mjdj5wLcPx2YyCOJdpRySN/Mp409cugUKRM0BglscBqzPtRQomeDO8XKhHw77BfSIXFh44/bK26vTbuz0NU+QfvgzrEqUyZ7813a0GhXUs4nXXS8BmURCHANpXddqsAaEpghTobOBsh/wnbHoksWLQFHfsxg7rOEyBu9oZB6Oo3DNTcGTHaVcoxL1hHOrePiFCgxAbdbLyh+2rZXGcG7Y8HqrIswvFeFB9H7UDjf7/ZQudmb5LgDjazOl2A4ayVEtE2EbanIb17BwJFKkxiXRujSd6Msc0MbvCmj48CEAWQ/OTUrrW6ChzfFQNxO3jDwx6y7EF5aI+3TWwfYv0bHRBoozWtITW3iqKC9tUpSZp+/RzGFWA9yRt22Xn6mogyZoRZFn5vdUcAoiifR3puQT4h8RumbGJOED+AQvsKMZOOmncvF4uCJlA30PLxAham5Je7TRx5W53zxkvR8DcdRFewd+Sih0dDqkL6NX2Aczees/BR4EjfVG+I5x5CthFEP73XCw5BjEAhc0XYE80NIZ87ePPfz62TNW4KCUAkfd6HFG9TsvYvIGrOuRdO/Fb7PFr+8b03gaPY1EchZCdEW31N7/g2FIottSQuHzVl8IXfkzTeug0zJE6jaQfSW/KOIyCbYsqjH6QOoOGMOySOcK0Z3WbfNTwkowAhV5g1e3Zvb++HvXcC+xUHYOipc0lLkpYbZYkRNe/agqQlf9uhmvMnrzKfPsDbdzcFprLekhHtR7c8RECCq5j73db4eVERxLRjSWrPMERqh4XOtgkNOQiiKZ6NjXq1y6PjRxvKLT+2bsnCVZu4xNVdYz//hElFKTxFeueZHQCJLVL6NqFz/+lQzZ0u8Gf2B7DO84AbaZYkjm8vL4TML+FSajam/kL8qqhI3PUJHfNDEGPbBc443xZMeRLKTZ2BcmkmXQBN/XDc15qRbSWj75hyAhIERiG8pDgpsdYf6sUgxpaLSGpt28Ca11aJCijJ+CFrAui5102tGdZOAviBKY+AkuO7Msd3DcdlbYFODNK+GEiselzvlyS10UWaIBoejAKSBIex5gO0u3/4d94XZnmfjNpGoWvDOUx5KDCc+b/Ala1zPyUSa82zLsO7ZhABGPuna55lG3rXlxQBhZMZQsO/9zE/45Ow16HaRWKFb3//ataw1GXW3YQQf2FBKedD3DCHjrlpM5BCAhhS2aXS/O6VQ1MfxJ+KgcJpdRNAzwvpwt4N8Xr+ASJuD4lR73y74ca+lmGYqTkxoM4/YVIBzvDbcZUHSMdG79hL7ZoAIOIERVeZBs0vCGXcxTSA+nvmZ6zrA6h5OxLZDjJZ7T3+C9uxOG/nbI2fN2UNefzPppHWsdFYVleeXufGTQEQKlIFlqPftUckd6rRBwRnjKcJoOX1EKoNIhzMuaPlhj/0F+b4MrBfM4b8y7At3qK2zLTkCQDGdZXQrok4iPV2gMQ231hfWCm+hGkANf8LJKJVEvtZNwcJzmAL3ogwoQnyzeOXn2xomenIB34LJWO09U20QT8UhjJOYK2wRGw5x7gA1nnjJLRQZMTqOXKeSMTprgWvI+gRrLHw80PHnvsJvWNmSvOPUikCIGVeR7nFg8u30jHIFifUmJdoipIJbjMmhI7s2bw8uFwwIIAYU+p1zgOi+DkeVJzI8c7wTYmV9p89n0yZ6Tw/GbHrK39ChECB3lpfrcW0DHX+MVUYBDpfpysoghxO70NoHG2t4AV9l5cjgRiTmYWX7aGFvYoMo0ma/XHKkySdY6M1rP9uhbNIQIR9yZY7BmtuiOKg5PDntS1MXEUTRG/YwvGQUqzyjXecF0FgHe5bEHX9RPySNUOmd6+5+669pGauJs/bcs93mR4WRwibQ9+q8JTXDyq1AAlOZL2oSKxlrA9qofd2DKTEOHrPORCQ8uHrywWlvBwHkLz97DUn3uhJa5lpPfn0tDGzyX5WoBYjn/6wF5JWQOEq2oKg5H7Ourag59iGsd7T1KdDKezMERhehFvoupP95+0xYYV/3k1679jo05T8aMeR13xFo+u3r6TEYmT4PJRoiYjxV+qCILE36duKnobPllQkSonAsKArXN05Nk7C0Am/mNdHWstG7xzJJyZsfcwC0nv3IyCw+Fj2jo6FbAmU2sVqVxBK2Fcb22a0fDRCpCAwrKYz+/QEdDPzxSl7bdH9IEla49moSZrqlGEXLSSdo+GxiLDY+H6+szIitAgR9iZ9QYhRIW37jLGepOHDXQAStRLzD1Znffz48/9ad79Nz3+pRhrLbK8tv+k9aywu+Iq0JFNehBiLjSU/WA4SLYPChB+MLwgKe/VSu3YZzwZa8pLqqgCuvDrzrLNGApjy28n3slFbZlpPkt1rA7iZ1J6kcT9uEUeLhzUka92joVCAP60ZdKKb/UUhAs4lSWt9y4QqX+EMSXpH9vbMuhPZl8y4Z+bMZ5npnGemTsm+lyrbAzFm0HqSdFy0ISSa+yStpy3XZP+iszcBBDLWTPvTXL3QX9CUVGv2sq7T/L50hwBIicrMGkmmOi28no6BRILfsr+BNClJWpPJzFSnlpnOOefJ54/pLAGlEv7LfjY6/rAZFAqosx0f7VmrE0gEstZj+CFCNQGB0R8zvBICRIjLRzzywCK2dDwkpFp/NnUG6Yy1zLbGGmOZ7bVh4/QqAERK4EZqNvr0+00Qo8gjq0dXWz4VAESEbIHlqkdXc6dVJ0KiaYVVq1Or+dOqq0CEQKFx2+rUauFHV4dCAAIjPqXNKtgbTXJ276Nd4wERAULhv9TMNOxBjMU2igVaKFGgQKulUmhHhVU/oLPFWGscSeruy9AYxwIQEW5inZmazwyKUWzclmhWxMEKhco4XDQHIIpbKjIQYZX3HU2qw3ya6pQka1/tVtkMKCkpJQAIiZtoman52CApC1q2lYj3nknSBbPxpYdmdpc7ASQJINAoY3Ej68w0fFpCYFlcAphSPZnB6THHTD+mhEYVKeC6zZAAEAK3UzOzzkfLUYRldKkAdHV1dY3vWnHosKFDhyZo7FAKgJTJ/fzfRogglLyZmpmWj3UIiWX3OFbI3HXykZOnTP71Mcf8/zFHQAIQMnmIffxpU5Qi3M46MzWfUJBYtpdSSiW3YejJKAEimUlLyx83B+6gYWbKh8uRxEBQ4lb26zSzzjOhYvyL/SQd67vdyjozHR8BBAaEIo7udobZlqehE3dk0JF0zDT2oSSSGCAKpd41NsvXeSZKI9+lZaN2zLTmkySSGDBGmE5rM0jDs4EV36RuyLc8BQoDSIXjSJNFwzOQrPQGTYBPeQYUBpQl/N+zdD6DKc8Dhr5Lm+M1T0QJA8wIuI10GbQ8F/GKrzDNMjwJEQacKpY3fE2d4es8D2rI67QkfZ0noYQBqBBY7QOS1pHUvAgY/go1aXksYgxMFVY5aNEiMtWpNzwfyfIvsT/lCVAYqAqgc/Ad35Ckq/EioPN18hiUMHCVEYD1q1OrKUleKzGseiAiDHAVAIzp6uoatwEEgAgD3iiOY+SKWGFgLDMxIARWUDggdBsAAFBgAJ0BKvAAZAA+MRSIQqIhIRZL5pwgAwSyB1kWQJ2r6AP0r/xvCAJ0A/QD+AIvyhuoa/p6fzba+/fvxB7Luz/rfy4Ocv+Z94fzW/1HqW8wD9T/9b6X3qT8wH7Ofrn7sv+b/Z/3O/2r/W/sZ8BX9Q/wn//9rD1JPQL/jX+d9Nn9yfgs/qn/F/dH4GP2F/8/sAegB/6vYA/gHYd/zD8Ov1p8kP7F+Nv7e/2L2z/E/n/7D+PH7yf5fppdIfaB6p/s397/uv9t/3n9//dX5M/0nhX8E/431Bfx7+Rf4D8vf7P+6Xt5/1/faZ9/h/8/6gXrj8y/xX9w/wH/S/x3ovf4P9L9TPrD/lvzD/uH2AfyT+Yf4T+tfuV+//0//av9B44f0D/Ef8j++fAD/Gv6J/lP7t/iP+p/o/pa/jP9t/i/3B/2XtH/Kv7l/s/7z/nP+z/jv//+Av8Y/mf+O/tP+K/5n+H////p+6D2Ifsp7En6f/P+oalP4TeyvcKZ+8x9DRu3/v5f+bHikcNqvSyyZJkyTBfiTxD0haV/JRT+pr05dW6au97oZAPKtxpmlI5ILLQur4BW1iYuUHG3rsP3tKlb09/F9+613wDZjSFYl8eDU/MSuz7LSqiS8JV0LzOOVt/tJlAj4dTMeayU1S0RMTbJ5u42nJmWAiF1BJPtxtC/RknYwm2QDCoGZgJH4M76GkR/m6pDKyUnDLZG6mi5ej984jlVkyY8QVVTJ/QPiOijHVJoIkmBwEiozZXxvFiz+svpbKfCfVlW/P8S+c6I/VQHvHCaNj+guELu00yOI8xeRktWmk02c/FOkJ6jHVhy+KV4AynVUNSvck8vSCxEnhTzH/RXRH23BX//0LTXYebul2mhzIwVOqZmglSLpEFbnIVnTavxWDbr0TKZrYAE1je7pv7rKX1vfHtw2MGkEtSB0yvW8+9wA1r/bP3NDLLpTEbdb7d19vikGhpyvKKPzpkwpprBdqhpmE5eoN1PRcRyGX9G1HX1/U1pLuRiseW0PxbP3sy1XhL/iX/Ev+EAAP7/DWlnmpElfH9ncq7tu1F1hLc2cWcnPgyYqkvv/PpPruRjtAPqxJLFkCpRdCfgWpBC+pzE8NMv2ps2+H+we8Mr9o86sMa5aySmlZRUf/Wp0VvZyifVvBkeojHCrs9JD1b2bXngnaXhTxCAv2osca0mYhhdsczfhSoGj3xhVd+ctWcTrEHxIKbwTNqhLjNOXhs3Y1MTBUfk2XqsNhJ6UDQ/JY/RpHO21jm+a79v3uj/tqPD4yHRFlXQcZ25c1DH74XsCNQuJRxQwg52THKWiHNpymU46OEh8QXXKteWPI/UrgNPCphiVK/4dNUT2HtQSuNVw/QY2CmNSVCJ1FmDKrKP+zluBm2N8thJhm+GvPMMHHMYOgbuD/NdaYGvBMbl7FbF/POSAXBlx/lqUu+NH9OQndrhwV9EqvXBi0tzRG/epyGCEGKXEk0fzn4kSerBST4fGv4qMLdkhj0u38KQOHZeAiGo4HRRxrHIsK7l//0i37YR/73//nj2wmwTFhz//XmXUb+vp2P8OuLVWw/Rr/x2/21BeIkGi38OyND1255v9J+fZNu/quG/+GYQ7rV0uqhlIguO02goqDEZoA5gQ+GFEXGo5AAABb4vNj983eyPJFihGFGwmEmn25dccog1K82QnPSRaByn2wlq8QHnG/Al34B7Z5sTf+DeqEghbqxdU3LTeiJg3wZgpZP5RSrHCkMAqqzf07EM6kaZcmATj1ycFESplYSUN2yup3mfzrqdgDlgaNw8CPnRr5o3ITLUC1r3ZM57gEhJa7HcKqSHI5QNwjrGdPoeBn/M4UQ/6H2P2m6fGOxDvn+oyMGGuu4zrIL6o93WKUoMgc2rPSyfpY6VA3BkBNVmUNhlsEJ5WiMgGV1TY1gu2U0KOCJholUqviDdc4buv0aLupiez6I8DuekKDYT32ewAYY4WcnYw0WsCtB5w0Zt3upd9Z3DPhflOePlfQ7rkLJ7hiNqjdyJISa3tNt9A1btN1EDxwAkXBFZXvkbiExxU8OKiv567ezZXs0rxyeTARoa/W0esumKksyXE+2rc4jdDgUG1fHfF9kkO3UdGnJsVQkWGzyWb58N99uSi0IeQTwsOuAB7FHQ6LabJVFeRPKCUBR7F2BLJK7QleAHKF3sewCrSbUdGNHX6EweaXYcZFx4JgOLz91ZJJ8fO9Nck9b9OlAFCbqnJgvZteS+T5QzP6ttAPlQ5EdBM/q51AFbzb3NPNNxXHC0A8tsksW3c/izS8xh7CPYQ/Pisx8qXU8xl5MvzTp03MnZhvVXSxDULXYwF1hQrf93SVwSOhI9xWYZrMmxjDLWkeAbyhpkTu1julYHQF8r/Y5JDKHbiFDHt8sNQKPtRgSfgBf2RNIsTMBBeF+4QgMjgNpvrAi+KC5p7K1DG22SSQi9c7+qNUIkPWXv/pDAVCrAE659rZKIplXLwcH0nBJd758i5qoMgBRZeYrzvN8eN3vhigxFiIqhqVx1j/nZWGIXzyNnuUQZHOyQy49xsWXrAmBFOXrzGWsAcCb3dpswuxdDptjzX2rrevSIle1Tm+E7bWcFMGlnOfd1+lfzMo5ANXInXXcCzTuvEXVvW/6hNnOK6kUHk8qvQe5f7i/4MbwjlI2FYDP4Wa8zw1E8KunuPH1HAvFI29qpXkEMNemSRRWIMcDxiA4+71YJkkqrNzimekL+RjnAQUqgyeIqPm9zUI/j4qgud8W/e02SMEvFX2YubOHcDvwmbpefbk3Khy70ScGhzfsS3GPFgV9dQ3b9y6jTIge+ID1ZbzGqnTpam1vHxSwg5buB4HOFdZGft2HY0qMdOrhpIHu5NdlGB6yHr6m4dhP+IVD11Pm/GoRz/CGvMBKzbuL3IBXb5UZdIHVWgEeBEc+0hcSgaMt2BGgzzbMjAueer/5mEfqp9d66+9F/nvxV1WgdIu9tjnR96Vr2cz+eH467tBNfF88S4/kVD2AhRGHWVXsnTT122eN/YhDGM2cyzkYanjLqInf0NjJKmSFu0YKVKbU+E+1hlI+5XhfekuuU8+VZd4auWnfDALSQ77wenxuJknQUNTAv0G6YCnx7hXIZzUlaNvsdK27vKXZRSyEkPGhTbrpOxsT4tOagjN+Zev+bvBv28xEGKZQ1Xnx6EuTZW62UPZ3+4XsHAcmqCiVFDpp7AcJgqrddhef/ORkADy8GJYU6wQC/0EukMpViRy8Ec3kwW9yZjJB1yx3HY08BBnl2zwzq4+mIR/ec74vj0A3tLYlZyVmvpcWgrY3YJiiJAsBQOF97mWzsqqhqJ9f49+nazTqFndwN1pu6D7asGwCpguXQDme0o/Rjve/lQiVI/5jbTmG/SGnPmrZwYv/9a0xp/IliOaHBpfitHEuyROHFwAhyD0FhxCaxY+tdOn/mBw5T9ZmsSviqfJSmhRuwuNJ/hpVmO9UuG103HeXYZMOnGXX1nZLXg0qxNHX7G47fDf4w60W1hB1CoPwUeofI+2ORVIpcuF1Uf3hj1+gdEA++svsBnmpv5fDSCOqrtwRXruBhn2K0athzPs74i+qfhYpgVhk2q9OxOdvkep2h9R5JSlHogJ1NtIY9oC9shHygFBjztCgmMATOJtWRvnTO8zVE1zMsPYbPFKbKSuGEB1bGoRTdfgNwg7eOe4lk6U/Agq5Gep2xO3MLP1wKX0KXJo+xhpYy2z9kNDxZQz4HWoLlMFpKPzd0ZDAMSCLXoMERpuEtd6UyYMZZxjklF0+WcQa+r43ED1wF738e+iA9vMChfMvm9OgN7O//kJEBH0cGFZpx+v6eh/0tPP0ZxEAGiI5wdTuAZA8jsB0iMNXJgtxGcXk5zUNCBi7W1Q0SY6/C22zn1hZ6/tIUBkk8ntjaU+Y0Tyoq++Gau4QPZUMjsw01kkkY91Z1nxSi3GxGucjPJKxeSWF4rhMh24M7VY6AFcQyKhYP9VTsChyMuk5cTgWRBsTt9sV304pcyfzWGMZHRP/brl5AHQlsWJCWwmNeGB5RLNGbZWKpSjr+lnZ1HNfNy+NGVSd5p868MfLD3hoGECjBzrEQ2GsIEn7U6r31sVPiK0yi4T0OUn8eeyK/R1Xu3vj9vxBCnbyhuVB/Csl76M/AhJ+l0GSeObkODT+/j/4TcorONQSOs1zpB6r5gFSsQEdV9U4OKCC2DofE4vCAE09edimdKWqF9npd+fUDpUZ8jLhq0X7LDrToM+ziWcpMEEvt0NLEZuheEfiiyIf67JOl/kAxXNKCVPf54lavUzo7LUTIFmNJfYgIJGrQxZAPP3m+7yVTUetxn3CjmaowP4zU8TFJHreQujsG0sNHGx5vbhSZIDU4aADAzR/DNAwSCeUP608q5zyypdDWvbXqw2oDTWnrVHZMaK0b1EUvaKZxtmY365fQegbF5O+NRjsmZZHsOUp6RskpEIlhL7Ts0P6qj+x9d/OJAdlRm7ToYFofgzCqWVIZm5fhTcr2Ww3ySBPQe9J/jmxrWW2UCP2PLa8AAf8DsEMIA/x+8S9amRrUL5sN1yblXcfzL8qmDqoYmby3IOS8izj+IEiRCPJZE5RcN1E4AU2yxqnjQ+2+CGPQy3gCRl5w2nvPb2wc9MHmvT/Y6Xp089em8GhavjW96q9u4CEEsCoRSW0XnQBCZAltXdnMNRuteDq62HAyp1YIpW1jmtpjwjeyX3Z6f818mqUpvohgAeT8vzk1s+CidNi8LeLIujQzCemQqU+fgVI/iv27anWptSXFWtBm8Rw8E1pEQaHQhWuYhbUAxgccEsbFMicrffK6I9942m9Jeo8eMQytYvOMnasqcm83xj6pf3xgbRpVzf4vt9Xj+6V8NDNaYd41AnfeR7Du7BByvxzFhEh9OIXvSO1qhwytaFBQ7zzczSrKPc8QjYpAiLwgWr0/j3XQli6QRSBSu530otg4H+/sn4GncYdtfx8Cm7hSFBpEhPQRY5qKKT8+EH/bQBZ9xFUduIP8/k9TOxF/tE1P1vRNreWCT2aiI/Bv8HWLOtj4O/dOBBtb9TqW6rCzQavnI7oElVNzlj9r6hCCkarn2nqqSPbfP0lauxwewxu5umBzjgvb8Bj6O0utCqjcKaznPabwBRL8UMlfz8yTyGuzQLmkbxk796L+aBl/t+c2AKJvE+slhvDGu6tUetdMRLfl4y/YbpofT1uBj/Ct3USsJ/ngqwfxz/6Be+ydajJw8XP14K6uzquKUq4/i7dGPuJv4MCESzuV7Eyl6r5h1xUuJhdgpzEgTWoQ4Wlf93ztAGvWHKq9rVypSKVUgmjYWAtBpvQM3z6+FsVwkLWwT39NXKnLipAhn+gD59FfMNumJCxhmQap+TQ/PvyJwaMkjON0BfY3871umm1d5+znHqx4wQGaa8JVP7uRTG/9S6w2rkmHwY6Ktxwei2jV2ubYzRBout7n57K9TBRbgJmqLNKVQIOtoqntxIpPcLFu1ZUA47J2UKbHvOGgKdo3kEVxJnRWE9p42I8/NNnn1iyPykK9WN7zqPN/uLHcBHZNvOL/OrMk/Xnhn1B91Sv3gWN4jqL/uAeygkppzm1uVekcWqIl+lOo7rIYq3n16cWxzQShdh+bCWS08Uor+RhwUveLoSxhGQPaSOi/jriCxLOpQZ1lVrPQ9DnK8NalycXhXm073ILOHdjpKvuGco4loWCcP3qIHZPvd5KvXnhTnTXfLKBRKKrojwk7akpJGZPdfY0qTWOpPamxjteHToFilJX7c9tYWf2EOzDUmB5xPgmDxOdowyacexXICkIdkneB0PvMzORJtXw38X/o24A7S5OI2BesmCxwBTK2QWDxUS9sW8C79ddtsUB5BneS5aLwDuSP7dHx72XG17gm8usZn8JTkd3+VUuDHWi7PWYoHGfTfZJSTDRvX3y5LI0/JNlndGKQlkYMJMz3xQlgAAo7vUNITyW02imeUAgUMyQz/NoJDIw3wb9mhPfwkxoiSgmWd+fMwYaK7S82E4dOHbvaaPA90BBWh1U5c4f+hlPNVemou6oBx/1CaZACfwdHjZxkKdgdAv1nV2GRDf95uH/A75qC0c9d1+yw23QCSZU3nrv9Qz9M+e5awJjlgmTsQFrPQgMteBqJ0/GkFjpmnBjBxrWG+vEil8otHG2czuIAzNxGuHdE4dprFAuCxKRFVbSEPDw+QpkUFwVA6DS7dlBrGuQrOxizQUaJqp1Yt4UxxjYpuo0Q/4YKOWvHcf9LkjmlEn+lXvCPfZ++nf1zstDewD1IFZ1KUzM6djBrn89ejPqkz7kmceANA9rUHfZHt7KalJdiN7bfNXcP1QvIIkvlWCY7mArREzLdDNCyBSkibU/aeSz6wAl3BsvnlB6gOWnbfMrdqMQu3Ej5pCEcdYPLPZ30WL1a+/J9fmEiHMZsZlpol8QPTzj78yqAECP68vLyhqs7HY1aEGEIecrSBF9DJKRbKKHZKNPIUQ6WeE32K/TI+y5VaMgP7T3Yb11Af227TcQ2JPVpcc2wVhrjySymHunSuUbFWcQe8ibbmG/xvTo5h3QZulFqeqFIRTNw+h40jMtOirv+EtAPdrcsgJZs1L+HCT6B8TUK+0xyRAF4fAz+CtsDJpOed9VyG7sjEYHfn/nD/Tmv/9NR///TG+T//GL/Ixyd/w1/yo9nmnfT26ei5H+sNyARdIsA/ScVCTMw2TWFflhXlbZ1urkPLXkcfzoT4JHAJuxNhNbY4Brucu0sSJJcX6kCNVw1hRczXdjz3C2l+Epumy4aUcyBjmqH/LSQcIt1z2YCgptFX+6Nns6eqqWk4jjZuuzU9ifEVG7lUtJLG0Noh+U46qVwLNpufElv3fryvGUNs1Hw3T6dxONegYIQ8nXYcB8elad8lEMGTkh6JIK7nbGum7Fm0cbzBP+frZ0NUpgk9lZxy+Ehwi3pH17UJVRgwwajH/3JDgJQ6etjS2YJ7ifCGiMEHJ8+VPV1LQ3pZt9No3jyifws5MaxZkOv5uKGEjXNGqMEVQA73FH+ZngLWIReNdnTgutJrWBQCR/lFay24IpP9/g/gbUm89mv5mAQGmwoCv6NcSIpKAWimlHp6EXHTfCydEnTyPzlm9dzZIpHgvA6R2afrYWQHM9xCVXrg+SSYn4VAKVhuCWR331CCSCkm2dqcnIpQzYcSKUM+ieiZ83BhqY4W+Ho5f/g3uNlAmjaV+e3AxiyV5hZM0TH75rJObDgO/rRMV9F9bhhTzpLFB00qcNI5VLNo8RfdNbjYdCey0bDzdiCCaBBK0WSr2BhuEsjbLqm9060t2AQyiRhIL5mJ349g9NIlvU6JduVVrTQujEPwtIp1aUjf/+WLBY03xM4DR1SguBakL1Ed+t6eIjG6tYoR9FwGoUFtN9NmiCDEhCZox0r/Dh/UiZscOqxXKFdo/NYviPyKTtfh6Og0vxl3vcoy7NJFPsd3BslB6vG7GETXFz0IYgWcsxRa0kIY4kyWITUl4Rc/vmnXn6XMXOc9kFxz521TzS+9ZKuGqbWJNfDXTpJFElJJhVZZ7diDGWtDS/sHulVM8UjkJC20jckBnz30QpDlWlqMcOuRv/08P6QrVHigqlf/F1mwuCQGUJ/fcdSKG6/If9VjuOzRSWiyP1dB/jB6bRSibHzNxDNMI2nyvN14ITSPmUQawq0t/+oVE5NnJgYWUMGmweeqmTgDktx0pPFazwjSqGZuHoJj66CM6+94DQmv04vlUrbSziVxe0fKVRzJnbl6OV0iFNdjfS2NYYOZD0/pYP57xo9g9cNy4hvB9EqT8a9Pd9nERCnARNm6r4PmbnWTAnBle0N1hAmcVT8gAA1vcOEFUqLs1JuTf9PIx9uurBjnu78ENtzYcGs6jqDHlTCzIFXxshJiCLWbDc5inbjQRIA5DUdS6sHIc47FCw7wtaGKfctLja1OWmZYwykmxbCIJspvhurWcaWC6Tr0TANzEDX6lqslOS9hMCykmgRaFOIqeXWKJqvibBI25HvtBrA8gMPUjX3+wZIto7DUmS28S+zarr8V/bDajW0E5AlnoOq/dxia0FtD4d4RM2k9pNFmxh2LM0i8aX5ILI/EoQBBFaDTpPPhJCIibwDlc15GA0fr6NaDzY7pmQy+Izci1hG3nv+fytpqBADB+omhIPcehfJcgLrNJD5xwnJgLyMMYDhtAe95eHG9+gIjcobBWDEoAV69gaICNr1reFLL4FuuznfmExu5iDzktxYVcoX8jpguOJ3mvdc4evxh29V1ceWSoQ4gCzRu44s7ySvU6weLdzTAqy1YjLRTrGWssVXRWeh5x8e8sYOjovz4HJtOl/AtcWx34hbgP/FsnVLk2J87rQGpd5y9kJtTCaYhKFyokwT0nz1lje98FpFCkMtnDQbQUkqCFmfD4sqXpzqhMTQ3TTMdMBBlbkzAXoyOfRMelUFBTDXUqbaIDKn9YccLGLHbzuNNxG6XqUE+/gFMJPkt0mcMuAIgmQfhxDiHZM5ndIQOQtN+dtUNNP1h0D74V0EG+Vh8fhTV4bcRvY7ClSlMfxtwXWsI2w+XcWo4pTz0wpFcrWHaXBSsWvJwl2kGEFxLjL1iZHv5koedsiJBeAYWmLC0tcmj1DuqUH1fdFmVUZFIrR1zea1Uwxc+tp6mJpVvHduzyz+kDzKRyNP5iUeogK1/lvixn9CKyMHrd8HsWM5S5XnldVSZZlruliGE6X+IYGtIFP0ZGvkdazFxHMDCY23N/Gn6fkoisRCX0s7+I4Ho9KyFk9WQ0fuNND5w5X/QH7i17hKLGl/Fhvyz0sB/fN1+gWsr377Vsdq2jkAjOi+h1h1mLMnkKxNCX4QOeft9CIMJNYWjHRri0+9W5J9ZHe6sfpisatRuKIFbEXWjvVS0UxmH1z48SP3iBTe0iSLUmwDE6OXzqTPScc/lUIe1E3/bz8xgJXVjs7CThuysWBsUamtA6/6/EQ3gfOX4JMv/tV8q3bKlHf9LTnC8StNfezZfO3Vm1+f8bMI+zSuQqzfntUPAr8n2fYYMOfzhsGmgwU39scemUZgzzwm1uskAYqcGTqt0qYp/XI7eRsahaY/AHQf2Bvhtw851U5zgW1tEmNN42Z1xT+rvcrROEehSrWASdl4S/Fni6uUReFWFcgq6QndzLCR+NjLjTTIApq+lCpr+xZXjwmv59Ux8O024wAu97cPrFox9potxgB+TENkAAAAAAAAAAAABQAoE+C6+8+XGPrv+N0IdVWKoMGAzNvyNzSHLMPBWm4aCAtMT5H95XfQSFe0dC752p9RfkKolIlvK2U1PzfXdiov6LcgDTOHqPphJfASb1LqmLkmz1NdeEWmy6Fqh3/02mPDYDelsN4C33gLx/Hu6wAVjBeQAAAA" alt="SNC Logo" />
+          </span>
+          <div>
+            <h2>Karar Destek Panellerine Hazır mısınız?</h2>
+            <p>6 uzman panelini ve canlı yapay zekâ fiyat tahminlerini tek tıkla açın.</p>
+          </div>
+        </div>
+        <button type="button" class="btn-footer-start" data-start-action>
+          <span>BAŞLA — Panelleri Aç</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Panel Detay Modalı -->
+  <dialog class="panel-dialog" id="panelDialog" aria-labelledby="dialogTitle">
+    <div class="dialog-head">
+      <h3 id="dialogTitle">Panel Detayı</h3>
+      <button type="button" class="dialog-close" id="dialogClose" aria-label="Kapat">&times;</button>
+    </div>
+    <div class="dialog-body">
+      <p id="dialogDesc"></p>
+    </div>
+    <div class="dialog-foot">
+      <button type="button" class="btn-secondary" id="dialogCancel" style="padding: 0.55rem 1rem;">Kapat</button>
+      <button type="button" class="btn-header-cta" data-start-action style="padding: 0.58rem 1.15rem;">Bu Panele Geç &rarr;</button>
+    </div>
+  </dialog>
+
+  <!-- Örnek Etkileşim Bildirimi -->
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <span class="pulse-dot" aria-hidden="true"></span>
+    <span id="toastMsg">Karar destek panellerine yönlendiriliyor (Örnek tasarım)</span>
+  </div>
+
+  <script>
+    // 1. Canlı AI Sinyal Önizleme Ürün Değiştirici
+    const products = {
+      ananas: {
+        name: "İthal • Ananas (Adet)",
+        price: '78,40 <span>₺ / ort.</span>',
+        badge: "ŞİMDİ AL • %9,2 Dip",
+        badgeClass: "decision-badge decision-buy",
+        delta: "+11,4% yükseliş riski",
+        deltaColor: "#166e37",
+        min: "69,00 ₺",
+        avg: "78,40 ₺",
+        max: "92,50 ₺",
+        hist: "M 0 74 C 45 70, 80 62, 125 68 C 165 74, 200 84, 238 82",
+        pred: "M 238 82 C 278 70, 315 44, 360 28",
+        area: "M 0 74 C 45 70, 80 62, 125 68 C 165 74, 200 84, 238 82 C 278 70, 315 44, 360 28 L 360 108 L 0 108 Z",
+        dotY: 82
+      },
+      domates: {
+        name: "Sebze • Domates (Kg)",
+        price: '34,80 <span>₺ / ort.</span>',
+        badge: "NORMAL TEDARİK • Dengeli",
+        badgeClass: "decision-badge decision-normal",
+        delta: "±2,1% yatay seyir",
+        deltaColor: "#17528c",
+        min: "28,50 ₺",
+        avg: "34,80 ₺",
+        max: "43,00 ₺",
+        hist: "M 0 58 C 45 52, 85 64, 130 56 C 175 48, 205 58, 238 55",
+        pred: "M 238 55 C 278 52, 318 57, 360 51",
+        area: "M 0 58 C 45 52, 85 64, 130 56 C 175 48, 205 58, 238 55 C 278 52, 318 57, 360 51 L 360 108 L 0 108 Z",
+        dotY: 55
+      },
+      biber: {
+        name: "Sebze • Çarliston Biber (Kg)",
+        price: '56,20 <span>₺ / ort.</span>',
+        badge: "ALIMI ERTELE • Zirve Bandı",
+        badgeClass: "decision-badge decision-wait",
+        delta: "-13,8% düşüş beklentisi",
+        deltaColor: "#9a4a00",
+        min: "44,00 ₺",
+        avg: "56,20 ₺",
+        max: "68,00 ₺",
+        hist: "M 0 78 C 45 72, 85 56, 130 46 C 175 36, 205 26, 238 24",
+        pred: "M 238 24 C 278 38, 318 62, 360 76",
+        area: "M 0 78 C 45 72, 85 56, 130 46 C 175 36, 205 26, 238 24 C 278 38, 318 62, 360 76 L 360 108 L 0 108 Z",
+        dotY: 24
+      }
+    };
+
+    document.querySelectorAll(".product-tab").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const key = btn.dataset.product;
+        const p = products[key];
+        if (!p) return;
+
+        document.querySelectorAll(".product-tab").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+        document.getElementById("previewName").textContent = p.name;
+        document.getElementById("previewPrice").innerHTML = p.price;
+        const badge = document.getElementById("previewBadge");
+        badge.textContent = p.badge;
+        badge.className = p.badgeClass;
+        const delta = document.getElementById("previewDelta");
+        delta.textContent = p.delta;
+        delta.style.color = p.deltaColor;
+        document.getElementById("bandMin").textContent = p.min;
+        document.getElementById("bandAvg").textContent = p.avg;
+        document.getElementById("bandMax").textContent = p.max;
+        document.getElementById("chartHist").setAttribute("d", p.hist);
+        document.getElementById("chartPred").setAttribute("d", p.pred);
+        document.getElementById("chartArea").setAttribute("d", p.area);
+        document.getElementById("chartDot").setAttribute("cy", String(p.dotY));
+      });
+    });
+
+    // 2. Panel Kategori Filtreleme
+    document.querySelectorAll(".filter-pill").forEach((pill) => {
+      pill.addEventListener("click", () => {
+        const filter = pill.dataset.filter;
+        document.querySelectorAll(".filter-pill").forEach((p) => p.setAttribute("aria-pressed", String(p === pill)));
+        document.querySelectorAll(".panel-card").forEach((card) => {
+          const show = filter === "all" || card.dataset.category === filter;
+          card.classList.toggle("hidden-card", !show);
+        });
+      });
+    });
+
+    // 3. Panel Detay Modalı
+    const dialog = document.getElementById("panelDialog");
+    const dialogTitle = document.getElementById("dialogTitle");
+    const dialogDesc = document.getElementById("dialogDesc");
+
+    document.querySelectorAll(".panel-action").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        dialogTitle.textContent = btn.dataset.dialogTitle;
+        dialogDesc.textContent = btn.dataset.dialogDesc;
+        dialog.showModal();
+      });
+    });
+
+    document.getElementById("dialogClose").addEventListener("click", () => dialog.close());
+    document.getElementById("dialogCancel").addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+
+    // 4. Başla Butonları Örnek Geri Bildirimi
+    const toast = document.getElementById("toast");
+    let toastTimer;
+    document.querySelectorAll("[data-start-action]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (dialog.open) dialog.close();
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
+      });
+    });
+  </script>
+</body>
+</html>
